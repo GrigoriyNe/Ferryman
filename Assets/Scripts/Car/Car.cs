@@ -26,7 +26,7 @@ public class Car : MonoBehaviour //, IMoveable
         _startPositionTile = startPositionTile;
         _finishPositionTile = finishPositionTile;
         transform.position = _startPositionTile.transform.position;
-        Move();
+      //  Move();
     }
 
     public void Move()
@@ -35,7 +35,6 @@ public class Car : MonoBehaviour //, IMoveable
         moverLogic.SetEnd(_startPositionTile);
         StartCoroutine(MoveTo(moverLogic.GetPath()));
         _isMoving = true;
-        // targets));
     }
 
     private IEnumerator MoveTo(List<TileHelper> targets)
