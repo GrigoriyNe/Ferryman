@@ -7,7 +7,6 @@ public class MoverLogic : MonoBehaviour
     private const int Height = 10;
 
     [SerializeField] private GameObject _prefab;
-    [SerializeField] private FabricCars _fabricCars;
 
     private Point[,] _map = new Point[Height, Width];
     private TileHelper[,] _tiles = new TileHelper[Height, Width];
@@ -23,11 +22,12 @@ public class MoverLogic : MonoBehaviour
     private int _end_X;
     private int _end_Y;
 
+    public int CountStartPlace => _carStartPoints.Count;
+
     void Start()
     {
         InitMap();
         AddItemOnMap();
-        _fabricCars.Create();
     }
 
     public void SetStart(TileHelper tile)
@@ -49,6 +49,9 @@ public class MoverLogic : MonoBehaviour
         List<TileHelper> path = new List<TileHelper>();
         Point temp = _end.parent;
 
+        if (_end.parent == null)
+            return null;
+
         while (temp != _start)
         {
             path.Add(_tiles[temp.X, temp.Y]);
@@ -66,6 +69,18 @@ public class MoverLogic : MonoBehaviour
     public TileHelper GetFinihCarPosition()
     {
         return _carFinishPoints.Dequeue();
+    }
+
+    public void AddObstacle(int x, int y)
+    {
+        _map[x, y].isObstacle = true;
+        _tiles[x, y].sprite.color = Color.black;
+    }
+
+    public void RemoveObstacle(int x, int y)
+    {
+        _map[x, y].isObstacle = false;
+        _tiles[x, y].sprite.color = Color.white;
     }
 
     //public void Update()
@@ -172,33 +187,33 @@ public class MoverLogic : MonoBehaviour
         AddWalls(4, 2, 2);
         AddWalls(5, 2, 3);
 
+        AddCarStartPoint(1, 1);
         AddCarStartPoint(1, 2);
+        AddCarStartPoint(1, 3);
+        AddCarStartPoint(2, 1);
+        AddCarStartPoint(2, 2);
         AddCarStartPoint(2, 3);
-        AddCarStartPoint(1, 4);
-        AddCarStartPoint(2, 5);
+        AddCarStartPoint(2, 4);
 
-        AddCarFinishPoint(6, 7);
-        AddCarFinishPoint(6, 8);
+        AddCarFinishPoint(0, 7);
+        AddCarFinishPoint(1, 7);
+        AddCarFinishPoint(1, 9);
         AddCarFinishPoint(2, 8);
-        AddCarFinishPoint(3, 8);
+        AddCarFinishPoint(3, 9);
+        AddCarFinishPoint(5, 9);
+        AddCarFinishPoint(5, 8);
     }
 
     private void AddCarStartPoint(int x, int y)
     {
-        TileHelper tile = _tiles[x, y];
-        _carStartPoints.Enqueue(tile);
+        _map[x, y].isObstacle = true;
+        _tiles[x, y].sprite.color = Color.blue;
+        _carStartPoints.Enqueue(_tiles[x, y]);
     }
 
     private void AddCarFinishPoint(int x, int y)
     {
-        TileHelper tile = _tiles[x, y];
-        _carFinishPoints.Enqueue(tile);
-    }
-
-    private void AddObstacle(int x, int y)//Add barriers
-    {
-        _map[x, y].isObstacle = true;
-        _tiles[x, y].sprite.color = Color.black;
+        _carFinishPoints.Enqueue(_tiles[x, y]);
     }
 
     private void AddVoid(int x, int y)//Add void
@@ -220,9 +235,6 @@ public class MoverLogic : MonoBehaviour
         _end = _map[endX, endY];
         _tiles[endX, endY].sprite.color = Color.red;
     }
-
-
-
 
     private void FindPath()
     {
@@ -304,10 +316,12 @@ public class MoverLogic : MonoBehaviour
     {
         int G = 0;
         int H = Mathf.Abs(_end.X - point.X) + Mathf.Abs(_end.Y - point.Y);
+
         if (point.parent != null)
         {
             G = 1 + point.parent.G;
         }
+
         int F = H + G;
         point.H = H;
         point.G = G;
