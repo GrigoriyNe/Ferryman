@@ -21,16 +21,6 @@ public class Car : MonoBehaviour //, IMoveable
         _onParking = false;
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.collider.TryGetComponent(out Car _))
-    //    {
-    //        _moving = null;
-    //        MoveToStart();
-    //        _onParking=true;
-    //    }
-    //}
-
     public void Init(TileHelper startPositionTile, TileHelper finishPositionTile)
     {
         _startPositionTile = startPositionTile;
@@ -45,31 +35,13 @@ public class Car : MonoBehaviour //, IMoveable
 
         if (_onParking == false)
         {
-        //    _isMoving = true;
-
-            //_moverLogic.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-
-            //_moverLogic.SetStart(_finishPositionTile);
-            //_moverLogic.SetEnd(_startPositionTile);
             TryMoving(_startPositionTile, _finishPositionTile);
         }
         else
         {
-            //_isMoving = true;
-            //_moverLogic.RemoveObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
-            //MoveToStart();
-
             TryMoving(_finishPositionTile, _startPositionTile);
         }
     }
-
-    //public void MoveToStart()
-    //{
-
-    //    //_moverLogic.SetEnd(_startPositionTile);
-    //    //_moverLogic.SetStart(_finishPositionTile);
-    //    TryMoving(_startPositionTile, _finishPositionTile);
-    //}
 
     private void TryMoving(TileHelper start, TileHelper end)
     {
@@ -80,8 +52,11 @@ public class Car : MonoBehaviour //, IMoveable
         _moverLogic.SetEnd(start);
 
         if (_moverLogic.GetPath() == null)
+        {
+            _moverLogic.AddObstacle(start.cord_x, start.cord_y);
+            _isMoving = false;
             return;
-
+        }
 
         _moving = StartCoroutine(MoveTo(_moverLogic.GetPath()));
     }

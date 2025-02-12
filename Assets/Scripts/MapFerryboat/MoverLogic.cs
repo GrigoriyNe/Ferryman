@@ -50,10 +50,19 @@ public class MoverLogic : MonoBehaviour
         Point temp = _end.parent;
 
         if (_end.parent == null)
+        {
+            Debug.Log("No way");
             return null;
+        }
 
         while (temp != _start)
         {
+            if (path.Count > 100)
+            {
+                Debug.Log("No way");
+                return null;
+            }
+
             path.Add(_tiles[temp.X, temp.Y]);
             temp = temp.parent;
         }
@@ -83,54 +92,7 @@ public class MoverLogic : MonoBehaviour
         _tiles[x, y].sprite.color = Color.white;
     }
 
-    //public void Update()
-    //{
-    //    if (Input.GetMouseButtonDown(0))
-    //    {
-    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //        RaycastHit hit;
-    //        if (Physics.Raycast(ray, out hit))
-    //        {
-    //            //if (_end != null)
-    //            //{
-    //            //    ClearPath();
-    //            //}
-    //            if (hit.collider.gameObject.tag == "Tile")
-    //            {
-    //                _tiles[_start_X, _start_Y].sprite.color = Color.white;
-    //                _tiles[_end_X, _end_Y].sprite.color = Color.white;
-    //                _start_X = hit.collider.gameObject.GetComponent<TileHelp>().cord_x;
-    //                _start_Y = hit.collider.gameObject.GetComponent<TileHelp>().cord_y;
-    //            }
-
-    //        }
-
-    //    }
-    //    if (Input.GetMouseButtonDown(1))
-    //    {
-    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //        RaycastHit hit;
-    //        if (Physics.Raycast(ray, out hit))
-    //        {
-    //            if (hit.collider.gameObject.tag == "Tile")
-    //            {
-    //                //if (_end != null)
-    //                //{
-    //                //    ClearPath();
-    //                //}
-    //                _tiles[_end_X, _end_Y].sprite.color = Color.white;
-    //                _end_X = hit.collider.gameObject.GetComponent<TileHelp>().cord_x;
-    //                _end_Y = hit.collider.gameObject.GetComponent<TileHelp>().cord_y;
-    //                SetStartAndEnd(_start_X, _start_Y, _end_X, _end_Y);
-    //                FindPath();
-    //                GetPath();
-    //            };
-    //        }
-
-    //    }
-    //}
-
-    private void InitMap()//Initialize the map
+    private void InitMap()
     {
         for (int i = 0; i < Width; i++)
         {
@@ -146,62 +108,28 @@ public class MoverLogic : MonoBehaviour
 
     private void AddItemOnMap()
     {
-        AddObstacle(2, 4);
+   //     AddObstacle(2, 4);
 
-        AddVoid(5, 0);
-        AddVoid(5, 1);
-        AddVoid(5, 2);
-        AddVoid(5, 3);
-        AddVoid(5, 4);
-        AddVoid(5, 5);
+        for (int i = 0; i < 3; i++)
+            AddVoid(6, i);
 
-        AddVoid(6, 0);
-        AddVoid(6, 1);
-        AddVoid(6, 2);
-        AddVoid(6, 3);
-        AddVoid(6, 4);
-        AddVoid(6, 5);
-        AddVoid(6, 6);
+        for (int i = 4; i <= 6; i++)
+            AddVoid(6, i);
 
-        AddVoid(7, 0);
-        AddVoid(7, 1);
-        AddVoid(7, 2);
-        AddVoid(7, 3);
-        AddVoid(7, 4);
-        AddVoid(7, 5);
-        AddVoid(7, 6);
+        for (int i = 7; i < Height; i++)
+            for (int j = 0; j < Height; j++)
+                AddVoid(i, j);
 
-        AddVoid(6, 0);
-        AddVoid(6, 1);
-        AddVoid(6, 2);
-        AddVoid(6, 3);
-        AddVoid(6, 5);
-        AddVoid(6, 6);
+        AddWalls(2, 5, 2);
+        AddWalls(5, 5, 2);
 
-        AddVoid(7, 0);
-        AddVoid(7, 1);
-        AddVoid(7, 2);
-        AddVoid(7, 3);
-        AddVoid(7, 4);
+        for (int i = 0;i <= 3; i++)
+            for (int j = 0; j < 3; j++)
+                AddCarStartPoint(i, j);
 
-        AddWalls(4, 2, 2);
-        AddWalls(5, 2, 3);
-
-        AddCarStartPoint(1, 1);
-        AddCarStartPoint(1, 2);
-        AddCarStartPoint(1, 3);
-        AddCarStartPoint(2, 1);
-        AddCarStartPoint(2, 2);
-        AddCarStartPoint(2, 3);
-        AddCarStartPoint(2, 4);
-
-        AddCarFinishPoint(0, 7);
-        AddCarFinishPoint(1, 7);
-        AddCarFinishPoint(1, 9);
-        AddCarFinishPoint(2, 8);
-        AddCarFinishPoint(3, 9);
-        AddCarFinishPoint(5, 9);
-        AddCarFinishPoint(5, 8);
+        for (int i = 0; i <= 3; i++)
+            for (int j = 6; j < Height; j++)
+                AddCarFinishPoint(i, j);
     }
 
     private void AddCarStartPoint(int x, int y)
