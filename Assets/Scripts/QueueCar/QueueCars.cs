@@ -14,6 +14,6 @@ public class QueueCars : MonoBehaviour
     //public void TransferCar()
     //{
     //    Car car = _cars.Dequeue();
-    //    car.MoveToParking();
+    //    car.Move();
     //}
 }

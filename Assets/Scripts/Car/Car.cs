@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Car : MonoBehaviour //, IMoveable
 {
     [SerializeField] private float _speed;
     [SerializeField] private MoverLogic _moverLogic;
+    [SerializeField] private TextMeshProUGUI _viewFinishPosition;
 
     private TileHelper _startPositionTile;
     private TileHelper _finishPositionTile;
 
     private bool _isMoving;
     private bool _onParking;
+    private bool _isActive;
 
     private Coroutine _moving = null;
 
@@ -19,6 +23,7 @@ public class Car : MonoBehaviour //, IMoveable
     {
         _isMoving = false;
         _onParking = false;
+        _isActive = false;
     }
 
     public void Init(TileHelper startPositionTile, TileHelper finishPositionTile)
@@ -26,6 +31,35 @@ public class Car : MonoBehaviour //, IMoveable
         _startPositionTile = startPositionTile;
         _finishPositionTile = finishPositionTile;
         transform.position = _startPositionTile.transform.position;
+        _viewFinishPosition.text = GetTextPosition();
+
+        CheckNextPosition();
+    }
+
+    private void CheckNextPosition()
+    {
+        if (_moverLogic.CheckObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y + 1) == false)
+            _isActive = true;
+    }
+
+    private string GetTextPosition()
+    {
+        string TextPositionX = null;
+
+        if (_finishPositionTile.cord_x == 0)
+            TextPositionX = "A";
+        if (_finishPositionTile.cord_x == 1)
+            TextPositionX = "B";
+        if (_finishPositionTile.cord_x == 2)
+            TextPositionX = "C";
+        if (_finishPositionTile.cord_x == 3)
+            TextPositionX = "D";
+        if (_finishPositionTile.cord_x == 4)
+            TextPositionX = "E";
+        if (_finishPositionTile.cord_x == 5)
+            TextPositionX = "F";
+
+        return TextPositionX + (1 + _finishPositionTile.cord_y).ToString();
     }
 
     public void Move()
@@ -33,9 +67,13 @@ public class Car : MonoBehaviour //, IMoveable
         if (_isMoving)
             return;
 
+        if (_isActive == false)
+            return;
+
         if (_onParking == false)
         {
             TryMoving(_startPositionTile, _finishPositionTile);
+
         }
         else
         {

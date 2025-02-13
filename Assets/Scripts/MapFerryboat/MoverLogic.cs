@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class MoverLogic : MonoBehaviour
 {
-    private const int Width = 10;
-    private const int Height = 10;
+    private const int Width = 15;
+    private const int Height = 15;
 
     [SerializeField] private GameObject _prefab;
 
@@ -22,6 +22,7 @@ public class MoverLogic : MonoBehaviour
     private int _end_X;
     private int _end_Y;
 
+    public int CountFinishPlace => _carFinishPoints.Count;
     public int CountStartPlace => _carStartPoints.Count;
 
     void Start()
@@ -42,6 +43,12 @@ public class MoverLogic : MonoBehaviour
         _end_Y = tile.cord_y;
         SetStartAndEnd(_start_X, _start_Y, _end_X, _end_Y);
         FindPath();
+    }
+
+    public bool CheckObstacle(int x, int y)
+    {
+        _tiles[x, y].sprite.color = Color.magenta;
+        return _map[x,y].isObstacle;
     }
 
     public List<TileHelper> GetPath()
@@ -108,7 +115,7 @@ public class MoverLogic : MonoBehaviour
 
     private void AddItemOnMap()
     {
-   //     AddObstacle(2, 4);
+        //     AddObstacle(2, 4);
 
         for (int i = 0; i < 3; i++)
             AddVoid(6, i);
@@ -120,16 +127,18 @@ public class MoverLogic : MonoBehaviour
             for (int j = 0; j < Height; j++)
                 AddVoid(i, j);
 
-        AddWalls(2, 5, 2);
-        AddWalls(5, 5, 2);
+        AddWalls(1, 9, 2);
+        AddWalls(4, 9, 2);
 
-        for (int i = 0;i <= 3; i++)
-            for (int j = 0; j < 3; j++)
+        for (int i = 1; i <= 4; i++)
+            for (int j = 10; j < Height; j++)
+                AddCarFinishPoint(i, j);
+
+        for (int i = 1; i <= 3; i++)
+            for (int j = 0; j < _carFinishPoints.Count / 3; j++)
                 AddCarStartPoint(i, j);
 
-        for (int i = 0; i <= 3; i++)
-            for (int j = 6; j < Height; j++)
-                AddCarFinishPoint(i, j);
+
     }
 
     private void AddCarStartPoint(int x, int y)
@@ -142,6 +151,7 @@ public class MoverLogic : MonoBehaviour
     private void AddCarFinishPoint(int x, int y)
     {
         _carFinishPoints.Enqueue(_tiles[x, y]);
+        _tiles[x, y].sprite.color = Color.yellow;
     }
 
     private void AddVoid(int x, int y)//Add void
