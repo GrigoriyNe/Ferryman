@@ -43,11 +43,11 @@ public class Car : MonoBehaviour //, IMoveable
 
     private IEnumerator MovingInQuenue()
     {
-        while (_startPositionTile.cord_y < 4)
+        while (_startPositionTile.cord_y < 8)
         {
             if (CheckNextPosition())
             {
-                float step = _speed * Time.deltaTime * 100;
+                float step = _speed * Time.deltaTime * 150;
 
                 _moverLogic.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
                 transform.position = Vector3.MoveTowards(transform.position, _moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform.position, step);

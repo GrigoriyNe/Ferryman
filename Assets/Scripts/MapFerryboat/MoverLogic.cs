@@ -49,7 +49,7 @@ public class MoverLogic : MonoBehaviour
     public bool CheckObstacle(int x, int y)
     {
         _tiles[x, y].sprite.color = Color.magenta;
-        return _map[x,y].isObstacle;
+        return _map[x, y].isObstacle;
     }
 
     public List<TileHelper> GetPath()
@@ -80,7 +80,12 @@ public class MoverLogic : MonoBehaviour
 
     public TileHelper GetStartCarPosition()
     {
-        return _carStartPoints.Dequeue();
+
+        TileHelper tile = _carStartPoints.Dequeue();
+        TileHelper cashtile = tile;
+        _carStartPoints.Enqueue(tile);
+
+        return cashtile;
     }
 
     public TileHelper GetFinihCarPosition()
@@ -146,11 +151,9 @@ public class MoverLogic : MonoBehaviour
             for (int j = 11; j < Height; j++)
                 AddCarFinishPoint(i, j);
 
-        for (int i = 1; i < 4; i++)
-            for (int j = 0; j < 4; j++)
+        for (int i = 1; i <= 3; i++)
+            for (int j = 0; j < _carFinishPoints.Count / 3; j++)
                 AddCarStartPoint(i, j);
-
-
     }
 
     private void AddCarStartPoint(int x, int y)
@@ -294,5 +297,5 @@ public class MoverLogic : MonoBehaviour
         return point;
     }
 
-    
+
 }

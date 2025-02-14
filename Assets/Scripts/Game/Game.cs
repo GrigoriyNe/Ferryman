@@ -13,14 +13,19 @@ public class Game : MonoBehaviour
 
     private IEnumerator CreateCars()
     {
-        int count = _moverLogic.CountStartPlace;
+        int count = _moverLogic.CountFinishPlace;
 
         for (int i = 0; i < count; i++)
         {
+            yield return new WaitForSeconds(0.4f);
             _fabricCars.Create();
             
         }
 
-        yield return new WaitForSeconds(1);
+        if (_fabricCars.NotCreatedCarCount > 0)
+        {
+            yield return new WaitForSeconds(2f);
+            _fabricCars.Create();
+        }
     }
 }
