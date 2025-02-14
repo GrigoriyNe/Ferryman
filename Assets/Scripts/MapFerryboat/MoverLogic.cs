@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -99,6 +100,11 @@ public class MoverLogic : MonoBehaviour
         _tiles[x, y].sprite.color = Color.white;
     }
 
+    public TileHelper GetTile(int x, int y)
+    {
+        return _tiles[x, y];
+    }
+
     private void InitMap()
     {
         for (int i = 0; i < Width; i++)
@@ -120,6 +126,12 @@ public class MoverLogic : MonoBehaviour
         for (int i = 0; i < 3; i++)
             AddVoid(6, i);
 
+        for (int i = 0; i < Height; i++)
+            AddVoid(0, i);
+
+        for (int i = 1; i < 9; i++)
+            AddVoid(4, i);
+
         for (int i = 4; i <= 6; i++)
             AddVoid(6, i);
 
@@ -131,11 +143,11 @@ public class MoverLogic : MonoBehaviour
         AddWalls(4, 9, 2);
 
         for (int i = 1; i <= 4; i++)
-            for (int j = 10; j < Height; j++)
+            for (int j = 11; j < Height; j++)
                 AddCarFinishPoint(i, j);
 
-        for (int i = 1; i <= 3; i++)
-            for (int j = 0; j < _carFinishPoints.Count / 3; j++)
+        for (int i = 1; i < 4; i++)
+            for (int j = 0; j < 4; j++)
                 AddCarStartPoint(i, j);
 
 
@@ -281,4 +293,6 @@ public class MoverLogic : MonoBehaviour
         }
         return point;
     }
+
+    
 }

@@ -13,7 +13,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator CreateCars()
     {
-        int count = _moverLogic.CountFinishPlace;
+        int count = _moverLogic.CountStartPlace;
 
         for (int i = 0; i < count; i++)
         {
