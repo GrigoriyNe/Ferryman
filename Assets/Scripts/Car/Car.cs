@@ -18,6 +18,8 @@ public class Car : MonoBehaviour //, IMoveable
     private bool _isMoving;
     private bool _inParking;
     private bool _isNextPositionEmpty;
+
+    private Coroutine _moving;
     private bool _isSelected;
 
     private void OnEnable()
@@ -26,6 +28,7 @@ public class Car : MonoBehaviour //, IMoveable
         _inParking = false;
         _isNextPositionEmpty = false;
         _isSelected = false;
+        _moving = null;
     }
 
     public void Init(TileHelper startPositionTile, TileHelper finishPositionTile)
