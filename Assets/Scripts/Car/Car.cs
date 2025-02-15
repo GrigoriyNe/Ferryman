@@ -11,6 +11,7 @@ public class Car : MonoBehaviour //, IMoveable
     [SerializeField] private MoverLogic _moverLogic;
     [SerializeField] private TextMeshProUGUI _viewFinishPosition;
     [SerializeField] private Image _backgroundText;
+    [SerializeField] private NameParkingPlaces _placesName;
 
     private TileHelper _startPositionTile;
     private TileHelper _finishPositionTile;
@@ -47,16 +48,18 @@ public class Car : MonoBehaviour //, IMoveable
         {
             if (CheckNextPosition())
             {
-                float step = _speed * Time.deltaTime * 150;
+                _isMoving = true;
 
                 _moverLogic.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-                transform.position = Vector3.MoveTowards(transform.position, _moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform.position, step);
+                transform.position = _moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform.position;
                 _startPositionTile = _moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
                 _moverLogic.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.666f);
         }
+
+        _isMoving = false;
     }
 
     private bool CheckNextPosition()
@@ -66,35 +69,7 @@ public class Car : MonoBehaviour //, IMoveable
 
     private string GetTextPosition()
     {
-        string TextPositionX = null;
-        string TextPositionY = null;
-
-        if (_finishPositionTile.cord_x == 1)
-            TextPositionX = "A";
-        if (_finishPositionTile.cord_x == 2)
-            TextPositionX = "B";
-        if (_finishPositionTile.cord_x == 3)
-            TextPositionX = "C";
-        if (_finishPositionTile.cord_x == 4)
-            TextPositionX = "D";
-        if (_finishPositionTile.cord_x == 5)
-            TextPositionX = "E";
-        if (_finishPositionTile.cord_x == 6)
-            TextPositionX = "F";
-
-        if (_finishPositionTile.cord_y == 14)
-            TextPositionY = "1";
-
-        if (_finishPositionTile.cord_y == 13)
-            TextPositionY = "2";
-
-        if (_finishPositionTile.cord_y == 12)
-            TextPositionY = "3";
-
-        if (_finishPositionTile.cord_y == 11)
-            TextPositionY = "4";
-
-        return (TextPositionX + TextPositionY).ToString();
+        return _placesName.GetTextPlace(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
     }
 
     public void Move()

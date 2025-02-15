@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class MoverLogic : MonoBehaviour
@@ -13,7 +14,8 @@ public class MoverLogic : MonoBehaviour
     private TileHelper[,] _tiles = new TileHelper[Height, Width];
 
     private Queue<TileHelper> _carStartPoints = new Queue<TileHelper>();
-    private Queue<TileHelper> _carFinishPoints = new Queue<TileHelper>();
+    private List<TileHelper> _carFinishPoints = new List<TileHelper>();
+ //   private List<TileHelper> _carFinishPointsSh = new List<string>(_carFinishPoints.Shuffle()); //new List<string>(File.ReadAllLines(fn).Shuffle() ) ;
 
     private Point _start;
     private Point _end;
@@ -30,12 +32,18 @@ public class MoverLogic : MonoBehaviour
     {
         InitMap();
         AddItemOnMap();
+     //   _carFinishPointsSh = new List<string>(_carFinishPoints.ToString().Shuffle())
     }
 
     public void SetStart(TileHelper tile)
     {
         _start_X = tile.cord_x;
         _start_Y = tile.cord_y;
+    }
+
+    public void Shuffle()
+    {
+        
     }
 
     public void SetEnd(TileHelper tile)
@@ -90,7 +98,10 @@ public class MoverLogic : MonoBehaviour
 
     public TileHelper GetFinihCarPosition()
     {
-        return _carFinishPoints.Dequeue();
+        TileHelper tile = _carFinishPoints[UnityEngine.Random.Range(0, _carFinishPoints.Count)];
+        _carFinishPoints.Remove(tile);
+
+        return tile;
     }
 
     public void AddObstacle(int x, int y)
@@ -137,15 +148,18 @@ public class MoverLogic : MonoBehaviour
         for (int i = 1; i < 9; i++)
             AddVoid(4, i);
 
+        for (int i = 10; i < Height; i++)
+            AddVoid(5, i);
+
         for (int i = 4; i <= 6; i++)
             AddVoid(6, i);
 
-        for (int i = 7; i < Height; i++)
+        for (int i = 6; i < Height; i++)
             for (int j = 0; j < Height; j++)
                 AddVoid(i, j);
 
-        AddWalls(1, 9, 2);
-        AddWalls(4, 9, 2);
+        AddWalls(1, 10, 2);
+        AddWalls(4, 10, 2);
 
         for (int i = 1; i <= 4; i++)
             for (int j = 11; j < Height; j++)
@@ -165,7 +179,10 @@ public class MoverLogic : MonoBehaviour
 
     private void AddCarFinishPoint(int x, int y)
     {
-        _carFinishPoints.Enqueue(_tiles[x, y]);
+        if (_map[x, y].isObstacle)
+            return;
+
+        _carFinishPoints.Add(_tiles[x, y]);
         _tiles[x, y].sprite.color = Color.yellow;
     }
 
