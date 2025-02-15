@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,10 +7,11 @@ using UnityEngine.UI;
 public class Car : MonoBehaviour //, IMoveable
 {
     [SerializeField] private float _speed;
-    [SerializeField] private MoverLogic _moverLogic;
+    [SerializeField] private Map _map;
     [SerializeField] private TextMeshProUGUI _viewFinishPosition;
     [SerializeField] private Image _backgroundText;
-    [SerializeField] private NameParkingPlaces _placesName;
+    [SerializeField] private NamesOfParkingPlaces _placesName;
+    [SerializeField] private ScoreCounter _counter;
 
     private TileHelper _startPositionTile;
     private TileHelper _finishPositionTile;
@@ -32,6 +32,13 @@ public class Car : MonoBehaviour //, IMoveable
         _moving = null;
     }
 
+    private void OnDisable()
+    {
+        _startPositionTile = null;
+        _finishPositionTile = null;
+        _backgroundText.gameObject.SetActive(true);
+    }
+
     public void Init(TileHelper startPositionTile, TileHelper finishPositionTile)
     {
         _startPositionTile = startPositionTile;
@@ -50,13 +57,13 @@ public class Car : MonoBehaviour //, IMoveable
             {
                 _isMoving = true;
 
-                _moverLogic.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-                transform.position = _moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform.position;
-                _startPositionTile = _moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
-                _moverLogic.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
+                _map.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
+                transform.position = _map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform.position;
+                _startPositionTile = _map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
+                _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
             }
 
-            yield return new WaitForSeconds(0.666f);
+            yield return new WaitForSeconds(0.6f);
         }
 
         _isMoving = false;
@@ -64,7 +71,7 @@ public class Car : MonoBehaviour //, IMoveable
 
     private bool CheckNextPosition()
     {
-        return !_moverLogic.CheckObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
+        return !_map.CheckObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
     }
 
     private string GetTextPosition()
@@ -81,7 +88,7 @@ public class Car : MonoBehaviour //, IMoveable
             return;
 
         _isSelected = true;
-        _backgroundText.gameObject.SetActive(false);
+
 
         if (_inParking)
         {
@@ -97,23 +104,32 @@ public class Car : MonoBehaviour //, IMoveable
     {
         _isMoving = true;
 
-        _moverLogic.RemoveObstacle(start.cord_x, start.cord_y);
-        _moverLogic.SetStart(end);
-        _moverLogic.SetEnd(start);
+        _map.RemoveObstacle(start.cord_x, start.cord_y);
+        _map.SetStart(end);
+        _map.SetEnd(start);
 
-        if (_moverLogic.GetPath() == null)
+        if (_map.GetPath() == null)
         {
-            _moverLogic.AddObstacle(start.cord_x, start.cord_y);
+            _map.AddObstacle(start.cord_x, start.cord_y);
             _isMoving = false;
             return;
         }
 
-        _moving = StartCoroutine(MoveToPath(_moverLogic.GetPath()));
+        if (_inParking == true)
+        {
+            _counter.RemoveScore();
+        }
+
+        _backgroundText.gameObject.SetActive(false);
+        _moving = StartCoroutine(MoveToPath(_map.GetPath()));
     }
 
     private IEnumerator MoveToPath(List<TileHelper> targets)
     {
         float step = _speed * Time.deltaTime;
+
+        
+
 
         for (int i = 0; i < targets.Count; i++)
         {
@@ -136,7 +152,7 @@ public class Car : MonoBehaviour //, IMoveable
     {
         if (_isSelected)
         {
-            _startPositionTile = _moverLogic.GetTile(_startPositionTile.cord_x, 0);
+            _startPositionTile = _map.GetTile(_startPositionTile.cord_x, 0);
             _inParking = !_inParking;
         }
 
@@ -145,15 +161,17 @@ public class Car : MonoBehaviour //, IMoveable
         if (_inParking)
         {
             transform.position = _finishPositionTile.transform.position;
-            _moverLogic.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
+            _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
+            _counter.AddScore();
         }
         else
         {
             StartCoroutine(MovingInQuenue());
-            _moverLogic.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
+            _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
             transform.position = _startPositionTile.transform.position;
-            transform.LookAt(_moverLogic.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform);
+            transform.LookAt(_map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform);
             _backgroundText.gameObject.SetActive(true);
+            
         }
     }
 }

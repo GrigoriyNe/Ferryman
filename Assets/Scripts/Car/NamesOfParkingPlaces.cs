@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class NameParkingPlaces : MonoBehaviour
+public class NamesOfParkingPlaces : MonoBehaviour
 {
     private Dictionary<int, string> _placesVertical;
     private Dictionary<int, int> _placesHorizontal;
@@ -37,11 +37,13 @@ public class NameParkingPlaces : MonoBehaviour
         string resultHorizontal = string.Empty;
 
         if (_placesVertical.ContainsKey(vertical))
-            resultVertical = _placesVertical[vertical];
+            resultVertical = _placesVertical[vertical].ToString();
         if (_placesHorizontal.ContainsKey(horizontal))
             resultHorizontal = _placesHorizontal[horizontal].ToString();
 
-        return resultVertical + resultHorizontal;
+        string result = resultVertical + resultHorizontal;
+
+        return result;
     }
 
 }

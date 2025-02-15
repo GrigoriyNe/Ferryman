@@ -9,7 +9,7 @@ public class Point
 
     public bool isObstacle = false;
 
-    public bool[] walls = new bool[] { false, false, false, false }; // left right up down
+    public bool[] walls = new bool[] { false, false, false, false };
     public Point(int x, int y)
     {
         X = x;

@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 
 public class FabricCars : MonoBehaviour
 {
-    [SerializeField] private Car _prefab;
-    [SerializeField] private MoverLogic _moverLogic;
+    [SerializeField] private Cars _cars;
+    [SerializeField] private Map _map;
+
+    private Queue<Car> _createdEarlierCars = new Queue<Car>();
+    private List<Car> _createdCars = new List<Car>();
 
     public int NotCreatedCarCount {get; private set;}
 
@@ -15,7 +19,7 @@ public class FabricCars : MonoBehaviour
 
     public void Create()
     {
-        if (_moverLogic.CountStartPlace  == 0)
+        if (_map.CountStartPlace  == 0)
         {
             NotCreatedCarCount += 1;
             Debug.Log(NotCreatedCarCount);
@@ -23,8 +27,28 @@ public class FabricCars : MonoBehaviour
             return;
         }
 
-        Car car = Instantiate(_prefab);
+        Car car = null;
+
+        if (_createdEarlierCars.Count == 0)
+            car = Instantiate(_cars.GetRandomCar());
+        else
+            car = _createdEarlierCars.Dequeue();
+
+        car.transform.rotation = Quaternion.identity;
         car.gameObject.SetActive(true);
-        car.Init(_moverLogic.GetStartCarPosition(), _moverLogic.GetFinihCarPosition());
+        _createdCars.Add(car);
+
+        car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition());
+    }
+
+    public void PackCars()
+    {
+        foreach (var car in _createdCars)
+        {
+            _createdEarlierCars.Enqueue(car);
+            car.gameObject.SetActive(false);
+        }
+
+        _createdCars = new List<Car>();
     }
 }
