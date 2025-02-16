@@ -1,16 +1,45 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private Map _map;
+    private const int FuelCoust = 1;
+
     [SerializeField] private FabricCars _fabricCars;
-    [SerializeField] private NumberingPlaceText _numberingText;
     [SerializeField] private Ferryboat _ferryboat;
-    [SerializeField] private GameObject _ferryboatBackground;
     [SerializeField] private BridgeAnimator _bridge;
-    [SerializeField] private WindowBlind _blind;
     [SerializeField] private ScoreCounter _counter;
+    [SerializeField] private ButtonFuel _fuelerAdder;
+    [SerializeField] private Wallet _wallet;
+
+    private void OnEnable()
+    {
+        _fuelerAdder.ButtonClicked += TryRefill;
+    }
+
+    private void OnDisable()
+    {
+        _fuelerAdder.ButtonClicked -= TryRefill;
+    }
+
+    private void TryRefill()
+    {
+        if(_ferryboat.GetEnoughValue() == 0)
+                return;
+
+        int coustRefull = _ferryboat.GetEnoughValue() * FuelCoust;
+
+        if (_wallet.IsEnough(coustRefull))
+        {
+            _wallet.RemoveMoney(coustRefull);
+            _ferryboat.Refill();
+        }
+        else
+        {
+            MakeOffer();
+        }
+    }
 
     private void Start()
     {
@@ -19,8 +48,15 @@ public class Game : MonoBehaviour
 
     public void RoundOver()
     {
-       
-        EndScene();
+        if (_ferryboat.CheckFuel())
+            EndScene();
+        else
+            MakeOffer();
+    }
+
+    private void MakeOffer()
+    {
+        throw new NotImplementedException();
     }
 
     private void StartScene()
@@ -39,32 +75,25 @@ public class Game : MonoBehaviour
     private IEnumerator OpenGarage()
     {
         yield return new WaitForSeconds(3f);
-        _blind.Open();
-        _map.Activate();
-        _ferryboatBackground.SetActive(true);
-        _numberingText.Activate();
+
         _counter.Activate();
         StartCoroutine(CreateCars());
     }
 
     private IEnumerator CloseGarage()
     {
-        _map.Deactivate();
-        _blind.Close();
-        yield return new WaitForSeconds(1f);
-
-        _ferryboatBackground.SetActive(false);
         _ferryboat.Finish();
-        _numberingText.Deactivate();
+
         _counter.Deactivate();
         _fabricCars.PackCars();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         StartScene();
     }
+
     private IEnumerator CreateCars()
     {
-        int count = _map.CountFinishPlace;
+        int count = _ferryboat.CountFinishPlace;
 
         for (int i = 0; i < count; i++)
         {
