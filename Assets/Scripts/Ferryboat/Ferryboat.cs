@@ -12,6 +12,7 @@ public class Ferryboat : MonoBehaviour
     [SerializeField] private Fueltank _fueltank;
 
     public int CountFinishPlace => _map.CountFinishPlace;
+    public int CountSpesialFinishPlace => _map.CountFinishSpesialPlace;
 
     public void Activate()
     {
@@ -60,6 +61,4 @@ public class Ferryboat : MonoBehaviour
         _ferryboatBackground.SetActive(false);
         _numberingText.Deactivate();
     }
-
-   
 }

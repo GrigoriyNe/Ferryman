@@ -83,7 +83,6 @@ public class Game : MonoBehaviour
     private IEnumerator CloseGarage()
     {
         _ferryboat.Finish();
-
         _counter.Deactivate();
         _fabricCars.PackCars();
 
@@ -105,6 +104,20 @@ public class Game : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             _fabricCars.Create();
+        }
+
+        int countS = _ferryboat.CountSpesialFinishPlace;
+
+        for (int i = 0; i < countS; i++)
+        {
+            yield return new WaitForSeconds(0.4f);
+            _fabricCars.CreateSpesial();
+        }
+
+        if (_fabricCars.NotCreatedSpesialCarCount > 0)
+        {
+            yield return new WaitForSeconds(2f);
+            _fabricCars.CreateSpesial();
         }
     }
 }

@@ -19,7 +19,7 @@ public class NamesOfParkingPlaces : MonoBehaviour
         _placesVertical.Add(2, "B");
         _placesVertical.Add(3, "C");
         _placesVertical.Add(4, "D");
-        _placesVertical.Add(5, "E");
+        _placesVertical.Add(5, "e");
 
         for (int i = 14; i > 11;)
         {
@@ -35,6 +35,9 @@ public class NamesOfParkingPlaces : MonoBehaviour
     {
         string resultVertical = string.Empty;
         string resultHorizontal = string.Empty;
+
+        if(_placesVertical.ContainsKey(vertical) && vertical == 5)
+            return _placesVertical[vertical].ToString();
 
         if (_placesVertical.ContainsKey(vertical))
             resultVertical = _placesVertical[vertical].ToString();

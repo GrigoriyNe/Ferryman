@@ -2,8 +2,12 @@
 
 public class ScoreCounter : MonoBehaviour
 {
+    private const int RewardOnPanking = 10;
+    private const int RewardOnSpescialPanking = 20;
+
     [SerializeField] private Map _map;
     [SerializeField] private Game _game;
+    [SerializeField] private Wallet _walet;
 
     private int _maxScore;
 
@@ -13,7 +17,7 @@ public class ScoreCounter : MonoBehaviour
     {
         gameObject.SetActive(true);
         Score = 0;
-        _maxScore = _map.CountFinishPlace;
+        _maxScore = _map.CountFinishPlace + _map.CountFinishSpesialPlace;
     }
 
     public void Deactivate()
@@ -26,8 +30,9 @@ public class ScoreCounter : MonoBehaviour
     {
         Score += 1;
 
-        if (Score >= _maxScore)
+        if (Score == _maxScore)
         {
+            _walet.AddMoney(Score * RewardOnPanking + (_map.CountFinishSpesialPlace * RewardOnSpescialPanking));
             _game.RoundOver();
         }
     }

@@ -1,20 +1,23 @@
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class FabricCars : MonoBehaviour
 {
     [SerializeField] private Cars _cars;
+    [SerializeField] private SpesialCars _carsSpesials;
     [SerializeField] private Map _map;
 
     private Queue<Car> _createdEarlierCars = new Queue<Car>();
     private List<Car> _createdCars = new List<Car>();
+    private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
 
     public int NotCreatedCarCount {get; private set;}
+    public int NotCreatedSpesialCarCount { get; private set; }
 
     private void Start()
     {
         NotCreatedCarCount = 0;
+        NotCreatedSpesialCarCount = 0;
     }
 
     public void Create()
@@ -41,14 +44,41 @@ public class FabricCars : MonoBehaviour
         car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition());
     }
 
+    public void CreateSpesial()
+    {
+        if (_map.CountStartSpesialPlace == 0)
+        {
+            NotCreatedSpesialCarCount += 1;
+            Debug.Log(NotCreatedSpesialCarCount);
+
+            return;
+        }
+
+        SpesialCar car = null;
+
+        car = Instantiate(_carsSpesials.GetRandomCar());
+        car.transform.rotation = Quaternion.identity;
+        car.gameObject.SetActive(true);
+
+        _createdSpesialCars.Add(car);
+
+        car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition());
+    }
+
     public void PackCars()
     {
-        foreach (var car in _createdCars)
+        foreach (Car car in _createdCars)
         {
             _createdEarlierCars.Enqueue(car);
             car.gameObject.SetActive(false);
         }
 
+        foreach (SpesialCar car in _createdSpesialCars)
+        {
+            car.gameObject.SetActive(false);
+        }
+
         _createdCars = new List<Car>();
+        _createdSpesialCars = new List<SpesialCar>();
     }
 }

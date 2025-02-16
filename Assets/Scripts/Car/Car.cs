@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Car : MonoBehaviour //, IMoveable
+public class Car : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Map _map;
@@ -58,9 +58,12 @@ public class Car : MonoBehaviour //, IMoveable
             {
                 _isMoving = true;
 
+                TileHelper lite = _map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
                 _map.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-                transform.position = _map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform.position;
-                _startPositionTile = _map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
+
+                transform.LookAt(lite.transform.position);
+                transform.position = lite.transform.position;
+                _startPositionTile = lite;
                 _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
             }
 

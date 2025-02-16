@@ -14,6 +14,9 @@ public class Map : MonoBehaviour
     private Queue<TileHelper> _carStartPoints = new Queue<TileHelper>();
     private List<TileHelper> _carFinishPoints = new List<TileHelper>();
 
+    private Queue<TileHelper> _carSpesialStartPoints = new Queue<TileHelper>();
+    private List<TileHelper> _carSpesialFinishPoints = new List<TileHelper>();
+
     private Point _start;
     private Point _end;
 
@@ -24,6 +27,9 @@ public class Map : MonoBehaviour
 
     public int CountFinishPlace => _carFinishPoints.Count;
     public int CountStartPlace => _carStartPoints.Count;
+    public int CountStartSpesialPlace => _carSpesialStartPoints.Count;
+    public int CountFinishSpesialPlace => _carSpesialFinishPoints.Count;
+
 
     private void OnEnable()
     {
@@ -104,6 +110,23 @@ public class Map : MonoBehaviour
         return tile;
     }
 
+    public TileHelper GetStartSpesialCarPosition()
+    {
+        TileHelper tile = _carSpesialStartPoints.Dequeue();
+        TileHelper cashtile = tile;
+        _carStartPoints.Enqueue(tile);
+
+        return cashtile;
+    }
+
+    public TileHelper GetSpesialFinihCarPosition()
+    {
+        TileHelper tile = _carSpesialFinishPoints[Random.Range(0, _carFinishPoints.Count)];
+        _carSpesialFinishPoints.Remove(tile);
+
+        return tile;
+    }
+
     public void AddObstacle(int x, int y)
     {
         _map[x, y].isObstacle = true;
@@ -147,18 +170,19 @@ public class Map : MonoBehaviour
         for (int i = 1; i < 9; i++)
             AddVoid(4, i);
 
-        for (int i = 10; i < Height; i++)
-            AddVoid(5, i);
+        //for (int i = 10; i < Height; i++)
+        //    AddVoid(5, i);
 
         for (int i = 4; i <= 6; i++)
             AddVoid(6, i);
 
         for (int i = 6; i < Height; i++)
-            for (int j = 0; j < Height; j++)
+            for (int j = 0; j < Width; j++)
                 AddVoid(i, j);
 
         AddWalls(1, 10, 2);
         AddWalls(4, 10, 2);
+        AddWalls(5, 10, 2);
 
         for (int i = 1; i <= 4; i++)
             for (int j = 11; j < Height; j++)
@@ -167,6 +191,12 @@ public class Map : MonoBehaviour
         for (int i = 1; i <= 3; i++)
             for (int j = 0; j < _carFinishPoints.Count / 3; j++)
                 AddCarStartPoint(i, j);
+
+       // AddSpesialCarFinishPoint(5, 13);
+        AddSpesialCarFinishPoint(5, 11);
+
+      //  AddSpesialCarStartPoint(1, 2);
+        AddSpesialCarStartPoint(3, 1);
     }
 
     private void AddCarStartPoint(int x, int y)
@@ -182,6 +212,21 @@ public class Map : MonoBehaviour
 
         _tiles[x, y].sprite.gameObject.SetActive(true);
         _carFinishPoints.Add(_tiles[x, y]);
+    }
+
+    private void AddSpesialCarStartPoint(int x, int y)
+    {
+        _map[x, y].isObstacle = true;
+        _carSpesialStartPoints.Enqueue(_tiles[x, y]);
+    }
+
+    private void AddSpesialCarFinishPoint(int x, int y)
+    {
+        if (_map[x, y].isObstacle)
+            return;
+
+        _tiles[x, y].sprite.color = Color.red;
+        _carSpesialFinishPoints.Add(_tiles[x, y]);
     }
 
     private void AddVoid(int x, int y)
