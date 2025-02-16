@@ -53,7 +53,8 @@ public class Car : MonoBehaviour //, IMoveable
     {
         while (_startPositionTile.cord_y < 8)
         {
-            if (CheckNextPosition())
+
+            if (CheckPosition(_startPositionTile.cord_x, _startPositionTile.cord_y + 1))
             {
                 _isMoving = true;
 
@@ -69,9 +70,9 @@ public class Car : MonoBehaviour //, IMoveable
         _isMoving = false;
     }
 
-    private bool CheckNextPosition()
+    private bool CheckPosition(int x, int y)
     {
-        return !_map.CheckObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y + 1);
+        return !_map.CheckObstacle(x, y);
     }
 
     private string GetTextPosition()
@@ -93,6 +94,7 @@ public class Car : MonoBehaviour //, IMoveable
         if (_inParking)
         {
             TryMoving(_finishPositionTile, _startPositionTile);
+
         }
         else
         {
@@ -115,9 +117,13 @@ public class Car : MonoBehaviour //, IMoveable
             return;
         }
 
-        if (_inParking == true)
+        if (_inParking)
         {
             _counter.RemoveScore();
+        }
+        else
+        {
+            _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
         }
 
         _backgroundText.gameObject.SetActive(false);
@@ -127,10 +133,7 @@ public class Car : MonoBehaviour //, IMoveable
     private IEnumerator MoveToPath(List<TileHelper> targets)
     {
         float step = _speed * Time.deltaTime;
-
         
-
-
         for (int i = 0; i < targets.Count; i++)
         {
             while (transform.position != targets[i].transform.position)
@@ -166,12 +169,12 @@ public class Car : MonoBehaviour //, IMoveable
         }
         else
         {
-            StartCoroutine(MovingInQuenue());
             _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-            transform.position = _startPositionTile.transform.position;
+            StartCoroutine(MovingInQuenue());
             transform.LookAt(_map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 1).transform);
             _backgroundText.gameObject.SetActive(true);
-            
+            transform.position = _startPositionTile.transform.position;
+
         }
     }
 }

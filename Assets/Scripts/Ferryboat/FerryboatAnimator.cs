@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FerryboatAnimator : MonoBehaviour
 {
@@ -10,21 +9,11 @@ public class FerryboatAnimator : MonoBehaviour
 
     public void PlayStart()
     {
-        _animator.SetBool(Start, true);
-        StartCoroutine(ResetAnimation());
+        _animator.SetTrigger(Start);
     }
 
     public void PlayFinish()
     {
-        _animator.SetBool(Finish, true);
-        StartCoroutine(ResetAnimation());
-    }
-
-    private IEnumerator ResetAnimation()
-    {
-        yield return new WaitForSeconds(3f);
-
-        _animator.SetBool(Start, false);
-        _animator.SetBool(Finish, false);
+        _animator.SetTrigger(Finish);
     }
 }

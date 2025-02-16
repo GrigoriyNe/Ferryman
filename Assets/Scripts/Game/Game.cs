@@ -19,21 +19,19 @@ public class Game : MonoBehaviour
 
     public void RoundOver()
     {
-        _blind.Close();
+       
         EndScene();
     }
 
     private void StartScene()
     {
         _bridge.Open();
-        _ferryboat.gameObject.SetActive(true);
         _ferryboat.Activate();
         StartCoroutine(OpenGarage());
     }
 
     private void EndScene()
     {
-        
         _bridge.Close();
         StartCoroutine(CloseGarage());
     }
@@ -41,10 +39,7 @@ public class Game : MonoBehaviour
     private IEnumerator OpenGarage()
     {
         yield return new WaitForSeconds(3f);
-        _ferryboat.gameObject.SetActive(false);
         _blind.Open();
-        
-        yield return new WaitForSeconds(1f);
         _map.Activate();
         _ferryboatBackground.SetActive(true);
         _numberingText.Activate();
@@ -55,17 +50,16 @@ public class Game : MonoBehaviour
     private IEnumerator CloseGarage()
     {
         _map.Deactivate();
+        _blind.Close();
         yield return new WaitForSeconds(1f);
 
-        _blind.gameObject.SetActive(false);
-        _ferryboat.gameObject.SetActive(true);
+        _ferryboatBackground.SetActive(false);
         _ferryboat.Finish();
         _numberingText.Deactivate();
-        _ferryboatBackground.SetActive(false);
         _counter.Deactivate();
         _fabricCars.PackCars();
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
         StartScene();
     }
     private IEnumerator CreateCars()

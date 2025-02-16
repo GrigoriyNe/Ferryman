@@ -9,13 +9,11 @@ public class WindowBlind : MonoBehaviour
 
     public void Open()
     {
-        gameObject.SetActive(true);
         _animator.SetTrigger(Opened);
     }
 
     public void Close()
     {
-        gameObject.SetActive(true);
         _animator.SetTrigger(Closed);
     }
 }
