@@ -14,7 +14,6 @@ public class Ferryboat : MonoBehaviour
 
     public void Activate()
     {
-        _fueltank.Travel();
         _animator.PlayStart();
         StartCoroutine(Activating());
     }
@@ -55,6 +54,7 @@ public class Ferryboat : MonoBehaviour
 
     private IEnumerator Deactivating()
     {
+        _fueltank.Travel();
         _map.Deactivate();
         _blind.Close();
         yield return new WaitForSeconds(1f);

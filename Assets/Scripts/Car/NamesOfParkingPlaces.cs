@@ -40,11 +40,11 @@ public class NamesOfParkingPlaces : MonoBehaviour
 
     public string GetTextPlace(int vertical, int horizontal)
     {
-        string resultVertical = "0";
-        string resultHorizontal = "n6";
+        string resultVertical = string.Empty;
+        string resultHorizontal = string.Empty;
 
-        //if(_placesVertical.ContainsKey(vertical) && vertical == 5)
-        //    return _placesVertical[vertical].ToString();
+        if (_placesVertical.ContainsKey(vertical) && vertical == 5)
+            return _placesVertical[vertical].ToString();
 
         if (_placesVertical.ContainsKey(vertical))
             resultVertical = _placesVertical[vertical].ToString();

@@ -15,11 +15,8 @@ public class Game : MonoBehaviour
     [SerializeField] private ButtonFuel _fuelerAdder;
     [SerializeField] private Wallet _wallet;
 
-    private NamesOfParkingPlaces _places;
-
     private void OnEnable()
     {
-        _places = null;
         _fuelerAdder.ButtonClicked += TryRefill;
     }
 
@@ -68,8 +65,7 @@ public class Game : MonoBehaviour
     {
         _bridge.Open();
         _ferryboat.Activate();
-        _places = _ferryboat.GetPlaces();
-        _fabricCars.SetPlacesNames(_places);
+        
         StartCoroutine(OpenGarage());
     }
 
@@ -102,7 +98,7 @@ public class Game : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         int count = _mapLogic.CountFinishPlace;
-      //  _fabricCars.SetPlacesNames(_places);
+        _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
 
         for (int i = 0; i < count; i++)
         {

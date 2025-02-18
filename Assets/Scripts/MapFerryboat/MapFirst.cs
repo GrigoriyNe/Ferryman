@@ -43,9 +43,9 @@ public class MapFirst : Map
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        _logic.AddWalls(1, 10, 2);
-        _logic.AddWalls(4, 10, 2);
-        _logic.AddWalls(5, 10, 2);
+        _logic.AddWall(1, 10, 2);
+        _logic.AddWall(4, 10, 2);
+        _logic.AddWall(5, 10, 2);
 
         for (int i = 1; i < 5; i++)
             for (int j = 11; j < Height; j++)
