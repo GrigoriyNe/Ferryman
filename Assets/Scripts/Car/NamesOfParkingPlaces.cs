@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class NamesOfParkingPlaces : MonoBehaviour
 {
+    [SerializeField] Map _map;
+
     private Dictionary<int, string> _placesVertical;
     private Dictionary<int, int> _placesHorizontal;
 
@@ -15,32 +17,38 @@ public class NamesOfParkingPlaces : MonoBehaviour
 
     private void FillDictionary()
     {
+        _placesVertical.Add(0, "0");
         _placesVertical.Add(1, "A");
         _placesVertical.Add(2, "B");
         _placesVertical.Add(3, "C");
         _placesVertical.Add(4, "D");
         _placesVertical.Add(5, "e");
+        _placesVertical.Add(6, "f");
+        _placesVertical.Add(7, "f");
+        _placesVertical.Add(8, "f");
 
-        for (int i = 14; i > 11;)
+        for (int i = _map.GetHeight() - 1; i > 0;)
         {
-            for (int j = 1; j < 5; j++)
+            for (int j = 1; j < _map.GetHeight(); )
             {
                 _placesHorizontal.Add(i, j);
                 i--;
+                j++;
             }
         }
     }
 
     public string GetTextPlace(int vertical, int horizontal)
     {
-        string resultVertical = string.Empty;
-        string resultHorizontal = string.Empty;
+        string resultVertical = "0";
+        string resultHorizontal = "n6";
 
-        if(_placesVertical.ContainsKey(vertical) && vertical == 5)
-            return _placesVertical[vertical].ToString();
+        //if(_placesVertical.ContainsKey(vertical) && vertical == 5)
+        //    return _placesVertical[vertical].ToString();
 
         if (_placesVertical.ContainsKey(vertical))
             resultVertical = _placesVertical[vertical].ToString();
+
         if (_placesHorizontal.ContainsKey(horizontal))
             resultHorizontal = _placesHorizontal[horizontal].ToString();
 

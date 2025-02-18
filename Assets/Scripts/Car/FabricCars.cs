@@ -5,11 +5,13 @@ public class FabricCars : MonoBehaviour
 {
     [SerializeField] private Cars _cars;
     [SerializeField] private SpesialCars _carsSpesials;
-    [SerializeField] private Map _map;
+    [SerializeField] private MapLogic _map;
 
     private Queue<Car> _createdEarlierCars = new Queue<Car>();
     private List<Car> _createdCars = new List<Car>();
     private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
+
+    private NamesOfParkingPlaces _places;
 
     public int NotCreatedCarCount {get; private set;}
     public int NotCreatedSpesialCarCount { get; private set; }
@@ -18,6 +20,11 @@ public class FabricCars : MonoBehaviour
     {
         NotCreatedCarCount = 0;
         NotCreatedSpesialCarCount = 0;
+    }
+
+    public void SetPlacesNames(NamesOfParkingPlaces places)
+    {
+        _places = places;
     }
 
     public void Create()
@@ -41,7 +48,7 @@ public class FabricCars : MonoBehaviour
         car.gameObject.SetActive(true);
         _createdCars.Add(car);
 
-        car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition());
+        car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition(), _places);
     }
 
     public void CreateSpesial()
@@ -62,7 +69,7 @@ public class FabricCars : MonoBehaviour
 
         _createdSpesialCars.Add(car);
 
-        car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition());
+        car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
     }
 
     public void PackCars()

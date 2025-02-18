@@ -5,7 +5,7 @@ public class ScoreCounter : MonoBehaviour
     private const int RewardOnPanking = 10;
     private const int RewardOnSpescialPanking = 20;
 
-    [SerializeField] private Map _map;
+    [SerializeField] private MapLogic _map;
     [SerializeField] private Game _game;
     [SerializeField] private Wallet _walet;
 

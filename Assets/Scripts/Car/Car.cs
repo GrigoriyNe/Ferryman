@@ -7,10 +7,9 @@ using UnityEngine.UI;
 public class Car : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private Map _map;
+    [SerializeField] private MapLogic _map;
     [SerializeField] private TextMeshProUGUI _viewFinishPosition;
     [SerializeField] private Image _backgroundText;
-    [SerializeField] private NamesOfParkingPlaces _placesName;
     [SerializeField] private ScoreCounter _counter;
 
     private TileHelper _startPositionTile;
@@ -20,6 +19,7 @@ public class Car : MonoBehaviour
     private bool _inParking;
     private bool _isNextPositionEmpty;
 
+    private NamesOfParkingPlaces _parkPlace;
     private Coroutine _moving;
     private bool _isSelected;
 
@@ -39,8 +39,9 @@ public class Car : MonoBehaviour
         _backgroundText.gameObject.SetActive(true);
     }
 
-    public void Init(TileHelper startPositionTile, TileHelper finishPositionTile)
+    public void Init(TileHelper startPositionTile, TileHelper finishPositionTile, NamesOfParkingPlaces parkPlace)
     {
+        _parkPlace = parkPlace;
         _startPositionTile = startPositionTile;
         _finishPositionTile = finishPositionTile;
         transform.position = _startPositionTile.transform.position;
@@ -80,7 +81,7 @@ public class Car : MonoBehaviour
 
     private string GetTextPosition()
     {
-        return _placesName.GetTextPlace(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
+        return _parkPlace.GetTextPlace(_finishPositionTile.cord_x, _finishPositionTile.cord_y).ToString();
     }
 
     public void Move()
@@ -136,7 +137,7 @@ public class Car : MonoBehaviour
     private IEnumerator MoveToPath(List<TileHelper> targets)
     {
         float step = _speed * Time.deltaTime;
-        
+
         for (int i = 0; i < targets.Count; i++)
         {
             while (transform.position != targets[i].transform.position)

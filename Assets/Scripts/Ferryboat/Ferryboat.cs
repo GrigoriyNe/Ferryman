@@ -10,9 +10,7 @@ public class Ferryboat : MonoBehaviour
     [SerializeField] private WindowBlind _blind;
     [SerializeField] private FerryboatAnimator _animator;
     [SerializeField] private Fueltank _fueltank;
-
-    public int CountFinishPlace => _map.CountFinishPlace;
-    public int CountSpesialFinishPlace => _map.CountFinishSpesialPlace;
+    [SerializeField] private NamesOfParkingPlaces _places;
 
     public void Activate()
     {
@@ -39,6 +37,10 @@ public class Ferryboat : MonoBehaviour
     public void Refill()
     {
         _fueltank.Refill();
+    }
+    public NamesOfParkingPlaces GetPlaces()
+    {
+        return _places;
     }
 
     private IEnumerator Activating()

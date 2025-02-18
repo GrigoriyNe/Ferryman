@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Numerics;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -8,19 +9,28 @@ public class Game : MonoBehaviour
 
     [SerializeField] private FabricCars _fabricCars;
     [SerializeField] private Ferryboat _ferryboat;
+    [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private ButtonFuel _fuelerAdder;
     [SerializeField] private Wallet _wallet;
 
+    private NamesOfParkingPlaces _places;
+
     private void OnEnable()
     {
+        _places = null;
         _fuelerAdder.ButtonClicked += TryRefill;
     }
 
     private void OnDisable()
     {
         _fuelerAdder.ButtonClicked -= TryRefill;
+    }
+
+    private void Start()
+    {
+        StartScene();
     }
 
     private void TryRefill()
@@ -41,11 +51,6 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        StartScene();
-    }
-
     public void RoundOver()
     {
         if (_ferryboat.CheckFuel())
@@ -63,6 +68,8 @@ public class Game : MonoBehaviour
     {
         _bridge.Open();
         _ferryboat.Activate();
+        _places = _ferryboat.GetPlaces();
+        _fabricCars.SetPlacesNames(_places);
         StartCoroutine(OpenGarage());
     }
 
@@ -92,7 +99,10 @@ public class Game : MonoBehaviour
 
     private IEnumerator CreateCars()
     {
-        int count = _ferryboat.CountFinishPlace;
+        yield return new WaitForSeconds(0.3f);
+
+        int count = _mapLogic.CountFinishPlace;
+      //  _fabricCars.SetPlacesNames(_places);
 
         for (int i = 0; i < count; i++)
         {
@@ -106,7 +116,7 @@ public class Game : MonoBehaviour
             _fabricCars.Create();
         }
 
-        int countS = _ferryboat.CountSpesialFinishPlace;
+        int countS = _mapLogic.CountFinishSpesialPlace;
 
         for (int i = 0; i < countS; i++)
         {
