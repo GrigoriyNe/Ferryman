@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
-public class NamesOfParkingPlaces : Namer
+public class NamesOfParkingPlacesBigMap : Namer
 {
     [SerializeField] Map _map;
 
@@ -40,14 +39,28 @@ public class NamesOfParkingPlaces : Namer
             }
         }
     }
-
     public override string GetTextPlace(int vertical, int horizontal)
     {
         string resultVertical = string.Empty;
         string resultHorizontal = string.Empty;
 
-        if (_placesVertical.ContainsKey(vertical) && vertical == 5)
-            return _placesVertical[vertical].ToString();
+        if (_placesVertical.ContainsKey(vertical) && vertical == 0)
+        {
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 22)
+                return "f";
+
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 20)
+                return "h";
+        }
+
+        if (_placesVertical.ContainsKey(vertical) && vertical == 7)
+        {
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 22)
+                return "g";
+
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 20)
+                return "i";
+        }
 
         if (_placesVertical.ContainsKey(vertical))
             resultVertical = _placesVertical[vertical].ToString();
@@ -59,4 +72,5 @@ public class NamesOfParkingPlaces : Namer
 
         return result;
     }
+
 }

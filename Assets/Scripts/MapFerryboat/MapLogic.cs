@@ -34,6 +34,8 @@ public class MapLogic : MonoBehaviour
     public int CountStartSpesialPlace => _carSpesialStartPoints.Count;
     public int CountFinishSpesialPlace => _carSpesialFinishPoints.Count;
 
+    public int RoadOffVerticalValue {  get; private set; }
+
     public void Init(int width, int height)
     {
         _width = width;
@@ -41,6 +43,14 @@ public class MapLogic : MonoBehaviour
 
         _map = new Point[_height, _width];
         _tiles = new TileHelper[_height, _width];
+
+        RoadOffVerticalValue = 8;
+
+        if (_width > 17)
+        {
+            RoadOffVerticalValue = _width - 9;
+            transform.position = new Vector3(transform.position.x, transform.position.y, - 7);
+        }
 
         Activate();
         InitMap();

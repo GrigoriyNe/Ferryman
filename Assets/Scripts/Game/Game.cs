@@ -5,46 +5,29 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    private const int FuelCoust = 1;
-
     [SerializeField] private FabricCars _fabricCars;
     [SerializeField] private Ferryboat _ferryboat;
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
-    [SerializeField] private ButtonFuel _fuelerAdder;
     [SerializeField] private Wallet _wallet;
-
-    private void OnEnable()
-    {
-        _fuelerAdder.ButtonClicked += TryRefill;
-    }
-
-    private void OnDisable()
-    {
-        _fuelerAdder.ButtonClicked -= TryRefill;
-    }
 
     private void Start()
     {
         StartScene();
     }
 
-    private void TryRefill()
+    public bool TryPay(int coust)
     {
-        if(_ferryboat.GetEnoughValue() == 0)
-                return;
-
-        int coustRefull = _ferryboat.GetEnoughValue() * FuelCoust;
-
-        if (_wallet.IsEnough(coustRefull))
+        if (_wallet.IsEnough(coust))
         {
-            _wallet.RemoveMoney(coustRefull);
-            _ferryboat.Refill();
+            _wallet.RemoveMoney(coust);
+            return true;
         }
         else
         {
             MakeOffer();
+            return false;
         }
     }
 
@@ -66,16 +49,16 @@ public class Game : MonoBehaviour
         _bridge.Open();
         _ferryboat.Activate();
         
-        StartCoroutine(OpenGarage());
+        StartCoroutine(OpenCargo());
     }
 
     private void EndScene()
     {
         _bridge.Close();
-        StartCoroutine(CloseGarage());
+        StartCoroutine(CloseCargo());
     }
 
-    private IEnumerator OpenGarage()
+    private IEnumerator OpenCargo()
     {
         yield return new WaitForSeconds(3f);
 
@@ -83,7 +66,7 @@ public class Game : MonoBehaviour
         StartCoroutine(CreateCars());
     }
 
-    private IEnumerator CloseGarage()
+    private IEnumerator CloseCargo()
     {
         _ferryboat.Finish();
         _counter.Deactivate();

@@ -11,7 +11,7 @@ public class FabricCars : MonoBehaviour
     private List<Car> _createdCars = new List<Car>();
     private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
 
-    private NamesOfParkingPlaces _places;
+    private Namer _places;
 
     public int NotCreatedCarCount {get; private set;}
     public int NotCreatedSpesialCarCount { get; private set; }
@@ -22,7 +22,7 @@ public class FabricCars : MonoBehaviour
         NotCreatedSpesialCarCount = 0;
     }
 
-    public void SetPlacesNames(NamesOfParkingPlaces places)
+    public void SetPlacesNames(Namer places)
     {
         _places = places;
     }

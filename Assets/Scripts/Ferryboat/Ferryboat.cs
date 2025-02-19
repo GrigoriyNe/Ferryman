@@ -4,13 +4,27 @@ using UnityEngine;
 
 public class Ferryboat : MonoBehaviour
 {
+    private const int FuelCoust = 1;
+
+    [SerializeField] private Game _game;
     [SerializeField] private Map _map;
     [SerializeField] private NumberingPlaceText _numberingText;
     [SerializeField] private GameObject _ferryboatBackground;
     [SerializeField] private WindowBlind _blind;
     [SerializeField] private FerryboatAnimator _animator;
     [SerializeField] private Fueltank _fueltank;
-    [SerializeField] private NamesOfParkingPlaces _places;
+    [SerializeField] private Namer _places;
+    [SerializeField] private ButtonFuel _fuelerAdder;
+
+    private void OnEnable()
+    {
+        _fuelerAdder.ButtonClicked += TryRefill;
+    }
+
+    private void OnDisable()
+    {
+        _fuelerAdder.ButtonClicked -= TryRefill;
+    }
 
     public void Activate()
     {
@@ -28,18 +42,26 @@ public class Ferryboat : MonoBehaviour
         return _fueltank.CheckFull();
     }
 
-    public int GetEnoughValue()
+    public Namer GetPlaces()
     {
-        return _fueltank.GetEnoughValue();
+        return _places.Get();
     }
 
-    public void Refill()
+    private void TryRefill()
     {
-        _fueltank.Refill();
-    }
-    public NamesOfParkingPlaces GetPlaces()
-    {
-        return _places;
+        if (_fueltank.GetEnoughValue() == 0)
+            return;
+
+        int coustRefull = _fueltank.GetEnoughValue() * FuelCoust;
+
+        if (_game.TryPay(coustRefull))
+        {
+            _fueltank.Refill();
+        }
+        else
+        {
+            return;
+        }
     }
 
     private IEnumerator Activating()
