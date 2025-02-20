@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class NamesOfParkingPlacesBigMap : Namer
+public class NamesOfParkingPlacesThird : Namer
 {
     [SerializeField] Map _map;
 

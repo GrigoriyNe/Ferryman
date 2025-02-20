@@ -2209,7 +2209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &385034674
 Transform:
   m_ObjectHideFlags: 0
@@ -2219,7 +2219,7 @@ Transform:
   m_GameObject: {fileID: 385034672}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalPosition: {x: 1, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4281,7 +4281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5115920b8e084f90f5400e4cdbbcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 6
   _map: {fileID: 385034675}
   _counter: {fileID: 396276325}
   _viewer: {fileID: 702533163}
@@ -4543,7 +4543,7 @@ RectTransform:
   m_Father: {fileID: 1550114623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.47, y: 1}
   m_AnchoredPosition: {x: -0.98069763, y: -0.095077515}
   m_SizeDelta: {x: 1.9614, y: -0.59626}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4754,8 +4754,8 @@ Transform:
   m_GameObject: {fileID: 777462398}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.553, y: 0.399, z: 0.4979}
-  m_LocalScale: {x: 1, y: 0.2, z: 1.9958}
+  m_LocalPosition: {x: -0.553, y: 0.399, z: 0.3016}
+  m_LocalScale: {x: 1, y: 0.2, z: 1.6032262}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1339759163}
@@ -6186,7 +6186,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 930622803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19267f5909591c14e97b9a0dd06a95e1, type: 3}
+  m_Script: {fileID: 11500000, guid: b72c9b56e898ec047b7c6f9c9c656152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _map: {fileID: 2006535014}
@@ -7006,8 +7006,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1429993013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.47, y: 0}
-  m_AnchorMax: {x: 0.47, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7064,7 +7064,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1038633067
 Transform:
   m_ObjectHideFlags: 0
@@ -9345,7 +9345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5115920b8e084f90f5400e4cdbbcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 6
   _map: {fileID: 385034675}
   _counter: {fileID: 396276325}
   _viewer: {fileID: 1559498874}
@@ -9731,8 +9731,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 617100840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.47, y: 0}
+  m_AnchorMax: {x: 0.47, y: 1}
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9955,7 +9955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fabricCars: {fileID: 1784118233}
-  _ferryboat: {fileID: 334395305}
+  _ferryboat: {fileID: 690251718}
   _mapLogic: {fileID: 385034675}
   _bridge: {fileID: 1339759165}
   _counter: {fileID: 396276325}
@@ -10123,7 +10123,7 @@ RectTransform:
   m_Father: {fileID: 735257133}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.47, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0.98069763, y: -0.095077515}
   m_SizeDelta: {x: 1.9614, y: -0.59626}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10422,6 +10422,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1850298988}
     m_Modifications:
+    - target: {fileID: -7511558181221131132, guid: 3b03a1e9d7a0b8444909d59d7d27ebbe,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef937a46a6d64484da7ae15c1abeee32,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -10491,11 +10496,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ferryboat1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 3b03a1e9d7a0b8444909d59d7d27ebbe,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10835,7 +10835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1850298988
 Transform:
   m_ObjectHideFlags: 0
@@ -11708,7 +11708,7 @@ Transform:
   m_GameObject: {fileID: 2094135084}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 5.07, y: 1.47, z: 5.4776998}
+  m_LocalPosition: {x: 4.111, y: 1.47, z: 5.4776998}
   m_LocalScale: {x: 7.426375, y: 1, z: 0.89337796}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12368,7 +12368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5115920b8e084f90f5400e4cdbbcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 6
   _map: {fileID: 385034675}
   _counter: {fileID: 396276325}
   _viewer: {fileID: 5479504219327166863}

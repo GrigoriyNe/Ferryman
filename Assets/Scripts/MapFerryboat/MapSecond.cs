@@ -30,33 +30,32 @@ public class MapSecond : Map
         for (int i = 0; i < 3; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 0; i < Height; i++)
-            _logic.AddVoid(0, i);
+        for (int i = 0; i < 11; i++)
+            _logic.AddVoid(5, i);
 
-        for (int i = 1; i < 9; i++)
-            _logic.AddVoid(4, i);
-
-        for (int i = 4; i <= 6; i++)
+        for (int i = 0; i <11; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 6; i < Height; i++)
+        for (int i = 7; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        _logic.AddWall(1, 10, 2);
-        _logic.AddWall(4, 10, 2);
-        _logic.AddWall(5, 10, 2);
+        _logic.AddWall(0, 11, 2);
+        _logic.AddWall(1, 11, 2);
+        _logic.AddWall(4, 11, 2);
+        _logic.AddWall(5, 11, 2);
+        _logic.AddWall(6, 11, 2);
 
         for (int i = 1; i < 5; i++)
-            for (int j = 11; j < Height; j++)
+            for (int j = 12; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int i = 1; i <= 3; i++)
+        for (int i = 2; i <5; i++)
             for (int j = 0; j < _logic.CountFinishPlace / 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
-        _logic.AddSpesialCarFinishPoint(5, 11);
-        _logic.AddSpesialCarFinishPoint(5, 13);
+        _logic.AddSpesialCarFinishPoint(5, 12);
+        _logic.AddSpesialCarFinishPoint(5, 14);
         _logic.AddSpesialCarStartPoint(3, 1);
         _logic.AddSpesialCarStartPoint(2, 1);
     }

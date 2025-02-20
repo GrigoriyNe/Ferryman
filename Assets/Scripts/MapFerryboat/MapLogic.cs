@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapLogic : MonoBehaviour
@@ -34,7 +35,7 @@ public class MapLogic : MonoBehaviour
     public int CountStartSpesialPlace => _carSpesialStartPoints.Count;
     public int CountFinishSpesialPlace => _carSpesialFinishPoints.Count;
 
-    public int RoadOffVerticalValue {  get; private set; }
+    public int RoadOffVerticalValue { get; private set; }
 
     public void Init(int width, int height)
     {
@@ -46,14 +47,20 @@ public class MapLogic : MonoBehaviour
 
         RoadOffVerticalValue = 8;
 
+        if (_width == 17)
+        {
+            RoadOffVerticalValue =  9;
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1);
+        }
+
         if (_width > 17)
         {
             RoadOffVerticalValue = _width - 9;
-            transform.position = new Vector3(transform.position.x, transform.position.y, - 7);
+            transform.position = new Vector3(transform.position.x, transform.position.y, -7);
         }
 
         Activate();
-        InitMap();
+        InitLogicMap();
     }
 
     public void Activate()
@@ -83,6 +90,21 @@ public class MapLogic : MonoBehaviour
     public bool CheckObstacle(int x, int y)
     {
         return _map[x, y].IsObstacle;
+    }
+
+    public TileHelper GetFreePlaceOnQenue(int x)
+    {
+        int countClosed = 0;
+
+        for (int i = 0; i < RoadOffVerticalValue; i++)
+        {
+            if (_map[x, i].IsObstacle)
+            {
+                countClosed += 1;
+            }
+        }
+
+        return _tiles[x, Math.Abs( RoadOffVerticalValue - countClosed - 2)];
     }
 
     public List<TileHelper> GetPath()
@@ -199,7 +221,7 @@ public class MapLogic : MonoBehaviour
         _tiles[x, y].gameObject.GetComponent<TileHelper>().SetWalls(walls_id);
     }
 
-    private void InitMap()
+    private void InitLogicMap()
     {
         for (int i = 0; i < _width; i++)
         {
