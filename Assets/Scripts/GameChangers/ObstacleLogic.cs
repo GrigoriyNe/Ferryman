@@ -7,11 +7,6 @@ public class ObstacleLogic : MonoBehaviour
 
     public void CreateObstacle()
     {
-
-        _map.CreateObstacle();
-
-        Debug.Log("323");
-
         if (Random.Range(0, 20) % 5 == 0)
             _map.CreateObstacle();
     }

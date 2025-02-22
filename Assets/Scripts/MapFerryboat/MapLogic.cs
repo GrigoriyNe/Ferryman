@@ -6,12 +6,10 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class MapLogic : MonoBehaviour
 {
-
     private const int MaxStep = 50;
 
     [SerializeField] private GameObject _prefabMapTile;
     [SerializeField] private ObstacleView _obstacleView;
-
 
     private Point[,] _map;
     private TileHelper[,] _tiles;
