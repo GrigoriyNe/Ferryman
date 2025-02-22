@@ -6,30 +6,29 @@ using static UnityEngine.Rendering.DebugUI;
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] private Transform _cameraTransform;
-    [SerializeField] private CameraButtonUp _up;
-    [SerializeField] private CameraButtonDown _down;
+    [SerializeField] private CameraButtonsChange _botton;
 
     private void OnEnable()
     {
-        _up.ButtonClicked += OnUpClick;
-        _down.ButtonClicked += OnDownClick;
+        _botton.ButtonClicked += OnUpClick;
+        _botton.ButtonZoomClicked += OnZoomClick;
     }
 
     private void OnDisable()
     {
-        _up.ButtonClicked -= OnUpClick;
-        _down.ButtonClicked -= OnDownClick;
+        _botton.ButtonClicked -= OnUpClick;
+        _botton.ButtonZoomClicked -= OnZoomClick;
     }
 
-    private void OnDownClick()
+    private void OnZoomClick(int value)
     {
-        float valueZ = Math.Clamp((_cameraTransform.position.z - 1), 1f, 10f);
-        _cameraTransform.position = new Vector3(_cameraTransform.position.x, _cameraTransform.position.y, valueZ);
+        float valueY = Math.Clamp((_cameraTransform.position.y + value), 3f, 10f);
+        _cameraTransform.position = new Vector3(_cameraTransform.position.x, valueY, _cameraTransform.position.z);
     }
 
-    private void OnUpClick()
+    private void OnUpClick(int value)
     {
-        float valueZ = Math.Clamp((_cameraTransform.position.z + 1), 1f, 10f);
+        float valueZ = Math.Clamp((_cameraTransform.position.z + value), 1f, 10f);
         _cameraTransform.position = new Vector3(_cameraTransform.position.x, _cameraTransform.position.y, valueZ);
     }
 }

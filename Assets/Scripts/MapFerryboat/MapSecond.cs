@@ -12,6 +12,7 @@ public class MapSecond : Map
         gameObject.SetActive(true);
         _logic.Init(Width, Height);
         CreateItemOnMap();
+        SetObstacle();
     }
 
     public override void Deactivate()
@@ -45,6 +46,9 @@ public class MapSecond : Map
             _logic.AddVoid(6, i);
 
         for (int i = 0; i < 11; i++)
+            _logic.AddVoid(4, i);
+
+        for (int i = 0; i < 11; i++)
             _logic.AddVoid(5, i);
 
         for (int i = 0; i <11; i++)
@@ -58,18 +62,20 @@ public class MapSecond : Map
         _logic.AddWall(1, 11, 2);
         _logic.AddWall(4, 11, 2);
         _logic.AddWall(5, 11, 2);
-        _logic.AddWall(6, 11, 2);
 
-        for (int i = 1; i < 5; i++)
+        for (int i = 0; i < 4; i++)
             for (int j = 12; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int i = 2; i <5; i++)
+        for (int i = 1; i <4; i++)
             for (int j = 0; j < _logic.CountFinishPlace / 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
-        _logic.AddSpesialCarFinishPoint(5, 12);
-        _logic.AddSpesialCarFinishPoint(5, 14);
+        _logic.AddSpesialCarFinishPoint(4, 16);
+        _logic.AddSpesialCarFinishPoint(4, 12);
+        _logic.AddSpesialCarFinishPoint(4, 14);
+
+        _logic.AddSpesialCarStartPoint(1, 2);
         _logic.AddSpesialCarStartPoint(3, 1);
         _logic.AddSpesialCarStartPoint(2, 1);
     }

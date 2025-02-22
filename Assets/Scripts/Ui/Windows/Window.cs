@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public abstract class Window : MonoBehaviour
 {
     [SerializeField] protected CanvasGroup WindowGroup;
-    [SerializeField] protected  Button ActionButton;
+    [SerializeField] protected Button ActionButton;
 
     public event Action ButtonClicked;
 
@@ -26,7 +26,7 @@ public abstract class Window : MonoBehaviour
 
     public void Open()
     {
-       this.gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
     }
 
     public void Close()

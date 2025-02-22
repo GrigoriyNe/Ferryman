@@ -8,10 +8,16 @@ public class ShopWindow : Window
     [SerializeField] private Button _item2;
     [SerializeField] private Button _item3;
     [SerializeField] private CanvasGroup _canvasGroupOffer;
+   
 
     public event Action OnItem1Click;
     public event Action OnItem2Click;
     public event Action OnItem3Click;
+
+    //private void Start()
+    //{
+    //    this.gameObject.SetActive(false);
+    //}
 
     public override void OnEnabled()
     {

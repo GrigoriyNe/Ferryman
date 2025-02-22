@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayWindow : Window
@@ -35,7 +34,7 @@ public class PlayWindow : Window
 
     public void OnButtonSettingsClick()
     {
-        _settingsWindow.gameObject.SetActive(true);
-        _settingsWindow.Open();
+        //_settingsWindow.gameObject.SetActive(true);
+        //_settingsWindow.Open();
     }
 }

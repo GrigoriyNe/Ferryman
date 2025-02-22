@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Numerics;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -12,13 +11,10 @@ public class Game : MonoBehaviour
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private ObstacleLogic _obstacle;
-    
-
 
     private void Start()
     {
         StartScene();
-        
     }
 
     public bool TryPay(int coust)
