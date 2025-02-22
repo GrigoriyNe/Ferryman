@@ -24,6 +24,20 @@ public class MapSecond : Map
     {
         return Height;
     }
+    public override void SetObstacle()
+    {
+        _logic.SetObstaclePlaces(Height - 1, 0, 4);
+    }
+
+    public override void CreateObstacle()
+    {
+        _logic.CreateObstacle();
+    }
+
+    public override void RemoveObstacle()
+    {
+        _logic.DeleteObstacle();
+    }
 
     private void CreateItemOnMap()
     {

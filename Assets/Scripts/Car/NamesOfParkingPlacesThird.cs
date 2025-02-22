@@ -24,8 +24,6 @@ public class NamesOfParkingPlacesThird : Namer
         _placesVertical.Add(4, "D");
         _placesVertical.Add(5, "e");
         _placesVertical.Add(6, "f");
-        _placesVertical.Add(7, "f");
-        _placesVertical.Add(8, "f");
 
         int height = _map.GetHeight();
 

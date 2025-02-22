@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class MapLogic : MonoBehaviour
 {
@@ -9,12 +10,17 @@ public class MapLogic : MonoBehaviour
     private const int MaxStep = 50;
 
     [SerializeField] private GameObject _prefabMapTile;
+    [SerializeField] private ObstacleView _obstacleView;
+
 
     private Point[,] _map;
     private TileHelper[,] _tiles;
 
     private Queue<TileHelper> _carStartPoints = new Queue<TileHelper>();
     private List<TileHelper> _carFinishPoints = new List<TileHelper>();
+
+    private List<TileHelper> _emptyCellObstacle = new List<TileHelper>();
+    private Queue<TileHelper> _filledCellObstacle = new Queue<TileHelper>();
 
     private List<TileHelper> _carSpesialStartPoints = new List<TileHelper>();
     private Queue<TileHelper> _carSpesialFinishPoints = new Queue<TileHelper>();
@@ -49,7 +55,7 @@ public class MapLogic : MonoBehaviour
 
         if (_width == 17)
         {
-            RoadOffVerticalValue =  9;
+            RoadOffVerticalValue = 9;
             transform.position = new Vector3(transform.position.x, transform.position.y, -1);
         }
 
@@ -71,6 +77,8 @@ public class MapLogic : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
+    //    _emptyCellObstacle = null;
+   //     _filledCellObstacle = new Queue<TileHelper>();
     }
 
     public void SetStart(TileHelper tile)
@@ -104,7 +112,7 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        return _tiles[x, Math.Abs( RoadOffVerticalValue - countClosed - 2)];
+        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 2)];
     }
 
     public List<TileHelper> GetPath()
@@ -205,7 +213,6 @@ public class MapLogic : MonoBehaviour
         if (_map[x, y].IsObstacle)
             return;
 
-        _tiles[x, y].sprite.color = Color.red;
         _carSpesialFinishPoints.Enqueue(_tiles[x, y]);
     }
 
@@ -339,5 +346,59 @@ public class MapLogic : MonoBehaviour
             }
         }
         return point;
+    }
+
+    public void SetObstaclePlaces(int horizontal, int vertical, int length)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            TileHelper tile = GetTile( i, horizontal);
+            _emptyCellObstacle.Add(tile);
+        }
+
+        for (int i = RoadOffVerticalValue + 3; i < _width; i++)
+        {
+            TileHelper tile = GetTile(vertical, i);
+
+            _emptyCellObstacle.Add(tile);    
+        }
+
+     //   AddedCreatedObstacle();
+    }
+
+    public void CreateObstacle()
+    {
+        TileHelper tile = _emptyCellObstacle[UnityEngine.Random.Range(0, _emptyCellObstacle.Count)];
+        CreatingObstacle(tile);
+    }
+
+    //private void AddedCreatedObstacle()
+    //{
+    //    if (_filledCellObstacle.Count>0)
+    //    {
+    //        foreach (TileHelper tile in _filledCellObstacle)
+    //        {
+    //            CreatingObstacle(tile); 
+    //        }
+    //    }
+    //}
+
+    private void CreatingObstacle(TileHelper tile)
+    {
+        tile.sprite.sprite = _obstacleView.GetSprite();
+        _carFinishPoints.Remove(tile);
+        _carStartPoints.Dequeue();
+
+        AddObstacle(tile.cord_x, tile.cord_y);
+        tile.sprite.gameObject.SetActive(true);
+        _filledCellObstacle.Enqueue(tile);
+        _emptyCellObstacle.Remove(tile);
+    }
+
+    public void DeleteObstacle()
+    {
+        TileHelper tile = _filledCellObstacle.Dequeue();
+        RemoveObstacle(tile.cord_x, tile.cord_y);
+        _emptyCellObstacle.Add(tile);
     }
 }

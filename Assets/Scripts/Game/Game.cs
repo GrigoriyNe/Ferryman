@@ -11,10 +11,14 @@ public class Game : MonoBehaviour
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private Wallet _wallet;
+    [SerializeField] private ObstacleLogic _obstacle;
+    
+
 
     private void Start()
     {
         StartScene();
+        
     }
 
     public bool TryPay(int coust)
@@ -37,6 +41,8 @@ public class Game : MonoBehaviour
             EndScene();
         else
             MakeOffer();
+
+        
     }
 
     private void MakeOffer()
@@ -61,6 +67,7 @@ public class Game : MonoBehaviour
     private IEnumerator OpenCargo()
     {
         yield return new WaitForSeconds(3f);
+        _obstacle.CreateObstacle();
 
         _counter.Activate();
         StartCoroutine(CreateCars());
@@ -79,6 +86,7 @@ public class Game : MonoBehaviour
     private IEnumerator CreateCars()
     {
         yield return new WaitForSeconds(0.3f);
+        
 
         int count = _mapLogic.CountFinishPlace;
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());

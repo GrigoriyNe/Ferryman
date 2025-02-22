@@ -76,6 +76,8 @@ public class CarMover : MonoBehaviour
 
     private IEnumerator MovingInQuenue()
     {
+        _isMoving = true;
+
         while (_startPositionTile.cord_y < _map.RoadOffVerticalValue)
         {
             if (CheckPosition(_startPositionTile.cord_x, _startPositionTile.cord_y + 1))
@@ -85,14 +87,13 @@ public class CarMover : MonoBehaviour
 
             yield return new WaitForSeconds(0.6f);
         }
+
         _viewer.ActivateBackground();
-        
+        _isMoving = false;
     }
 
     private void TeleportTo(int coordY)
     {
-        _isMoving = true;
-
         TileHelper tile = _map.GetTile(_startPositionTile.cord_x, coordY);
         _map.RemoveObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
 
@@ -100,7 +101,7 @@ public class CarMover : MonoBehaviour
         transform.position = tile.transform.position;
         _startPositionTile = tile;
         _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-        _isMoving = false;
+        
     }
 
     private void TryMoving(TileHelper start, TileHelper end)

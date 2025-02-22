@@ -21,3 +21,4 @@ public class ViewMoney : MonoBehaviour
         _moneyCount.text = value.ToString();
     }
 }
+
