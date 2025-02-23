@@ -6,7 +6,7 @@ public class Wallet : MonoBehaviour
     public event Action<int> Changed;
     public int Money { get; private set; }
 
-    private void OnEnable()
+    private void Start()
     {
         Money = 100;
         Changed?.Invoke(Money);

@@ -27,6 +27,7 @@ public class CarMover : MonoBehaviour
         _isNextPositionEmpty = false;
         _isSelected = false;
         _moving = null;
+        _counter.AddMaxScore(1);
     }
 
     private void OnDisable()
@@ -166,7 +167,7 @@ public class CarMover : MonoBehaviour
         if (_inParking)
         {
             transform.position = _finishPositionTile.transform.position;
-            _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
+           // _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
             _counter.AddScore();
         }
         else

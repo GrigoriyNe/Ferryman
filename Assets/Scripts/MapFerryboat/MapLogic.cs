@@ -10,6 +10,7 @@ public class MapLogic : MonoBehaviour
 
     [SerializeField] private GameObject _prefabMapTile;
     [SerializeField] private ObstacleView _obstacleView;
+    [SerializeField] private ObstacleLogic _obstaleLogic;
 
     private Point[,] _map;
     private TileHelper[,] _tiles;
@@ -18,7 +19,7 @@ public class MapLogic : MonoBehaviour
     private List<TileHelper> _carFinishPoints = new List<TileHelper>();
 
     private List<TileHelper> _emptyCellObstacle = new List<TileHelper>();
-    private Queue<TileHelper> _filledCellObstacle = new Queue<TileHelper>();
+    private List<TileHelper> _filledCellObstacle = new List<TileHelper>();
 
     private List<TileHelper> _carSpesialStartPoints = new List<TileHelper>();
     private Queue<TileHelper> _carSpesialFinishPoints = new Queue<TileHelper>();
@@ -74,9 +75,10 @@ public class MapLogic : MonoBehaviour
 
     public void Deactivate()
     {
+        _obstaleLogic.RememberObstacle(_filledCellObstacle);
         gameObject.SetActive(false);
-    //    _emptyCellObstacle = null;
-   //     _filledCellObstacle = new Queue<TileHelper>();
+        //    _emptyCellObstacle = null;
+        //     _filledCellObstacle = new Queue<TileHelper>();
     }
 
     public void SetStart(TileHelper tile)
@@ -134,6 +136,12 @@ public class MapLogic : MonoBehaviour
 
             path.Add(_tiles[temp.X, temp.Y]);
             temp = temp.Parent;
+
+            if (temp == null)
+            {
+                Debug.Log("No way");
+                return null;
+            }
         }
 
         return path;
@@ -187,7 +195,7 @@ public class MapLogic : MonoBehaviour
 
     public void AddCarStartPoint(int x, int y)
     {
-        _map[x, y].ChangeObstacle(true);
+        //  _map[x, y].ChangeObstacle(true);
         _carStartPoints.Enqueue(_tiles[x, y]);
     }
 
@@ -202,7 +210,7 @@ public class MapLogic : MonoBehaviour
 
     public void AddSpesialCarStartPoint(int x, int y)
     {
-        _map[x, y].ChangeObstacle(true);
+        // _map[x, y].ChangeObstacle(true);
         _carSpesialStartPoints.Add(_tiles[x, y]);
     }
 
@@ -228,6 +236,7 @@ public class MapLogic : MonoBehaviour
 
     private void InitLogicMap()
     {
+
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -350,18 +359,22 @@ public class MapLogic : MonoBehaviour
     {
         for (int i = 0; i < length; i++)
         {
-            TileHelper tile = GetTile( i, horizontal);
-            _emptyCellObstacle.Add(tile);
+            if (_map[i, horizontal].IsObstacle == false)
+            {
+                TileHelper tile = GetTile(i, horizontal);
+                _emptyCellObstacle.Add(tile);
+            }
         }
 
-        for (int i = RoadOffVerticalValue + 3; i < _width; i++)
+        for (int i = RoadOffVerticalValue + 3; i < _width - 2; i++)
         {
-            TileHelper tile = GetTile(vertical, i);
-
-            _emptyCellObstacle.Add(tile);    
+            if (_map[vertical, i].IsObstacle == false)
+            {
+                TileHelper tile = GetTile(vertical, i);
+                _emptyCellObstacle.Add(tile);
+            }
         }
-
-     //   AddedCreatedObstacle();
+        //   AddedCreatedObstacle();
     }
 
     public void CreateObstacle()
@@ -381,22 +394,25 @@ public class MapLogic : MonoBehaviour
     //    }
     //}
 
-    private void CreatingObstacle(TileHelper tile)
+    public void CreatingObstacle(TileHelper tile)
     {
-        tile.sprite.sprite = _obstacleView.GetSprite();
+        tile.sprite.sprite = _obstacleView.GetSpriteClose();
         _carFinishPoints.Remove(tile);
         _carStartPoints.Dequeue();
+        tile.sprite.gameObject.SetActive(true);
+
+        if (_map[tile.cord_x, tile.cord_y].IsObstacle)
+            return;
 
         AddObstacle(tile.cord_x, tile.cord_y);
-        tile.sprite.gameObject.SetActive(true);
-        _filledCellObstacle.Enqueue(tile);
-        _emptyCellObstacle.Remove(tile);
+        _filledCellObstacle.Add(tile);
     }
 
-    public void DeleteObstacle()
+    public void DeleteObstacle(TileHelper tile)
     {
-        TileHelper tile = _filledCellObstacle.Dequeue();
+        _filledCellObstacle.Remove(tile);
         RemoveObstacle(tile.cord_x, tile.cord_y);
-        _emptyCellObstacle.Add(tile);
+        tile.sprite.sprite = _obstacleView.GetSpriteOpen();
+        AddCarFinishPoint(tile.cord_x, tile.cord_y);
     }
 }

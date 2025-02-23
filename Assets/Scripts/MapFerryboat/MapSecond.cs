@@ -35,9 +35,9 @@ public class MapSecond : Map
         _logic.CreateObstacle();
     }
 
-    public override void RemoveObstacle()
+    public override void RemoveObstacle(TileHelper tile)
     {
-        _logic.DeleteObstacle();
+        _logic.DeleteObstacle(tile);
     }
 
     private void CreateItemOnMap()

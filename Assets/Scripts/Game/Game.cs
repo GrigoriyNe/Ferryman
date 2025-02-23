@@ -37,8 +37,11 @@ public class Game : MonoBehaviour
             EndScene();
         else
             MakeOffer();
+    }
 
-        
+    public void CreateNewCar()
+    {
+        _fabricCars.Create();
     }
 
     private void MakeOffer()
@@ -113,4 +116,6 @@ public class Game : MonoBehaviour
             _fabricCars.CreateSpesial();
         }
     }
+
+    
 }

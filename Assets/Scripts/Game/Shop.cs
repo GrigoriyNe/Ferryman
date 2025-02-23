@@ -7,11 +7,12 @@ public class Shop : MonoBehaviour
     [SerializeField] private ShopWindow _shopWindow;
     [SerializeField] private PlayWindow _playWindow;
     [SerializeField] private OfferWindow _offer;
+    [SerializeField] private ObstacleLogic _obstacle;
 
     private void OnEnable()
     {
         _shopWindow.ButtonClicked += OnExitClicked;
-        _shopWindow.OnItem1Click += OnItem1Click;
+        _shopWindow.OnItem1Click += OnDeleteBoxs;
         _shopWindow.OnItem2Click += OnItem2Click;
         _shopWindow.OnItem3Click += OnItem3Click;
     }
@@ -19,13 +20,19 @@ public class Shop : MonoBehaviour
     private void OnDisable()
     {
         _shopWindow.ButtonClicked -= OnExitClicked;
-        _shopWindow.OnItem1Click -= OnItem1Click;
+        _shopWindow.OnItem1Click -= OnDeleteBoxs;
         _shopWindow.OnItem2Click -= OnItem2Click;
         _shopWindow.OnItem3Click -= OnItem3Click;
         _offer.ButtonClicked -= OnExitOffer;
     }
 
-    private void OnItem1Click()
+    public void SellRemoveObstacle()
+    {
+        _shopWindow.ShowSellInfo();
+        _obstacle.Activate();
+    }
+
+    private void OnDeleteBoxs()
     {
         _offer.gameObject.SetActive(true);
         _offer.ButtonClicked += OnExitOffer;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class Map : MonoBehaviour
 {
@@ -8,5 +9,6 @@ public abstract class Map : MonoBehaviour
     public abstract void CreateObstacle();
     
     public abstract void SetObstacle();
-    public abstract void RemoveObstacle();
+    public abstract void RemoveObstacle(TileHelper _);
+
 }

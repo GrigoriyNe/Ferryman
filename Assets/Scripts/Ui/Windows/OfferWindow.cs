@@ -7,37 +7,37 @@ public class OfferWindow : Window
     [SerializeField] private Button _gold;
     [SerializeField] private Button _revard;
     [SerializeField] private Game _game;
-
-    //private void Start()
-    //{
-    //    this.gameObject.SetActive(false);
-    //}
-
+    [SerializeField] private Shop _shop;
+    
     public override void OnEnabled()
     {
         _gold.onClick.AddListener(OnButtonGoldClick);
-        _revard.onClick.AddListener(OnButtonGoldRevard);
+        _revard.onClick.AddListener(OnButtonRevard);
+    }
+    public override void OnDisabled()
+    {
+        _gold.onClick.RemoveListener(OnButtonGoldClick);
+        _revard.onClick.AddListener(OnButtonRevard);
     }
 
-    private void OnButtonGoldRevard()
+    private void OnButtonRevard()
     {
         throw new NotImplementedException();
     }
 
-    public override void OnDisabled()
-    {
-        _gold.onClick.RemoveListener(OnButtonGoldClick);
-        _revard.onClick.AddListener(OnButtonGoldRevard);
-    }
-
     private void OnButtonGoldClick()
     {
-        TryPay(20);
+        if (TryPay(20))
+        {
+            _shop.SellRemoveObstacle();
+        }
+
+        Close();
     }
 
-    private void TryPay (int value)
+    private bool TryPay(int value)
     {
-        _game.TryPay(value);
+        return _game.TryPay(value);
     }
 
 }

@@ -12,7 +12,7 @@ public class PlayerInputController : MonoBehaviour
 
     private Vector2 _tapPoint;
 
-    public event Action<RaycastHit> Clicked;
+    public event Action<TileHelper> Clicked;
 
     private void OnEnable()
     {
@@ -56,6 +56,11 @@ public class PlayerInputController : MonoBehaviour
                     if (hit.collider.TryGetComponent(out Car car))
                     {
                         car.Move();
+                    }
+
+                    if (hit.collider.TryGetComponent(out TileHelper tile))
+                    {
+                        Clicked?.Invoke(tile);
                     }
 
                     //Clicked?.Invoke(hit);

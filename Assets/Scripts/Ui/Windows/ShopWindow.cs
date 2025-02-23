@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +10,8 @@ public class ShopWindow : Window
     [SerializeField] private Button _item2;
     [SerializeField] private Button _item3;
     [SerializeField] private CanvasGroup _canvasGroupOffer;
-   
+    [SerializeField] private Image _sellInfo;
+
 
     public event Action OnItem1Click;
     public event Action OnItem2Click;
@@ -44,7 +47,20 @@ public class ShopWindow : Window
         OnItem3Click?.Invoke();
     }
 
-    
+    public void ShowSellInfo()
+    {
+        _sellInfo.gameObject.SetActive(true);
+        StartCoroutine(DeactivateImge());
+    }
+
+    private IEnumerator DeactivateImge()
+    {
+        yield return new WaitForSeconds(1.6f);
+
+        _sellInfo.gameObject.SetActive(false);
+        Close();
+    }
+
     //_canvasGroupOffer.SetActive(true);
     //_canvasGroupOffer.Open();
 

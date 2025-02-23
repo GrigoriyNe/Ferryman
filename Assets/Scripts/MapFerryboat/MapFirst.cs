@@ -7,6 +7,7 @@ public class MapFirst : Map
     private const int Height = 15;
 
     [SerializeField] private MapLogic _logic;
+    [SerializeField] private ObstacleLogic _obstaleLogic;
 
     public override void Activate()
     {
@@ -38,13 +39,12 @@ public class MapFirst : Map
 
     public override void CreateObstacle()
     {
-    //    SetObstacle();
         _logic.CreateObstacle();
     }
 
-    public override void RemoveObstacle()
+    public override void RemoveObstacle(TileHelper tile)
     {
-        _logic.DeleteObstacle();
+        _logic.DeleteObstacle(tile);
     }
 
     private void CreateItemOnMap()

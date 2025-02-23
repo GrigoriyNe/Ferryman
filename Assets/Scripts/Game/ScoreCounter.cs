@@ -19,14 +19,20 @@ public class ScoreCounter : MonoBehaviour
     {
         gameObject.SetActive(true);
         Score = 0;
-        MaxPossibleFinishPlaces = _map.CountFinishPlace + _map.CountFinishSpesialPlace;
-        _step.SetStartValue(StepMultiplayer * MaxPossibleFinishPlaces);
+        MaxPossibleFinishPlaces = 0;
+        
     }
 
     public void Deactivate()
     {
         gameObject.SetActive(false);
         Score = 0;
+    }
+
+    public void AddMaxScore(int value)
+    {
+        MaxPossibleFinishPlaces += value;
+        _step.SetStartValue(StepMultiplayer * MaxPossibleFinishPlaces);
     }
 
     public void AddScore()
