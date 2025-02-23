@@ -6583,6 +6583,58 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!1 &827646183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 827646185}
+  - component: {fileID: 827646184}
+  m_Layer: 0
+  m_Name: ShipAdder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &827646184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827646183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f23c57a3e63a04ab65b96f46fc6b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ferryboats:
+  - {fileID: 690251718}
+  - {fileID: 1695503587}
+  - {fileID: 334395305}
+  _ferryboatGroups:
+  - {fileID: 1850298987}
+  - {fileID: 284246316}
+  - {fileID: 1038633066}
+--- !u!4 &827646185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827646183}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1280, y: 720, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &829518666
 GameObject:
   m_ObjectHideFlags: 0
@@ -8962,8 +9014,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1429993013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.47, y: 0}
+  m_AnchorMax: {x: 0.47, y: 1}
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13337,12 +13389,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fabricCars: {fileID: 1784118233}
-  _ferryboat: {fileID: 690251718}
   _mapLogic: {fileID: 385034675}
   _bridge: {fileID: 1339759165}
   _counter: {fileID: 396276325}
   _wallet: {fileID: 1639682904}
   _obstacle: {fileID: 341337246}
+  _shipAdder: {fileID: 827646184}
 --- !u!4 &1639682903
 Transform:
   m_ObjectHideFlags: 0
@@ -13507,7 +13559,7 @@ RectTransform:
   m_Father: {fileID: 735257133}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.47, y: 1}
   m_AnchoredPosition: {x: -0.98069763, y: -0.095077515}
   m_SizeDelta: {x: 1.9614, y: -0.59626}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -14850,7 +14902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1850298988
 Transform:
   m_ObjectHideFlags: 0
@@ -17072,3 +17124,4 @@ SceneRoots:
   - {fileID: 1028407150}
   - {fileID: 1361634318}
   - {fileID: 341337249}
+  - {fileID: 827646185}

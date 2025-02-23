@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class MapLogic : MonoBehaviour
 {
-    private const int MaxStep = 50;
+    private const int MaxStep = 30;
 
     [SerializeField] private GameObject _prefabMapTile;
     [SerializeField] private ObstacleView _obstacleView;
@@ -134,14 +132,14 @@ public class MapLogic : MonoBehaviour
                 return null;
             }
 
-            path.Add(_tiles[temp.X, temp.Y]);
-            temp = temp.Parent;
-
             if (temp == null)
             {
                 Debug.Log("No way");
                 return null;
             }
+
+            path.Add(_tiles[temp.X, temp.Y]);
+            temp = temp.Parent;
         }
 
         return path;
@@ -268,13 +266,13 @@ public class MapLogic : MonoBehaviour
 
             freePoints.Remove(point);
             workedOutPoints.Add(point);
-            List<Point> SurroundPoints = GetSurroundPoint(point.X, point.Y);
+            List<Point> surroundPoints = GetSurroundPoint(point.X, point.Y);
 
             foreach (Point p in workedOutPoints)
-                if (SurroundPoints.Contains(p))
-                    SurroundPoints.Remove(p);
+                if (surroundPoints.Contains(p))
+                    surroundPoints.Remove(p);
 
-            foreach (Point p in SurroundPoints)
+            foreach (Point p in surroundPoints)
             {
                 if (freePoints.Contains(p))
                 {
@@ -302,25 +300,25 @@ public class MapLogic : MonoBehaviour
 
     private List<Point> GetSurroundPoint(int x, int y)
     {
-        List<Point> PointList = new List<Point>();
+        List<Point> points = new List<Point>();
 
         if (x > 0 && !_map[x - 1, y].IsObstacle && !_map[x - 1, y].Walls[1] && !_map[x, y].Walls[0])
         {
-            PointList.Add(_map[x - 1, y]);
+            points.Add(_map[x - 1, y]);
         }
         if (y > 0 && !_map[x, y - 1].IsObstacle && !_map[x, y - 1].Walls[2] && !_map[x, y].Walls[3])
         {
-            PointList.Add(_map[x, y - 1]);
+            points.Add(_map[x, y - 1]);
         }
         if (x < _height - 1 && !_map[x + 1, y].IsObstacle && !_map[x + 1, y].Walls[0] && !_map[x, y].Walls[1])
         {
-            PointList.Add(_map[x + 1, y]);
+            points.Add(_map[x + 1, y]);
         }
         if (y < _width - 1 && !_map[x, y + 1].IsObstacle && !_map[x, y + 1].Walls[3] && !_map[x, y].Walls[2])
         {
-            PointList.Add(_map[x, y + 1]);
+            points.Add(_map[x, y + 1]);
         }
-        return PointList;
+        return points;
     }
 
 

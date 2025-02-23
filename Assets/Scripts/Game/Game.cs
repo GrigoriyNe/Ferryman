@@ -5,15 +5,18 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     [SerializeField] private FabricCars _fabricCars;
-    [SerializeField] private Ferryboat _ferryboat;
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private ObstacleLogic _obstacle;
 
+    [SerializeField] private ShipAdder _shipAdder;
+    private Ferryboat _ferryboat;
+
     private void Start()
     {
+        _ferryboat = _shipAdder.GetFerryboat(0);
         StartScene();
     }
 
@@ -53,7 +56,7 @@ public class Game : MonoBehaviour
     {
         _bridge.Open();
         _ferryboat.Activate();
-        
+
         StartCoroutine(OpenCargo());
     }
 
@@ -85,7 +88,7 @@ public class Game : MonoBehaviour
     private IEnumerator CreateCars()
     {
         yield return new WaitForSeconds(0.3f);
-        
+
 
         int count = _mapLogic.CountFinishPlace;
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
@@ -117,5 +120,5 @@ public class Game : MonoBehaviour
         }
     }
 
-    
+
 }

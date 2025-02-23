@@ -14,7 +14,6 @@ public class CarMover : MonoBehaviour
 
     private bool _isMoving;
     private bool _inParking;
-    private bool _isNextPositionEmpty;
 
     private Namer _parkPlace;
     private Coroutine _moving;
@@ -24,7 +23,6 @@ public class CarMover : MonoBehaviour
     {
         _isMoving = false;
         _inParking = false;
-        _isNextPositionEmpty = false;
         _isSelected = false;
         _moving = null;
         _counter.AddMaxScore(1);
@@ -53,7 +51,7 @@ public class CarMover : MonoBehaviour
         if (_isMoving)
             return;
 
-        if (_isNextPositionEmpty)
+        if (CheckPosition(_startPositionTile.cord_x, _startPositionTile.cord_y + 1) == false)
             return;
 
         _isSelected = true;
@@ -84,9 +82,12 @@ public class CarMover : MonoBehaviour
             if (CheckPosition(_startPositionTile.cord_x, _startPositionTile.cord_y + 1))
             {
                 TeleportTo(_startPositionTile.cord_y + 1);
+                yield return new WaitForSeconds(0.1f);
             }
-
-            yield return new WaitForSeconds(0.6f);
+            else
+            {
+                yield return new WaitForSeconds(2f);
+            }
         }
 
         _viewer.ActivateBackground();
@@ -102,7 +103,7 @@ public class CarMover : MonoBehaviour
         transform.position = tile.transform.position;
         _startPositionTile = tile;
         _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
-        
+
     }
 
     private void TryMoving(TileHelper start, TileHelper end)
@@ -112,7 +113,7 @@ public class CarMover : MonoBehaviour
         _map.RemoveObstacle(start.cord_x, start.cord_y);
         _map.SetStart(end);
         _map.SetEnd(start);
-
+        
         if (_map.GetPath() == null)
         {
             _map.AddObstacle(start.cord_x, start.cord_y);
@@ -124,13 +125,14 @@ public class CarMover : MonoBehaviour
 
         if (_inParking)
         {
+            _map.RemoveObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
             _counter.RemoveScore();
         }
         else
         {
-            _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
+          //  _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
         }
-        
+
         _moving = StartCoroutine(MoveToPath(_map.GetPath()));
     }
 
@@ -167,11 +169,12 @@ public class CarMover : MonoBehaviour
         if (_inParking)
         {
             transform.position = _finishPositionTile.transform.position;
-           // _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
+            _map.AddObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
             _counter.AddScore();
         }
         else
         {
+            _map.RemoveObstacle(_finishPositionTile.cord_x, _finishPositionTile.cord_y);
             _map.AddObstacle(_startPositionTile.cord_x, _startPositionTile.cord_y);
             StartCoroutine(MovingInQuenue());
             transform.LookAt(_map.GetTile(_startPositionTile.cord_x, _startPositionTile.cord_y + 2).transform);
