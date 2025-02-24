@@ -33,23 +33,26 @@ public class ObstacleLogic : MonoBehaviour
 
     public void RememberObstacle(List<TileHelper> filedTile)
     {
-        foreach (TileHelper tileEarly in filedTile)
+        List<TileHelper> hash = new List<TileHelper>();
+        hash = filedTile;
+
+        foreach (TileHelper tileEarly in hash)
         {
-            _filedTileCoordX.Add(tileEarly.cord_x);
-            _filedTileCoordY.Add(tileEarly.cord_y);
+            _filedTileCoordX.Add(tileEarly.cordX);
+            _filedTileCoordY.Add(tileEarly.cordY);
         }
     }
 
     private void OnClicked(TileHelper tile)
     {
-        if (_mapLogic.CheckObstacle(tile.cord_x, tile.cord_y) == false)
+        if (_mapLogic.CheckObstacle(tile.cordX, tile.cordY) == false)
             return;
 
-        if (tile.cord_y < _mapLogic.RoadOffVerticalValue + 2)
+        if (tile.cordY < _mapLogic.RoadOffVerticalValue + 2)
             return;
 
-        _filedTileCoordX.Remove(tile.cord_x);
-        _filedTileCoordY.Add(tile.cord_y);
+        _filedTileCoordX.Remove(tile.cordX);
+        _filedTileCoordY.Remove(tile.cordY);
 
         _map.RemoveObstacle(tile);
         _game.CreateNewCar();
@@ -58,9 +61,10 @@ public class ObstacleLogic : MonoBehaviour
 
     private void SetCreatedEarlier()
     {
-        for (int i = 0; i < _filedTileCoordX.Count; i++)
+        for (int i = 0; i < _filedTileCoordX.Count;)
         {
             _mapLogic.CreatingObstacle(_mapLogic.GetTile(_filedTileCoordX[i], _filedTileCoordY[i]));
+            i += 1;
         }
     }
 }

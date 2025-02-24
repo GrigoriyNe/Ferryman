@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CarTextViewer : MonoBehaviour
 {
-    private const int Delay = 3;
+    private const int Delay = 2;
 
     [SerializeField] private TextMeshProUGUI _viewFinishPosition;
     [SerializeField] private Image _backgroundImage;
@@ -22,7 +22,7 @@ public class CarTextViewer : MonoBehaviour
 
     private void OnDisable()
     {
-        ActivateBackground();
+      //  ActivateBackground();
     }
 
     public void Init(Namer parkPlace, TileHelper finishPositionTile)
@@ -46,7 +46,7 @@ public class CarTextViewer : MonoBehaviour
 
     private string GetTextPosition()
     {
-        return _parkPlace.GetTextPlace(_finishPositionTile.cord_x, _finishPositionTile.cord_y).ToString();
+        return _parkPlace.GetTextPlace(_finishPositionTile.cordX, _finishPositionTile.cordY).ToString();
     }
 
     private IEnumerator SmoothActivate()

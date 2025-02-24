@@ -67,8 +67,8 @@ public class MapSecond : Map
             for (int j = 12; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int i = 1; i <4; i++)
-            for (int j = 0; j < _logic.CountFinishPlace / 3; j++)
+        for (int i = 1; i < 4; i++)
+            for (int j = 0; j < 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
         _logic.AddSpesialCarFinishPoint(4, 16);

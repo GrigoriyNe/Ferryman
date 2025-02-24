@@ -73,7 +73,7 @@ public class MapLogic : MonoBehaviour
 
     public void Deactivate()
     {
-        _obstaleLogic.RememberObstacle(_filledCellObstacle);
+        
         gameObject.SetActive(false);
         //    _emptyCellObstacle = null;
         //     _filledCellObstacle = new Queue<TileHelper>();
@@ -81,14 +81,14 @@ public class MapLogic : MonoBehaviour
 
     public void SetStart(TileHelper tile)
     {
-        _start_X = tile.cord_x;
-        _start_Y = tile.cord_y;
+        _start_X = tile.cordX;
+        _start_Y = tile.cordY;
     }
 
     public void SetEnd(TileHelper tile)
     {
-        _end_X = tile.cord_x;
-        _end_Y = tile.cord_y;
+        _end_X = tile.cordX;
+        _end_Y = tile.cordY;
         SetStartAndEnd(_start_X, _start_Y, _end_X, _end_Y);
         FindPath();
     }
@@ -179,11 +179,13 @@ public class MapLogic : MonoBehaviour
     public void AddObstacle(int x, int y)
     {
         _map[x, y].ChangeObstacle(true);
+        _tiles[x, y].sprite.color = Color.red;
     }
 
     public void RemoveObstacle(int x, int y)
     {
         _map[x, y].ChangeObstacle(false);
+        _tiles[x, y].sprite.color = Color.blue;
     }
 
     public TileHelper GetTile(int x, int y)
@@ -241,8 +243,8 @@ public class MapLogic : MonoBehaviour
             {
                 _tiles[i, j] = Instantiate(_prefabMapTile, new Vector3(i, 0, j), Quaternion.identity).GetComponent<TileHelper>();
                 _tiles[i, j].transform.SetParent(transform, false);
-                _tiles[i, j].cord_x = i;
-                _tiles[i, j].cord_y = j;
+                _tiles[i, j].cordX = i;
+                _tiles[i, j].cordY = j;
                 _map[i, j] = new Point(i, j);
             }
         }
@@ -396,21 +398,21 @@ public class MapLogic : MonoBehaviour
     {
         tile.sprite.sprite = _obstacleView.GetSpriteClose();
         _carFinishPoints.Remove(tile);
-        _carStartPoints.Dequeue();
         tile.sprite.gameObject.SetActive(true);
 
-        if (_map[tile.cord_x, tile.cord_y].IsObstacle)
+        if (_map[tile.cordX, tile.cordY].IsObstacle)
             return;
 
-        AddObstacle(tile.cord_x, tile.cord_y);
+        AddObstacle(tile.cordX, tile.cordY);
         _filledCellObstacle.Add(tile);
+        _obstaleLogic.RememberObstacle(_filledCellObstacle);
     }
 
     public void DeleteObstacle(TileHelper tile)
     {
         _filledCellObstacle.Remove(tile);
-        RemoveObstacle(tile.cord_x, tile.cord_y);
+        RemoveObstacle(tile.cordX, tile.cordY);
         tile.sprite.sprite = _obstacleView.GetSpriteOpen();
-        AddCarFinishPoint(tile.cord_x, tile.cord_y);
+        AddCarFinishPoint(tile.cordX, tile.cordY);
     }
 }

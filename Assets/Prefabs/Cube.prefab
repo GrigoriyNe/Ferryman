@@ -522,8 +522,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8bfc98dcb1d79440afae2b6c2288b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cord_x: 0
-  cord_y: 0
+  cordX: 0
+  cordY: 0
   sprite: {fileID: 1411046980097162638}
   walls:
   - {fileID: 4972921293360572230}

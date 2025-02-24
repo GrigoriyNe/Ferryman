@@ -74,7 +74,7 @@ public class MapThird : Map
                 _logic.AddCarFinishPoint(i, j);
 
         for (int i = 1; i < 4; i++)
-            for (int j = 0; j < _logic.CountFinishPlace / 3; j++)
+            for (int j = 0; j < 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
         _logic.AddSpesialCarFinishPoint(6, Height - 2);

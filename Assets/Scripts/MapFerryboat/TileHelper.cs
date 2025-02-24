@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class TileHelper : MonoBehaviour
 {
-    public int cord_x;
-    public int cord_y;
+    public int cordX;
+    public int cordY;
     public SpriteRenderer sprite;
 
     public GameObject[] walls;

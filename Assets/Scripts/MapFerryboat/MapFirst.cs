@@ -52,7 +52,7 @@ public class MapFirst : Map
         for (int i = 4; i < 7; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 10; i++)
             _logic.AddVoid(4, i);
 
         for (int i = 5; i < Height; i++)
@@ -62,13 +62,14 @@ public class MapFirst : Map
         _logic.AddWall(0, 10, 2);
         _logic.AddWall(3, 10, 2);
         _logic.AddWall(4, 10, 2);
+        _logic.AddWall(5, 10, 2);
 
         for (int i = 0; i < 4; i++)
             for (int j = 11; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
         for (int i = 1; i <4; i++)
-            for (int j = 0; j < _logic.CountFinishPlace / 3; j++)
+            for (int j = 0; j < 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
         _logic.AddSpesialCarFinishPoint(4, 12);

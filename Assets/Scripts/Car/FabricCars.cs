@@ -57,7 +57,6 @@ public class FabricCars : MonoBehaviour
         if (_map.CountStartSpesialPlace == 0)
         {
             NotCreatedSpesialCarCount += 1;
-            Debug.Log(NotCreatedSpesialCarCount);
 
             return;
         }
@@ -73,7 +72,7 @@ public class FabricCars : MonoBehaviour
         car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
     }
 
-    public void PackCars()
+    public void DeactivateCars()
     {
         foreach (Car car in _createdCars)
         {

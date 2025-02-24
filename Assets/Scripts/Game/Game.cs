@@ -79,7 +79,7 @@ public class Game : MonoBehaviour
     {
         _ferryboat.Finish();
         _counter.Deactivate();
-        _fabricCars.PackCars();
+        _fabricCars.DeactivateCars();
 
         yield return new WaitForSeconds(4f);
         StartScene();
