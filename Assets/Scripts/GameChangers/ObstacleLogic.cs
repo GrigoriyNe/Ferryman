@@ -13,34 +13,64 @@ public class ObstacleLogic : MonoBehaviour
     private List<int> _filedTileCoordX = new();
     private List<int> _filedTileCoordY = new();
 
-    public int FiledTileCout => _filedTileCoordX.Count;
+    private List<TileHelper> _startBlockTile = new();
+    private List<TileHelper> _startSpesialBlockTile = new();
 
     public void Activate()
     {
         _input.Clicked += OnClicked;
     }
 
+    public void SetBlockedStarPlace(TileHelper tile)
+    {
+        _startBlockTile.Add(tile);
+
+    }
+
+    public void SetSpesialBlockedStarPlace(TileHelper tile)
+    {
+        _startSpesialBlockTile.Add(tile);
+    }
+
     public void CreateObstacle()
     {
+        if (_filedTileCoordX.Count < 1)
+        {
+            TileHelper boofer = _mapLogic.GetTile(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
+            _mapLogic.CreatingObstacle(boofer);
+
+            foreach (TileHelper tile in _startBlockTile)
+            {
+                _mapLogic.CreatingObstacle(tile);
+            }
+
+            foreach (TileHelper tile in _startSpesialBlockTile)
+            {
+                _mapLogic.CreatingObstacle(tile);
+            }
+        }
+
         if (_filedTileCoordX.Count > 0)
             SetCreatedEarlier();
 
-        _map.CreateObstacle();
-
         if (UnityEngine.Random.Range(0, 20) % 5 == 0)
-            _map.CreateObstacle();
+            _mapLogic.CreateObstacle();
     }
 
     public void RememberObstacle(List<TileHelper> filedTile)
     {
-        List<TileHelper> hash = new List<TileHelper>();
-        hash = filedTile;
-
-        foreach (TileHelper tileEarly in hash)
+        foreach (TileHelper tile in filedTile)
         {
-            _filedTileCoordX.Add(tileEarly.cordX);
-            _filedTileCoordY.Add(tileEarly.cordY);
+            _filedTileCoordX.Add(tile.cordX);
+            _filedTileCoordY.Add(tile.cordY);
         }
+    }
+
+    public void RemoveObstacle(List<TileHelper> filedTile)
+    {
+        _filedTileCoordX = new();
+        _filedTileCoordY = new();
+        RememberObstacle(filedTile);
     }
 
     private void OnClicked(TileHelper tile)

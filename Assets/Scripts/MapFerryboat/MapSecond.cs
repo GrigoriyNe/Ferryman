@@ -6,13 +6,14 @@ public class MapSecond : Map
     private const int Height = 17;
 
     [SerializeField] private MapLogic _logic;
+    [SerializeField] private ObstacleLogic _obstaleLogic;
 
     public override void Activate()
     {
         gameObject.SetActive(true);
         _logic.Init(Width, Height);
         CreateItemOnMap();
-        SetObstacle();
+        SetVaribleObstaclePlaces();
     }
 
     public override void Deactivate()
@@ -25,14 +26,9 @@ public class MapSecond : Map
     {
         return Height;
     }
-    public override void SetObstacle()
+    public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetObstaclePlaces(Height - 1, 0, 4);
-    }
-
-    public override void CreateObstacle()
-    {
-        _logic.CreateObstacle();
+        _logic.SetVaribleObstaclePlaces(Height - 1, 0, 4);
     }
 
     public override void RemoveObstacle(TileHelper tile)
@@ -45,23 +41,29 @@ public class MapSecond : Map
         for (int i = 0; i < 3; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 12; i++)
             _logic.AddVoid(4, i);
 
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 12; i++)
             _logic.AddVoid(5, i);
 
-        for (int i = 0; i <11; i++)
+        for (int i = 0; i <12; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 7; i < Height; i++)
+        for (int i = 5; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
         _logic.AddWall(0, 11, 2);
         _logic.AddWall(1, 11, 2);
-        _logic.AddWall(4, 11, 2);
-        _logic.AddWall(5, 11, 2);
+        _logic.AddWall(4, 12, 0);
+        _logic.AddWall(5, 12, 0);
+
+        for (int i = 0; i < 4; i++)
+            _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(i, Height - 1));
+
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 16));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 14));
 
         for (int i = 0; i < 4; i++)
             for (int j = 12; j < Height; j++)

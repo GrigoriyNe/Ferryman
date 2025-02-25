@@ -14,9 +14,10 @@ public class Game : MonoBehaviour
     [SerializeField] private ShipAdder _shipAdder;
     private Ferryboat _ferryboat;
 
+
     private void Start()
     {
-        _ferryboat = _shipAdder.GetFerryboat(0);
+        _ferryboat = _shipAdder.GetFerryboat(2);
         StartScene();
     }
 
@@ -34,6 +35,11 @@ public class Game : MonoBehaviour
         }
     }
 
+    public void StepsOver()
+    {
+        RoundOver();
+    }
+
     public void RoundOver()
     {
         if (_ferryboat.CheckFuel())
@@ -44,7 +50,7 @@ public class Game : MonoBehaviour
 
     public void CreateNewCar()
     {
-        _fabricCars.Create();
+        StartCoroutine(CreateCars());
     }
 
     private void MakeOffer()
@@ -89,7 +95,6 @@ public class Game : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-
         int count = _mapLogic.CountFinishPlace;
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
 
@@ -105,9 +110,9 @@ public class Game : MonoBehaviour
             _fabricCars.Create();
         }
 
-        int countS = _mapLogic.CountFinishSpesialPlace;
+        int countSpesial = _mapLogic.CountFinishSpesialPlace;
 
-        for (int i = 0; i < countS; i++)
+        for (int i = 0; i < countSpesial; i++)
         {
             yield return new WaitForSeconds(0.4f);
             _fabricCars.CreateSpesial();
@@ -119,6 +124,4 @@ public class Game : MonoBehaviour
             _fabricCars.CreateSpesial();
         }
     }
-
-
 }

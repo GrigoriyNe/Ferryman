@@ -6,6 +6,7 @@ public class MapThird : Map
     private const int Height = 24;
 
     [SerializeField] private MapLogic _logic;
+    [SerializeField] private ObstacleLogic _obstaleLogic;
 
     public override void Activate()
     {
@@ -16,7 +17,7 @@ public class MapThird : Map
 
         _logic.Init(Width, Height);
         CreateItemOnMap();
-        SetObstacle();
+        SetVaribleObstaclePlaces();
     }
 
     public override void Deactivate()
@@ -30,14 +31,9 @@ public class MapThird : Map
         return Height;
     }
 
-    public override void SetObstacle()
+    public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetObstaclePlaces(Height - 1, 1, 4);
-    }
-
-    public override void CreateObstacle()
-    {
-        _logic.CreateObstacle();
+        _logic.SetVaribleObstaclePlaces(Height - 1, 1, 4);
     }
 
     public override void RemoveObstacle(TileHelper tile)
@@ -47,16 +43,13 @@ public class MapThird : Map
 
     private void CreateItemOnMap()
     {
-        for (int i = 0; i < 3; i++)
-            _logic.AddVoid(6, i);
+        for (int i = 0; i < Height - 6; i++)
+            _logic.AddVoid(4, i);
 
         for (int i = 0; i < Height - 6; i++)
             _logic.AddVoid(5, i);
 
-        for (int i = 1; i < 9; i++)
-            _logic.AddVoid(4, i);
-
-        for (int i = 4; i < 7; i++)
+        for (int i = 0; i < Height - 6; i++)
             _logic.AddVoid(6, i);
 
         for (int i = 7; i < Height; i++)
@@ -64,12 +57,20 @@ public class MapThird : Map
                 _logic.AddVoid(i, j);
 
         _logic.AddWall(0, Height - 7, 2);
-        _logic.AddWall(1, Height - 7, 2);
-        _logic.AddWall(4, Height - 7, 2);
-        _logic.AddWall(5, Height - 7, 2);
-        _logic.AddWall(6, Height - 7, 2);
+        _logic.AddWall(4, Height - 6, 0);
+        _logic.AddWall(5, Height - 6, 0);
+        _logic.AddWall(6, Height - 6, 0);
+        _logic.AddWall(7, Height - 6, 0);
 
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < 6; i++)
+            _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(i, Height - 1));
+
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 2));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 4));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 6));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(6, Height - 6));
+
+        for (int i = 1; i < 6; i++)
             for (int j = Height - 6; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
@@ -77,10 +78,13 @@ public class MapThird : Map
             for (int j = 0; j < 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
+
         _logic.AddSpesialCarFinishPoint(6, Height - 2);
+        _logic.AddSpesialCarFinishPoint(6, Height - 4);
+        _logic.AddSpesialCarFinishPoint(6, Height - 6);
         _logic.AddSpesialCarFinishPoint(0, Height - 2);
         _logic.AddSpesialCarFinishPoint(0, Height - 4);
-        _logic.AddSpesialCarFinishPoint(6, Height - 4);
+        _logic.AddSpesialCarFinishPoint(0, Height - 6);
         _logic.AddSpesialCarStartPoint(1, 1);
         _logic.AddSpesialCarStartPoint(3, 1);
         _logic.AddSpesialCarStartPoint(2, 1);

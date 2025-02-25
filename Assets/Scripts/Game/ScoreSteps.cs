@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ScoreSteps : MonoBehaviour
 {
+    [SerializeField] private Game _game;
+
     public event Action<int> Changed;
 
     public int StepsLeft { get; private set; }
@@ -16,6 +18,10 @@ public class ScoreSteps : MonoBehaviour
     public void ChangeOn(int value)
     {
         StepsLeft -= value;
+
+        if (StepsLeft == 0)
+            _game.StepsOver();
+
         Changed?.Invoke(StepsLeft);
     }
 }

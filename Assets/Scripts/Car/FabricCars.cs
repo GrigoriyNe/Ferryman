@@ -76,8 +76,8 @@ public class FabricCars : MonoBehaviour
     {
         foreach (Car car in _createdCars)
         {
-            _createdEarlierCars.Enqueue(car);
             car.gameObject.SetActive(false);
+            _createdEarlierCars.Enqueue(car);
         }
 
         foreach (SpesialCar car in _createdSpesialCars)

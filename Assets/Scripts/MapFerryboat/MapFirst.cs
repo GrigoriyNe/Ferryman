@@ -13,12 +13,12 @@ public class MapFirst : Map
     {
         gameObject.SetActive(true);
 
-        if(_logic.CountFinishPlace  != 0)
+        if (_logic.CountFinishPlace != 0)
             return;
 
         _logic.Init(Width, Height);
         CreateItemOnMap();
-        SetObstacle();
+        SetVaribleObstaclePlaces();
     }
 
     public override void Deactivate()
@@ -32,14 +32,9 @@ public class MapFirst : Map
         return Height;
     }
 
-    public override void SetObstacle()
+    public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetObstaclePlaces(Height - 1, 0, 4);
-    }
-
-    public override void CreateObstacle()
-    {
-        _logic.CreateObstacle();
+        _logic.SetVaribleObstaclePlaces(Height - 1, 0, 4);
     }
 
     public override void RemoveObstacle(TileHelper tile)
@@ -64,11 +59,18 @@ public class MapFirst : Map
         _logic.AddWall(4, 10, 2);
         _logic.AddWall(5, 10, 2);
 
+        _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(4, Height - 1));
+        _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(4, Height - 2));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 12));
+
         for (int i = 0; i < 4; i++)
             for (int j = 11; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int i = 1; i <4; i++)
+        _logic.AddCarFinishPoint(4, Height - 1);
+        _logic.AddCarFinishPoint(4, Height - 2);
+
+        for (int i = 1; i < 4; i++)
             for (int j = 0; j < 3; j++)
                 _logic.AddCarStartPoint(i, j);
 

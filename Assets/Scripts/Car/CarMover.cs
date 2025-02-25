@@ -32,6 +32,8 @@ public class CarMover : MonoBehaviour
     {
         _startPositionTile = null;
         _finishPositionTile = null;
+        _moving = null;
+        StopCoroutine(MovingInQuenue());
     }
 
     public void MoveInQuenue()
@@ -103,7 +105,6 @@ public class CarMover : MonoBehaviour
         transform.position = tile.transform.position;
         _startPositionTile = tile;
         _map.AddObstacle(_startPositionTile.cordX, _startPositionTile.cordY);
-
     }
 
     private void TryMoving(TileHelper start, TileHelper end)
