@@ -49,6 +49,9 @@ public class NamesOfParkingPlacesThird : Namer
 
             if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 20)
                 return "h";
+
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 18)
+                return "j";
         }
 
         if (_placesVertical.ContainsKey(vertical) && vertical == 6)
@@ -58,6 +61,9 @@ public class NamesOfParkingPlacesThird : Namer
 
             if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 20)
                 return "i";
+
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 18)
+                return "k";
         }
 
         if (_placesVertical.ContainsKey(vertical))

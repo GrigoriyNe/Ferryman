@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -65,8 +66,17 @@ public class PlayerInputController : MonoBehaviour
 
                     //Clicked?.Invoke(hit);
                     context = new InputAction.CallbackContext();
+                    _input.Player.Click.performed -= OnClick;
+                    StartCoroutine(Cooldown());
                 }
             }
         }
+    }
+
+    private IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        _input.Player.Click.performed += OnClick;
     }
 }

@@ -33,7 +33,6 @@ public class FabricCars : MonoBehaviour
         if (_map.CountStartPlace  == 0)
         {
             NotCreatedCarCount += 1;
-            Debug.Log(NotCreatedCarCount);
 
             return;
         }

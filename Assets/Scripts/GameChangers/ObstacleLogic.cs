@@ -68,8 +68,8 @@ public class ObstacleLogic : MonoBehaviour
 
     public void RemoveObstacle(List<TileHelper> filedTile)
     {
-        _filedTileCoordX = new();
-        _filedTileCoordY = new();
+        _filedTileCoordX = new List<int>();
+        _filedTileCoordY = new List<int>();
         RememberObstacle(filedTile);
     }
 
@@ -81,12 +81,13 @@ public class ObstacleLogic : MonoBehaviour
         if (tile.cordY < _mapLogic.RoadOffVerticalValue + 2)
             return;
 
+        _input.Clicked -= OnClicked;
+
         _filedTileCoordX.Remove(tile.cordX);
         _filedTileCoordY.Remove(tile.cordY);
 
-        _map.RemoveObstacle(tile);
+        _mapLogic.DeleteObstacle(tile);
         _game.CreateNewCar();
-        _input.Clicked -= OnClicked;
     }
 
     private void SetCreatedEarlier()

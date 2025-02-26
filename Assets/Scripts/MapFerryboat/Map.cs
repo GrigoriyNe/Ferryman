@@ -7,6 +7,5 @@ public abstract class Map : MonoBehaviour
     public abstract void Deactivate();
     public abstract int GetHeight();
     public abstract void SetVaribleObstaclePlaces();
-    public abstract void RemoveObstacle(TileHelper _);
 
 }

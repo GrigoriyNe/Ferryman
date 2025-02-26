@@ -157,6 +157,7 @@ public class MapLogic : MonoBehaviour
     public TileHelper GetFinihCarPosition()
     {
         TileHelper tile = _carFinishPoints[UnityEngine.Random.Range(0, _carFinishPoints.Count)];
+
         _carFinishPoints.Remove(tile);
 
         return tile;
@@ -171,7 +172,7 @@ public class MapLogic : MonoBehaviour
 
     public TileHelper GetSpesialFinihCarPosition()
     {
-        TileHelper tile = _carSpesialFinishPoints[UnityEngine.Random.Range(0, _carFinishPoints.Count)];
+        TileHelper tile = _carSpesialFinishPoints[UnityEngine.Random.Range(0, _carSpesialFinishPoints.Count)];
         _carSpesialFinishPoints.Remove(tile);
 
         return tile;
@@ -392,7 +393,7 @@ public class MapLogic : MonoBehaviour
             _carFinishPoints.Remove(tile);
             _filledCellObstacle.Add(tile);
         }
-        else if (_carSpesialFinishPoints.Contains(tile))
+        if (_carSpesialFinishPoints.Contains(tile))
         {
             _carSpesialFinishPoints.Remove(tile);
             _filledSpesialCellObstacle.Add(tile);
@@ -403,8 +404,9 @@ public class MapLogic : MonoBehaviour
 
         AddObstacle(tile.cordX, tile.cordY);
 
-        _obstaleLogic.RememberObstacle(_filledCellObstacle);
-        _obstaleLogic.RememberObstacle(_filledSpesialCellObstacle);
+        List<TileHelper> allObstales = _filledCellObstacle.Concat(_filledSpesialCellObstacle).ToList();
+
+        _obstaleLogic.RememberObstacle(allObstales);
     }
 
     public void DeleteObstacle(TileHelper tile)
@@ -417,14 +419,14 @@ public class MapLogic : MonoBehaviour
             _filledCellObstacle.Remove(tile);
         }
 
-        else if (_filledSpesialCellObstacle.Contains(tile))
+        if (_filledSpesialCellObstacle.Contains(tile))
         {
             AddSpesialCarFinishPoint(tile.cordX, tile.cordY);
             _filledSpesialCellObstacle.Remove(tile);
         }
 
-        List <TileHelper> allobstale  = _filledCellObstacle.Concat(_filledSpesialCellObstacle).ToList();
-        _obstaleLogic.RemoveObstacle(allobstale);
+        List <TileHelper> allObstales  = _filledCellObstacle.Concat(_filledSpesialCellObstacle).ToList();
+        _obstaleLogic.RemoveObstacle(allObstales);
         
         tile.sprite.sprite = _obstacleView.GetSpriteOpen();
     }

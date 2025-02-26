@@ -13,7 +13,7 @@ public class Game : MonoBehaviour
 
     [SerializeField] private ShipAdder _shipAdder;
     private Ferryboat _ferryboat;
-
+    private Coroutine _creatigCars = null;
 
     private void Start()
     {
@@ -50,7 +50,8 @@ public class Game : MonoBehaviour
 
     public void CreateNewCar()
     {
-        StartCoroutine(CreateCars());
+        if (_creatigCars == null)
+            StartCoroutine(CreatingCars());
     }
 
     private void MakeOffer()
@@ -78,7 +79,7 @@ public class Game : MonoBehaviour
         _obstacle.CreateObstacle();
 
         _counter.Activate();
-        StartCoroutine(CreateCars());
+        _creatigCars = StartCoroutine(CreatingCars());
     }
 
     private IEnumerator CloseCargo()
@@ -91,7 +92,7 @@ public class Game : MonoBehaviour
         StartScene();
     }
 
-    private IEnumerator CreateCars()
+    private IEnumerator CreatingCars()
     {
         yield return new WaitForSeconds(0.3f);
 
@@ -123,5 +124,7 @@ public class Game : MonoBehaviour
             yield return new WaitForSeconds(2f);
             _fabricCars.CreateSpesial();
         }
+
+        _creatigCars = null;
     }
 }

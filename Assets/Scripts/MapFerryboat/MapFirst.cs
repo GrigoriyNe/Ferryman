@@ -37,11 +37,6 @@ public class MapFirst : Map
         _logic.SetVaribleObstaclePlaces(Height - 1, 0, 4);
     }
 
-    public override void RemoveObstacle(TileHelper tile)
-    {
-        _logic.DeleteObstacle(tile);
-    }
-
     private void CreateItemOnMap()
     {
         for (int i = 4; i < 7; i++)
