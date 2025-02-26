@@ -4,15 +4,19 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     [SerializeField] private ShopWindow _shopWindow;
+    [SerializeField] private ObstacleLogic _obstacle;
+    [SerializeField] private Game _game;
+
     [SerializeField] private PlayWindow _playWindow;
     [SerializeField] private OfferWindow _offer;
-    [SerializeField] private ObstacleLogic _obstacle;
+    [SerializeField] private OfferWindow _offerSpesial;
+    [SerializeField] private OfferWindow _offerMoreTank;
 
     private void OnEnable()
     {
         _shopWindow.ButtonClicked += OnExitClicked;
         _shopWindow.OnItem1Click += OnDeleteBoxs;
-        _shopWindow.OnItem2Click += OnItem2Click;
+        _shopWindow.OnItem2Click += OnDeleteSpesialBoxs;
         _shopWindow.OnItem3Click += OnItem3Click;
     }
 
@@ -20,21 +24,40 @@ public class Shop : MonoBehaviour
     {
         _shopWindow.ButtonClicked -= OnExitClicked;
         _shopWindow.OnItem1Click -= OnDeleteBoxs;
-        _shopWindow.OnItem2Click -= OnItem2Click;
+        _shopWindow.OnItem2Click -= OnDeleteSpesialBoxs;
         _shopWindow.OnItem3Click -= OnItem3Click;
         _offer.ButtonClicked -= OnExitOffer;
+        _offerSpesial.ButtonClicked -= OnExitOffer;
     }
 
     public void SellRemoveObstacle()
     {
         _shopWindow.ShowSellInfo();
-        _obstacle.Activate();
+        _obstacle.ActivateClicked();
+    }
+
+    public void SellSpesialRemoveObstacle()
+    {
+        _shopWindow.ShowSellInfo();
+        _obstacle.ActivateSpesialClicked();
+    }
+
+    public void SellMoreTank()
+    {
+        _game.GetTank().SetMoreTank();
+        _shopWindow.Close();
     }
 
     private void OnDeleteBoxs()
     {
         _offer.gameObject.SetActive(true);
         _offer.ButtonClicked += OnExitOffer;
+    }
+
+    private void OnDeleteSpesialBoxs()
+    {
+        _offerSpesial.gameObject.SetActive(true);
+        _offerSpesial.ButtonClicked += OnExitOffer;
     }
 
     private void OnItem2Click()
@@ -44,7 +67,8 @@ public class Shop : MonoBehaviour
 
     private void OnItem3Click()
     {
-        throw new NotImplementedException();
+        _offerMoreTank.gameObject.SetActive(true);
+        _offerMoreTank.ButtonClicked += OnExitOffer;
     }
 
     private void OnExitClicked()

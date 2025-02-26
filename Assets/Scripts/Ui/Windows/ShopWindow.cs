@@ -6,30 +6,27 @@ using UnityEngine.UI;
 
 public class ShopWindow : Window
 {
-    [SerializeField] private Button _item;
-    [SerializeField] private Button _item2;
-    [SerializeField] private Button _item3;
-    [SerializeField] private CanvasGroup _canvasGroupOffer;
+    [SerializeField] private Button _deleteOstacleButton;
+    [SerializeField] private Button _deleteSpesialOstacleButton;
+    [SerializeField] private Button _addedMaxFuletank;
     [SerializeField] private Image _sellInfo;
-
 
     public event Action OnItem1Click;
     public event Action OnItem2Click;
     public event Action OnItem3Click;
 
-    //private void Start()
-    //{
-    //    this.gameObject.SetActive(false);
-    //}
-
     public override void OnEnabled()
     {
-        _item.onClick.AddListener(OnButtonItem1Click);
+        _deleteOstacleButton.onClick.AddListener(OnButtonItem1Click);
+        _deleteSpesialOstacleButton.onClick.AddListener(OnButtonItem2Click);
+        _addedMaxFuletank.onClick.AddListener(OnButtonItem3Click);
     }
 
     public override void OnDisabled()
     {
-        _item.onClick.RemoveListener(OnButtonItem1Click);
+        _deleteOstacleButton.onClick.RemoveListener(OnButtonItem1Click);
+        _deleteSpesialOstacleButton.onClick.RemoveListener(OnButtonItem2Click);
+        _addedMaxFuletank.onClick.RemoveListener(OnButtonItem3Click);
     }
 
     public void OnButtonItem1Click()
@@ -61,7 +58,5 @@ public class ShopWindow : Window
         Close();
     }
 
-    //_canvasGroupOffer.SetActive(true);
-    //_canvasGroupOffer.Open();
 
 }

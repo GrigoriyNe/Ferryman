@@ -47,6 +47,11 @@ public class Ferryboat : MonoBehaviour
         return _places.Get();
     }
 
+    public Fueltank GetFueltank()
+    {
+        return _fueltank;
+    }
+
     private void TryRefill()
     {
         if (_fueltank.GetEnoughValue() == 0)

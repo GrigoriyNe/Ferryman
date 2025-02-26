@@ -2,12 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OfferWindow : Window
+public abstract class OfferWindow : Window
 {
     [SerializeField] private Button _gold;
     [SerializeField] private Button _revard;
     [SerializeField] private Game _game;
-    [SerializeField] private Shop _shop;
+    [SerializeField] protected Shop Shop;
     
     public override void OnEnabled()
     {
@@ -17,27 +17,18 @@ public class OfferWindow : Window
     public override void OnDisabled()
     {
         _gold.onClick.RemoveListener(OnButtonGoldClick);
-        _revard.onClick.AddListener(OnButtonRevard);
+        _revard.onClick.RemoveListener(OnButtonRevard);
     }
 
-    private void OnButtonRevard()
+    public void OnButtonRevard()
     {
         throw new NotImplementedException();
     }
 
-    private void OnButtonGoldClick()
-    {
-        if (TryPay(20))
-        {
-            _shop.SellRemoveObstacle();
-        }
+    public abstract void OnButtonGoldClick();
 
-        Close();
-    }
-
-    private bool TryPay(int value)
+    public bool TryPay(int value)
     {
         return _game.TryPay(value);
     }
-
 }

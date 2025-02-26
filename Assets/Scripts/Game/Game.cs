@@ -10,14 +10,16 @@ public class Game : MonoBehaviour
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private ObstacleLogic _obstacle;
-
     [SerializeField] private ShipAdder _shipAdder;
+
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
 
+    public Ferryboat Ferryboat => _ferryboat;
+
     private void Start()
     {
-        _ferryboat = _shipAdder.GetFerryboat(2);
+        _ferryboat = _shipAdder.GetFerryboat(0);
         StartScene();
     }
 
@@ -52,6 +54,11 @@ public class Game : MonoBehaviour
     {
         if (_creatigCars == null)
             StartCoroutine(CreatingCars());
+    }
+
+    public Fueltank GetTank()
+    {
+        return _ferryboat.GetFueltank();
     }
 
     private void MakeOffer()
@@ -94,7 +101,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator CreatingCars()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
 
         int count = _mapLogic.CountFinishPlace;
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
@@ -127,4 +134,6 @@ public class Game : MonoBehaviour
 
         _creatigCars = null;
     }
+
+   
 }

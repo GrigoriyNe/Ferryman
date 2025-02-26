@@ -5,13 +5,15 @@ public class Fueltank : MonoBehaviour
 {
     [SerializeField] private int _maxValue = 100;
     [SerializeField] private int _fuelСonsumption = 20;
-    
+    [SerializeField] private int _fuelAddForSaleSizedTank = 30;
 
     public int FuelValue { get; private set; }
-    public int Max => _maxValue;
+
+    public Action<int> ChangedMax;
 
     public Action<int> Changed;
 
+    public int Max => _maxValue;
 
     private void Start()
     {
@@ -40,5 +42,11 @@ public class Fueltank : MonoBehaviour
     {
         FuelValue -= _fuelСonsumption;
         Changed(FuelValue);
+    }
+
+    public void SetMoreTank()
+    {
+        _maxValue += _fuelAddForSaleSizedTank;
+        ChangedMax(_fuelAddForSaleSizedTank);
     }
 }

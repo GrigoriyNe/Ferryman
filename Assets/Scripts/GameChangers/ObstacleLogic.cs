@@ -16,15 +16,22 @@ public class ObstacleLogic : MonoBehaviour
     private List<TileHelper> _startBlockTile = new();
     private List<TileHelper> _startSpesialBlockTile = new();
 
-    public void Activate()
+    private bool _isSpesialSelected = false;
+
+    public void ActivateClicked()
     {
         _input.Clicked += OnClicked;
+    }
+
+    public void ActivateSpesialClicked()
+    {
+        _input.Clicked += OnClicked;
+        _isSpesialSelected = true;
     }
 
     public void SetBlockedStarPlace(TileHelper tile)
     {
         _startBlockTile.Add(tile);
-
     }
 
     public void SetSpesialBlockedStarPlace(TileHelper tile)
@@ -81,6 +88,21 @@ public class ObstacleLogic : MonoBehaviour
         if (tile.cordY < _mapLogic.RoadOffVerticalValue + 2)
             return;
 
+        if (_isSpesialSelected)
+        {
+            if (_startSpesialBlockTile.Contains(tile) == false)
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (_startSpesialBlockTile.Contains(tile))
+            {
+                return;
+            }
+        }
+
         _input.Clicked -= OnClicked;
 
         _filedTileCoordX.Remove(tile.cordX);
@@ -88,6 +110,7 @@ public class ObstacleLogic : MonoBehaviour
 
         _mapLogic.DeleteObstacle(tile);
         _game.CreateNewCar();
+        _isSpesialSelected = false;
     }
 
     private void SetCreatedEarlier()

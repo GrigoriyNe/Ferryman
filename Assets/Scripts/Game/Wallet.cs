@@ -8,7 +8,7 @@ public class Wallet : MonoBehaviour
 
     private void Start()
     {
-        Money = 100;
+        Money = 200;
         Changed?.Invoke(Money);
     }
 

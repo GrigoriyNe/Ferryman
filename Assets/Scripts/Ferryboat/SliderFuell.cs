@@ -15,10 +15,22 @@ public class SliderFuell : MonoBehaviour
     private void OnEnable()
     {
         _tank.Changed += ChangeSlider;
+        _tank.ChangedMax += ChangeMaxSlider;
+    }
+
+    private void OnDisable()
+    {
+        _tank.Changed -= ChangeSlider;
+        _tank.ChangedMax -= ChangeMaxSlider;
     }
 
     private void ChangeSlider(int value)
     {
         _slider.value = value;
+    }
+
+    private void ChangeMaxSlider(int value)
+    {
+        _slider.maxValue += value;
     }
 }
