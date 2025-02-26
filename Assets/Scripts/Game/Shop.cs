@@ -11,13 +11,15 @@ public class Shop : MonoBehaviour
     [SerializeField] private OfferWindow _offer;
     [SerializeField] private OfferWindow _offerSpesial;
     [SerializeField] private OfferWindow _offerMoreTank;
+    [SerializeField] private OfferWindow _offerSmalerVarible;
 
     private void OnEnable()
     {
         _shopWindow.ButtonClicked += OnExitClicked;
         _shopWindow.OnItem1Click += OnDeleteBoxs;
         _shopWindow.OnItem2Click += OnDeleteSpesialBoxs;
-        _shopWindow.OnItem3Click += OnItem3Click;
+        _shopWindow.OnItem3Click += OnBiggerTank;
+        _shopWindow.OnItem4Click += OnSmallerVarible;
     }
 
     private void OnDisable()
@@ -25,7 +27,8 @@ public class Shop : MonoBehaviour
         _shopWindow.ButtonClicked -= OnExitClicked;
         _shopWindow.OnItem1Click -= OnDeleteBoxs;
         _shopWindow.OnItem2Click -= OnDeleteSpesialBoxs;
-        _shopWindow.OnItem3Click -= OnItem3Click;
+        _shopWindow.OnItem3Click -= OnBiggerTank;
+        _shopWindow.OnItem4Click -= OnSmallerVarible;
         _offer.ButtonClicked -= OnExitOffer;
         _offerSpesial.ButtonClicked -= OnExitOffer;
     }
@@ -48,6 +51,12 @@ public class Shop : MonoBehaviour
         _shopWindow.Close();
     }
 
+    public void SellSmalerVarible()
+    {
+        _obstacle.SmalerVaribleCreating();
+        _shopWindow.Close();
+    }
+
     private void OnDeleteBoxs()
     {
         _offer.gameObject.SetActive(true);
@@ -60,12 +69,14 @@ public class Shop : MonoBehaviour
         _offerSpesial.ButtonClicked += OnExitOffer;
     }
 
-    private void OnItem2Click()
+    private void OnSmallerVarible()
     {
-        throw new NotImplementedException();
+        _offerSmalerVarible.gameObject.SetActive(true);
+        _offerSmalerVarible.ButtonClicked += OnExitOffer;
+
     }
 
-    private void OnItem3Click()
+    private void OnBiggerTank()
     {
         _offerMoreTank.gameObject.SetActive(true);
         _offerMoreTank.ButtonClicked += OnExitOffer;

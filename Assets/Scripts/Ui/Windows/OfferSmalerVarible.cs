@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class OfferMoreTank : OfferWindow
+public class OfferSmalerVarible : OfferWindow
 {
     [SerializeField] private int _goldPrice;
 
@@ -8,7 +8,7 @@ public class OfferMoreTank : OfferWindow
     {
         if (TryPay(_goldPrice))
         {
-            Shop.SellMoreTank();
+            Shop.SellSmalerVarible();
         }
 
         Close();

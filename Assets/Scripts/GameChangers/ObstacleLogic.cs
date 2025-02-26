@@ -17,6 +17,7 @@ public class ObstacleLogic : MonoBehaviour
     private List<TileHelper> _startSpesialBlockTile = new();
 
     private bool _isSpesialSelected = false;
+    private int _maxRangeForRandomCreatigVarible = 20;
 
     public void ActivateClicked()
     {
@@ -37,6 +38,12 @@ public class ObstacleLogic : MonoBehaviour
     public void SetSpesialBlockedStarPlace(TileHelper tile)
     {
         _startSpesialBlockTile.Add(tile);
+    }
+
+    public void SmalerVaribleCreating()
+    {
+        if (_maxRangeForRandomCreatigVarible + 1 < 25)
+            _maxRangeForRandomCreatigVarible += 1;
     }
 
     public void CreateObstacle()
@@ -60,7 +67,7 @@ public class ObstacleLogic : MonoBehaviour
         if (_filedTileCoordX.Count > 0)
             SetCreatedEarlier();
 
-        if (UnityEngine.Random.Range(0, 20) % 5 == 0)
+        if (UnityEngine.Random.Range(0, _maxRangeForRandomCreatigVarible) % 5 == 0)
             _mapLogic.CreateObstacle();
     }
 

@@ -9,17 +9,20 @@ public class ShopWindow : Window
     [SerializeField] private Button _deleteOstacleButton;
     [SerializeField] private Button _deleteSpesialOstacleButton;
     [SerializeField] private Button _addedMaxFuletank;
+    [SerializeField] private Button _smalerVarible;
     [SerializeField] private Image _sellInfo;
 
     public event Action OnItem1Click;
     public event Action OnItem2Click;
     public event Action OnItem3Click;
+    public event Action OnItem4Click;
 
     public override void OnEnabled()
     {
         _deleteOstacleButton.onClick.AddListener(OnButtonItem1Click);
         _deleteSpesialOstacleButton.onClick.AddListener(OnButtonItem2Click);
         _addedMaxFuletank.onClick.AddListener(OnButtonItem3Click);
+        _smalerVarible.onClick.AddListener(OnButtonItem4Click);
     }
 
     public override void OnDisabled()
@@ -27,6 +30,7 @@ public class ShopWindow : Window
         _deleteOstacleButton.onClick.RemoveListener(OnButtonItem1Click);
         _deleteSpesialOstacleButton.onClick.RemoveListener(OnButtonItem2Click);
         _addedMaxFuletank.onClick.RemoveListener(OnButtonItem3Click);
+        _smalerVarible.onClick.RemoveListener(OnButtonItem4Click);
     }
 
     public void OnButtonItem1Click()
@@ -44,6 +48,11 @@ public class ShopWindow : Window
         OnItem3Click?.Invoke();
     }
 
+    public void OnButtonItem4Click()
+    {
+        OnItem4Click?.Invoke();
+    }
+
     public void ShowSellInfo()
     {
         _sellInfo.gameObject.SetActive(true);
@@ -57,6 +66,4 @@ public class ShopWindow : Window
         _sellInfo.gameObject.SetActive(false);
         Close();
     }
-
-
 }
