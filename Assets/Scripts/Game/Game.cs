@@ -1,25 +1,24 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Game : MonoBehaviour
 {
     [SerializeField] private FabricCars _fabricCars;
-    [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private ObstacleLogic _obstacle;
     [SerializeField] private ShipAdder _shipAdder;
+    [SerializeField] private MapLogic _mapLogic;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
 
-    public Ferryboat Ferryboat => _ferryboat;
-
     private void Start()
     {
-        _ferryboat = _shipAdder.GetFerryboat(0);
+        SetStartFerryboat();
         StartScene();
     }
 
@@ -44,10 +43,14 @@ public class Game : MonoBehaviour
 
     public void RoundOver()
     {
-        if (_ferryboat.CheckFuel())
-            EndScene();
+        if (_ferryboat.IsFuelEnough())
+        {
+            StartCoroutine(ChangeRound());
+        }
         else
+        {
             MakeOffer();
+        }
     }
 
     public void CreateNewCar()
@@ -66,11 +69,35 @@ public class Game : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    private IEnumerator ChangeRound()
+    {
+        EndScene();
+        yield return new WaitForSeconds(3.8f);
+        StartScene();
+    }
+
+    public void SetNextFerryboat()
+    {
+        if (_shipAdder.IsAmout())
+        {
+            _creatigCars = null;
+            EndScene();
+            _obstacle.Clean();
+            _mapLogic.Clean();
+            _ferryboat = _shipAdder.GetNextFerryboat();
+            StartScene();
+        }
+    }
+
+    private void SetStartFerryboat()
+    {
+        _ferryboat = _shipAdder.GetFerryboat();
+    }
+
     private void StartScene()
     {
         _bridge.Open();
         _ferryboat.Activate();
-
         StartCoroutine(OpenCargo());
     }
 
@@ -96,7 +123,6 @@ public class Game : MonoBehaviour
         _fabricCars.DeactivateCars();
 
         yield return new WaitForSeconds(4f);
-        StartScene();
     }
 
     private IEnumerator CreatingCars()
@@ -134,6 +160,4 @@ public class Game : MonoBehaviour
 
         _creatigCars = null;
     }
-
-   
 }

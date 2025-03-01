@@ -22,14 +22,14 @@ public class NamesOfParkingPlacesSecond : Namer
         _placesVertical.Add(1, "B");
         _placesVertical.Add(2, "C");
         _placesVertical.Add(3, "D");
-        _placesVertical.Add(4, "e");
-        _placesVertical.Add(5, "e");
+        _placesVertical.Add(4, "E");
+        _placesVertical.Add(5, "f");
 
         int height = _map.GetHeight();
 
-        for (int i = height - 5; i < height;)
+        for (int i = height - 6; i < height;)
         {
-            for (int j = 1; j <= (height - 6);)
+            for (int j = 1; j <= (height - 7);)
             {
                 _placesHorizontal.Add(i, j);
                 i++;

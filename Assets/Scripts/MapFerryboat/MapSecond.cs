@@ -10,8 +10,8 @@ public class MapSecond : Map
 
     public override void Activate()
     {
-        gameObject.SetActive(true);
         _logic.Init(Width, Height);
+        gameObject.SetActive(true);
         CreateItemOnMap();
         SetVaribleObstaclePlaces();
     }
@@ -49,10 +49,10 @@ public class MapSecond : Map
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        _logic.AddWall(0, 11, 2);
-        _logic.AddWall(1, 11, 2);
-        _logic.AddWall(4, 12, 0);
-        _logic.AddWall(5, 12, 0);
+        _logic.AddWall(0, 10, 2);
+        _logic.AddWall(1, 10, 2);
+        _logic.AddWall(4, 10, 0);
+        _logic.AddWall(5, 10, 0);
 
         for (int i = 0; i < 4; i++)
             _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(i, Height - 1));
@@ -61,7 +61,7 @@ public class MapSecond : Map
         _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 14));
 
         for (int i = 0; i < 4; i++)
-            for (int j = 12; j < Height; j++)
+            for (int j = 11; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
         for (int i = 1; i < 4; i++)

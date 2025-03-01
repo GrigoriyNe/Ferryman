@@ -4,7 +4,7 @@ public class TileHelper : MonoBehaviour
 {
     public int cordX;
     public int cordY;
-    public SpriteRenderer sprite;
+    public SpriteRenderer spriteRenderer;
 
     public GameObject[] walls;
     public bool[] wallsBool;

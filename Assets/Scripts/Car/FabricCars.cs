@@ -30,7 +30,7 @@ public class FabricCars : MonoBehaviour
 
     public void Create()
     {
-        if (_map.CountStartPlace  == 0)
+        if (_map.CountFinishPlace  == 0)
         {
             NotCreatedCarCount += 1;
 

@@ -13,7 +13,7 @@ public class PlayerInputController : MonoBehaviour
 
     private Vector2 _tapPoint;
 
-    public event Action<TileHelper> Clicked;
+    public event Action<int, int> Clicked;
 
     private void OnEnable()
     {
@@ -61,7 +61,7 @@ public class PlayerInputController : MonoBehaviour
 
                     if (hit.collider.TryGetComponent(out TileHelper tile))
                     {
-                        Clicked?.Invoke(tile);
+                        Clicked?.Invoke(tile.cordX, tile.cordY);
                     }
 
                     //Clicked?.Invoke(hit);

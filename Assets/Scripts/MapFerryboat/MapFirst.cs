@@ -12,10 +12,6 @@ public class MapFirst : Map
     public override void Activate()
     {
         gameObject.SetActive(true);
-
-        if (_logic.CountFinishPlace != 0)
-            return;
-
         _logic.Init(Width, Height);
         CreateItemOnMap();
         SetVaribleObstaclePlaces();

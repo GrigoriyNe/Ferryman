@@ -28,7 +28,6 @@ public class Ferryboat : MonoBehaviour
 
     public void Activate()
     {
-        _animator.PlayStart();
         StartCoroutine(Activating());
     }
 
@@ -37,7 +36,7 @@ public class Ferryboat : MonoBehaviour
         StartCoroutine(Deactivating());
     }
 
-    public bool CheckFuel()
+    public bool IsFuelEnough()
     {
         return _fueltank.CheckFull();
     }
@@ -71,6 +70,7 @@ public class Ferryboat : MonoBehaviour
 
     private IEnumerator Activating()
     {
+        _animator.PlayStart();
         yield return new WaitForSeconds(3f);
 
         _blind.Open();
@@ -89,5 +89,10 @@ public class Ferryboat : MonoBehaviour
         _animator.PlayFinish();
         _ferryboatBackground.SetActive(false);
         _numberingText.Deactivate();
+    }
+
+    public Map GetMap()
+    {
+        return _map;
     }
 }

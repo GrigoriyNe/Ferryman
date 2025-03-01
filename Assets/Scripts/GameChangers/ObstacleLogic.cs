@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ObstacleLogic : MonoBehaviour
 {
-    [SerializeField] private Map _map;
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private Game _game;
 
@@ -19,9 +18,18 @@ public class ObstacleLogic : MonoBehaviour
     private bool _isSpesialSelected = false;
     private int _maxRangeForRandomCreatigVarible = 20;
 
+    public void Clean()
+    {
+        _filedTileCoordX = new List<int>();
+        _filedTileCoordY = new List<int>();
+        _startBlockTile = new List<TileHelper>();
+        _startSpesialBlockTile = new List<TileHelper>();
+    }
+
     public void ActivateClicked()
     {
         _input.Clicked += OnClicked;
+        _isSpesialSelected = false;
     }
 
     public void ActivateSpesialClicked()
@@ -87,13 +95,15 @@ public class ObstacleLogic : MonoBehaviour
         RememberObstacle(filedTile);
     }
 
-    private void OnClicked(TileHelper tile)
+    private void OnClicked(int x, int y)
     {
-        if (_mapLogic.CheckObstacle(tile.cordX, tile.cordY) == false)
+        if (_mapLogic.CheckObstacle(x, y) == false)
             return;
 
-        if (tile.cordY < _mapLogic.RoadOffVerticalValue + 2)
+        if (y < _mapLogic.RoadOffVerticalValue + 2)
             return;
+
+        TileHelper tile = _mapLogic.GetTile(x, y);
 
         if (_isSpesialSelected)
         {
@@ -115,7 +125,7 @@ public class ObstacleLogic : MonoBehaviour
         _filedTileCoordX.Remove(tile.cordX);
         _filedTileCoordY.Remove(tile.cordY);
 
-        _mapLogic.DeleteObstacle(tile);
+        _mapLogic.DeleteObstacle(tile.cordX, tile.cordY);
         _game.CreateNewCar();
         _isSpesialSelected = false;
     }

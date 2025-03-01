@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class Point
 {
@@ -48,5 +49,13 @@ public class Point
     public void AddWalls(int walls_id)
     {
         Walls[walls_id] = true;
+    }
+
+    public void RemoveWalls()
+    {
+        for (int i = 0; i < Walls.Length; i++)
+        {
+            Walls[i] = false;
+        }
     }
 }

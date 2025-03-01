@@ -508,8 +508,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.817635, z: 1}
-  m_Center: {x: 0, y: 0.40881738, z: 0}
+  m_Size: {x: 1, y: 1.2738433, z: 1}
+  m_Center: {x: 0, y: 0.13692161, z: 0}
 --- !u!114 &4498605090834668980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cordX: 0
   cordY: 0
-  sprite: {fileID: 1411046980097162638}
+  spriteRenderer: {fileID: 1411046980097162638}
   walls:
   - {fileID: 4972921293360572230}
   - {fileID: 870654617550657080}

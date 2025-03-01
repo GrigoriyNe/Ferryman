@@ -30,10 +30,10 @@ public class CarMover : MonoBehaviour
 
     private void OnDisable()
     {
+        StopCoroutine(MovingInQuenue());
+        _moving = null;
         _startPositionTile = null;
         _finishPositionTile = null;
-        _moving = null;
-        StopCoroutine(MovingInQuenue());
     }
 
     public void MoveInQuenue()

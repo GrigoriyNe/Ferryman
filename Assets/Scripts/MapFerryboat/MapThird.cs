@@ -10,12 +10,8 @@ public class MapThird : Map
 
     public override void Activate()
     {
-        gameObject.SetActive(true);
-
-        if (_logic.CountFinishPlace != 0)
-            return;
-
         _logic.Init(Width, Height);
+        gameObject.SetActive(true);
         CreateItemOnMap();
         SetVaribleObstaclePlaces();
     }
@@ -50,10 +46,10 @@ public class MapThird : Map
                 _logic.AddVoid(i, j);
 
         _logic.AddWall(0, Height - 7, 2);
-        _logic.AddWall(4, Height - 7, 2);
-        _logic.AddWall(5, Height - 7, 2);
-        _logic.AddWall(6, Height - 7, 2);
-        _logic.AddWall(7, Height - 7, 2);
+        _logic.AddWall(4, Height - 6, 0);
+        _logic.AddWall(5, Height - 6, 0);
+        _logic.AddWall(6, Height - 6, 0);
+        _logic.AddWall(7, Height - 6, 0);
 
         
 
