@@ -70,6 +70,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""ed9126ef-ef27-49a5-91bd-04844b849172"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""d5ce63c9-b419-4101-a00e-b74d374ae588"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Screen"",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""b51004d8-a983-4246-8b7f-fe5122228afc"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Screen"",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -84,6 +117,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isOptional"": false,
                     ""isOR"": false
                 },
+                {
+                    ""devicePath"": ""<Touchscreen>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Screen"",
+            ""bindingGroup"": ""Screen"",
+            ""devices"": [
                 {
                     ""devicePath"": ""<Touchscreen>"",
                     ""isOptional"": false,
@@ -206,6 +250,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (m_MouseAndSensorSchemeIndex == -1) m_MouseAndSensorSchemeIndex = asset.FindControlSchemeIndex("MouseAndSensor");
             return asset.controlSchemes[m_MouseAndSensorSchemeIndex];
+        }
+    }
+    private int m_ScreenSchemeIndex = -1;
+    public InputControlScheme ScreenScheme
+    {
+        get
+        {
+            if (m_ScreenSchemeIndex == -1) m_ScreenSchemeIndex = asset.FindControlSchemeIndex("Screen");
+            return asset.controlSchemes[m_ScreenSchemeIndex];
         }
     }
     public interface IPlayerActions

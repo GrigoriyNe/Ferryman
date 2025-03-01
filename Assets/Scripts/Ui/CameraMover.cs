@@ -22,13 +22,13 @@ public class CameraMover : MonoBehaviour
 
     private void OnZoomClick(int value)
     {
-        float valueY = Math.Clamp((_cameraTransform.position.y + value), 3f, 10f);
+        float valueY = Math.Clamp((_cameraTransform.position.y + value), 3f, 15f);
         _cameraTransform.position = new Vector3(_cameraTransform.position.x, valueY, _cameraTransform.position.z);
     }
 
     private void OnUpClick(int value)
     {
-        float valueZ = Math.Clamp((_cameraTransform.position.z + value), 1f, 10f);
+        float valueZ = Math.Clamp((_cameraTransform.position.z + value), 2f, 10f);
         _cameraTransform.position = new Vector3(_cameraTransform.position.x, _cameraTransform.position.y, valueZ);
     }
 }
