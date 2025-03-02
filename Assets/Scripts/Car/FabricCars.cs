@@ -53,7 +53,7 @@ public class FabricCars : MonoBehaviour
 
     public void CreateSpesial()
     {
-        if (_map.CountStartSpesialPlace == 0)
+        if (_map.CountFinishSpesialPlace == 0)
         {
             NotCreatedSpesialCarCount += 1;
 
@@ -67,6 +67,12 @@ public class FabricCars : MonoBehaviour
         car.gameObject.SetActive(true);
 
         _createdSpesialCars.Add(car);
+
+        if (_map.GetSpesialFinihCarPosition() == null)
+        {
+            NotCreatedSpesialCarCount += 1;
+            return;
+        }
 
         car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
     }

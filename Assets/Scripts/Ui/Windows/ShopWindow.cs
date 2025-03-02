@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class ShopWindow : Window
     [SerializeField] private Button _improveEngine;
     [SerializeField] private Button _newFerryboat;
     [SerializeField] private Image _sellInfo;
+    [SerializeField] private TextMeshProUGUI _sellTextInfo;
 
     public event Action OnItem1Click;
     public event Action OnItem2Click;
@@ -45,6 +47,11 @@ public class ShopWindow : Window
     {
         _sellInfo.gameObject.SetActive(true);
         StartCoroutine(DeactivateImge());
+    }
+
+    public void SetText(string infoUpgradeMoreTank)
+    {
+        _sellTextInfo.text = infoUpgradeMoreTank;
     }
 
     private void OnButtonItem1Click()
@@ -85,4 +92,6 @@ public class ShopWindow : Window
         _sellInfo.gameObject.SetActive(false);
         Close();
     }
+
+    
 }

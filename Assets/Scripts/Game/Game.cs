@@ -24,7 +24,7 @@ public class Game : MonoBehaviour
 
     public bool TryPay(int coust)
     {
-        if (_wallet.IsEnough(coust))
+        if (_wallet.IsEnoughMoney(coust))
         {
             _wallet.RemoveMoney(coust);
             return true;
@@ -127,7 +127,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator CreatingCars()
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(1f);
 
         int count = _mapLogic.CountFinishPlace;
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());

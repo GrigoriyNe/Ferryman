@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class ShipAdder : MonoBehaviour
 {
     [SerializeField] private List<Ferryboat> _ferryboats = new List<Ferryboat>();
     [SerializeField] private List<GameObject> _ferryboatGroups = new List<GameObject>();
 
-    public int CountFerryboats => _ferryboats.Count;
     private int _currentFerryboat = 0;
 
     public Ferryboat GetFerryboat()

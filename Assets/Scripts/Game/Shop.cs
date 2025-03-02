@@ -15,6 +15,14 @@ public class Shop : MonoBehaviour
     [SerializeField] private OfferWindow _offerImproveEngine;
     [SerializeField] private OfferWindow _offerNewFerryboat;
 
+    [Header(nameof(ShopWindow))]
+    [SerializeField] private string _infoCleanTile;
+    [SerializeField] private string _infoUpgradeMoreTank;
+    [SerializeField] private string _infoUpgradeSmalerVarible;
+    [SerializeField] private string _infoUpgradeImproveEngine;
+    [SerializeField] private string _infoUpgradeNewFerryboat;
+
+
     private void OnEnable()
     {
         _shopWindow.ButtonClicked += OnExitClicked;
@@ -39,6 +47,7 @@ public class Shop : MonoBehaviour
 
     public void SellRemoveObstacle()
     {
+        _shopWindow.SetText(_infoCleanTile);
         _shopWindow.ShowSellInfo();
         _obstacle.ActivateClicked();
         _offer.ButtonClicked -= OnExitOffer;
@@ -46,6 +55,7 @@ public class Shop : MonoBehaviour
 
     public void SellSpesialRemoveObstacle()
     {
+        _shopWindow.SetText(_infoCleanTile);
         _shopWindow.ShowSellInfo();
         _obstacle.ActivateSpesialClicked();
         _offerSpesial.ButtonClicked -= OnExitOffer;
@@ -54,27 +64,32 @@ public class Shop : MonoBehaviour
     public void SellMoreTank()
     {
         _game.GetTank().SetMoreTank();
-        _shopWindow.Close();
+        _shopWindow.SetText(_infoUpgradeMoreTank);
+        _shopWindow.ShowSellInfo();
         _offerMoreTank.ButtonClicked -= OnExitOffer;
     }
 
     public void SellSmalerVarible()
     {
         _obstacle.SmalerVaribleCreating();
-        _shopWindow.Close();
+        _shopWindow.SetText(_infoUpgradeSmalerVarible);
+        _shopWindow.ShowSellInfo();
         _offerSmalerVarible.ButtonClicked -= OnExitOffer;
     }
 
     public void SellImproveEngine()
     {
         _game.GetTank().ImproveEngine();
-        _shopWindow.Close();
+        _shopWindow.ShowSellInfo();
+        _shopWindow.SetText(_infoUpgradeImproveEngine);
         _offerImproveEngine.ButtonClicked -= OnExitOffer;
     }
 
     public  void SellNewFerryboat()
     {
         _game.SetNextFerryboat();
+        _shopWindow.ShowSellInfo();
+        _shopWindow.SetText(_infoUpgradeNewFerryboat);
         _offerNewFerryboat.ButtonClicked -= OnExitOffer;
     }
 

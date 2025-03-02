@@ -187,6 +187,9 @@ public class MapLogic : MonoBehaviour
 
     public TileHelper GetSpesialFinihCarPosition()
     {
+        if(_carSpesialFinishPoints.Count == 0)
+            return null;
+
         TileHelper tile = _carSpesialFinishPoints[UnityEngine.Random.Range(0, _carSpesialFinishPoints.Count)];
         _carSpesialFinishPoints.Remove(tile);
 

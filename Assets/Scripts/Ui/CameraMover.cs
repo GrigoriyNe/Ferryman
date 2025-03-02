@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -10,14 +9,22 @@ public class CameraMover : MonoBehaviour
 
     private void OnEnable()
     {
-        _botton.ButtonClicked += OnUpClick;
+        _botton.ButtonVerticalClicked += OnUpClick;
         _botton.ButtonZoomClicked += OnZoomClick;
+        _botton.ButtonHorizontalClicked += OnHorizontalClick;
     }
 
     private void OnDisable()
     {
-        _botton.ButtonClicked -= OnUpClick;
+        _botton.ButtonVerticalClicked -= OnUpClick;
         _botton.ButtonZoomClicked -= OnZoomClick;
+        _botton.ButtonHorizontalClicked -= OnHorizontalClick;
+    }
+
+    private void OnHorizontalClick(int value)
+    {
+        float valueX = Math.Clamp((_cameraTransform.position.x + value), 2f, 4f);
+        _cameraTransform.position = new Vector3(valueX, _cameraTransform.position.y, _cameraTransform.position.z);
     }
 
     private void OnZoomClick(int value)
