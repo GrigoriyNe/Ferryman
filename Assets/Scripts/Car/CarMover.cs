@@ -83,8 +83,8 @@ public class CarMover : MonoBehaviour
         {
             if (CheckPosition(_startPositionTile.cordX, _startPositionTile.cordY + 1))
             {
-                TeleportTo(_startPositionTile.cordY + 1);
                 yield return new WaitForSeconds(0.1f);
+                TeleportTo(_startPositionTile.cordY + 1);
             }
             else
             {
@@ -93,7 +93,9 @@ public class CarMover : MonoBehaviour
         }
 
         _viewer.ActivateBackground();
-        _isMoving = false;
+
+        if (transform.position == _map.GetTile(_startPositionTile.cordX, _map.RoadOffVerticalValue).transform.position)
+            _isMoving = false;
     }
 
     private void TeleportTo(int coordY)

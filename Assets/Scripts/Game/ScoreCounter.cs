@@ -10,7 +10,8 @@ public class ScoreCounter : MonoBehaviour
     [SerializeField] private Game _game;
     [SerializeField] private Wallet _walet;
     [SerializeField] private ScoreSteps _step;
-    
+    [SerializeField] private RestartButtonActivator _restart;
+
     public int MaxPossibleFinishPlaces { get; private set; }
 
     public int Score { get; private set; }
@@ -20,13 +21,14 @@ public class ScoreCounter : MonoBehaviour
         gameObject.SetActive(true);
         Score = 0;
         MaxPossibleFinishPlaces = 0;
-        
+
     }
 
     public void Deactivate()
     {
         gameObject.SetActive(false);
         Score = 0;
+        _restart.Deactivate();
     }
 
     public void AddMaxScore(int value)
@@ -39,6 +41,10 @@ public class ScoreCounter : MonoBehaviour
     {
         Score += 1;
         _step.ChangeOn(1);
+
+        if (_restart.gameObject.activeSelf == false)
+            if (Score > MaxPossibleFinishPlaces / 2)
+                _restart.Activate();
 
         if (Score == MaxPossibleFinishPlaces)
         {

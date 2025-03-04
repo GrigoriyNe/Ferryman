@@ -16,6 +16,9 @@ public class Game : MonoBehaviour
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
 
+    public event Action StartSceneDone;
+    public event Action FinishSceneStart;
+    
     private void Start()
     {
         SetStartFerryboat();
@@ -38,11 +41,15 @@ public class Game : MonoBehaviour
 
     public void StepsOver()
     {
+        _creatigCars = null;
+
         RoundOver();
     }
 
     public void RoundOver()
     {
+        FinishSceneStart?.Invoke();
+
         if (_ferryboat.IsFuelEnough())
         {
             StartCoroutine(ChangeRound());
@@ -84,9 +91,16 @@ public class Game : MonoBehaviour
             EndScene();
             _obstacle.Clean();
             _mapLogic.Clean();
-            _ferryboat = _shipAdder.GetNextFerryboat();
-            StartScene();
+            StartCoroutine(ChangingFerryboat());
         }
+    }
+
+    private IEnumerator ChangingFerryboat()
+    {
+        yield return new WaitForSeconds(3f);
+        _ferryboat = _shipAdder.GetNextFerryboat();
+        _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
+        StartScene();
     }
 
     private void SetStartFerryboat()
@@ -114,6 +128,7 @@ public class Game : MonoBehaviour
 
         _counter.Activate();
         _creatigCars = StartCoroutine(CreatingCars());
+        StartSceneDone?.Invoke();
     }
 
     private IEnumerator CloseCargo()

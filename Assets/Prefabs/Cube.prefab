@@ -530,7 +530,7 @@ MonoBehaviour:
   - {fileID: 870654617550657080}
   - {fileID: 6512081866547296425}
   - {fileID: 1256544338692718297}
-  wallsBool: 01010101
+  wallsBool: 00000000
 --- !u!1 &6512081866547296425
 GameObject:
   m_ObjectHideFlags: 0

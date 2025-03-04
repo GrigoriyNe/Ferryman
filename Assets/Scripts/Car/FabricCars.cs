@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +14,9 @@ public class FabricCars : MonoBehaviour
     private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
 
     private Namer _places;
+    private Coroutine _creating;
 
-    public int NotCreatedCarCount {get; private set;}
+    public int NotCreatedCarCount { get; private set; }
     public int NotCreatedSpesialCarCount { get; private set; }
 
     private void Start()
@@ -30,7 +32,7 @@ public class FabricCars : MonoBehaviour
 
     public void Create()
     {
-        if (_map.CountFinishPlace  == 0)
+        if (_map.CountFinishPlace == 0)// || _map.GetFinihCarPosition() == null)
         {
             NotCreatedCarCount += 1;
 
@@ -53,7 +55,7 @@ public class FabricCars : MonoBehaviour
 
     public void CreateSpesial()
     {
-        if (_map.CountFinishSpesialPlace == 0)
+        if (_map.CountFinishSpesialPlace == 0 )//|| _map.GetSpesialFinihCarPosition() == null)
         {
             NotCreatedSpesialCarCount += 1;
 
@@ -67,12 +69,6 @@ public class FabricCars : MonoBehaviour
         car.gameObject.SetActive(true);
 
         _createdSpesialCars.Add(car);
-
-        if (_map.GetSpesialFinihCarPosition() == null)
-        {
-            NotCreatedSpesialCarCount += 1;
-            return;
-        }
 
         car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
     }
@@ -92,5 +88,7 @@ public class FabricCars : MonoBehaviour
 
         _createdCars = new List<Car>();
         _createdSpesialCars = new List<SpesialCar>();
+        NotCreatedSpesialCarCount = 0;
+        NotCreatedCarCount = 0;
     }
 }

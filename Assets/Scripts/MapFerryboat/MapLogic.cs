@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class MapLogic : MonoBehaviour
@@ -8,6 +9,7 @@ public class MapLogic : MonoBehaviour
     private const int MaxStep = 30;
 
     [SerializeField] private GameObject _prefabMapTile;
+    [SerializeField] private Game _game;
     [SerializeField] private ObstacleView _obstacleView;
     [SerializeField] private ObstacleLogic _obstaleLogic;
 
@@ -76,6 +78,12 @@ public class MapLogic : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
+
+        foreach (var tile in _tiles)
+        {
+            _map[tile.cordX, tile.cordY].ChangeObstacle(false);
+            tile.gameObject.SetActive(false);
+        }
     }
 
     public void Clean()
@@ -86,10 +94,11 @@ public class MapLogic : MonoBehaviour
         _filledSpesialCellObstacle.Clear();
         _emptyCellObstacle.Clear();
 
-        foreach (var item in _tiles)
+        foreach (TileHelper item in _tiles)
         {
-            _map[item.cordX, item.cordY].RemoveWalls();
-            _map[item.cordX, item.cordY].ChangeObstacle(false);
+            item.RemoveWalls();
+            item.spriteRenderer.sprite = _obstacleView.GetSpriteEmpty();
+            item.spriteRenderer.gameObject.SetActive(false);
             item.gameObject.SetActive(false);
         }
     }
@@ -187,8 +196,8 @@ public class MapLogic : MonoBehaviour
 
     public TileHelper GetSpesialFinihCarPosition()
     {
-        if(_carSpesialFinishPoints.Count == 0)
-            return null;
+        //if (_carSpesialFinishPoints.Count == 0)
+        //    return null;
 
         TileHelper tile = _carSpesialFinishPoints[UnityEngine.Random.Range(0, _carSpesialFinishPoints.Count)];
         _carSpesialFinishPoints.Remove(tile);
@@ -221,7 +230,11 @@ public class MapLogic : MonoBehaviour
         if (_map[x, y].IsObstacle)
             return;
 
+        if (_carFinishPoints.Contains(_tiles[x, y]))
+            return;
+
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
+        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
         _carFinishPoints.Add(_tiles[x, y]);
     }
 
@@ -233,6 +246,9 @@ public class MapLogic : MonoBehaviour
     public void AddSpesialCarFinishPoint(int x, int y)
     {
         if (_map[x, y].IsObstacle)
+            return;
+
+        if (_carSpesialFinishPoints.Contains(_tiles[x, y]))
             return;
 
         _tiles[x, y].gameObject.SetActive(true);
@@ -430,7 +446,8 @@ public class MapLogic : MonoBehaviour
     public void DeleteObstacle(int x, int y)
     {
         TileHelper tile = GetTile(x, y);
-        tile.gameObject.SetActive(true );
+        tile.gameObject.SetActive(true);
+        tile.spriteRenderer.gameObject.SetActive(true);
         RemoveObstacle(tile.cordX, tile.cordY);
 
         if (_filledCellObstacle.Contains(tile))
@@ -446,7 +463,7 @@ public class MapLogic : MonoBehaviour
         }
 
         List<TileHelper> allObstales = _filledCellObstacle.Concat(_filledSpesialCellObstacle).ToList();
-        _obstaleLogic.RemoveObstacle(allObstales);
+        _obstaleLogic.ResetObstacle(allObstales);
 
         tile.spriteRenderer.gameObject.SetActive(true);
         tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen();

@@ -53,7 +53,7 @@ public class Point
 
     public void RemoveWalls()
     {
-        for (int i = 0; i < Walls.Length; i++)
+        for (int i = 0; i < Walls.Length -1; i++)
         {
             Walls[i] = false;
         }

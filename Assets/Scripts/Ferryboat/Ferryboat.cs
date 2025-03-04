@@ -72,7 +72,6 @@ public class Ferryboat : MonoBehaviour
     {
         _animator.PlayStart();
         yield return new WaitForSeconds(3f);
-
         _blind.Open();
         _map.Activate();
         _ferryboatBackground.SetActive(true);

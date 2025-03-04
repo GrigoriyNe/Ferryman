@@ -40,11 +40,17 @@ public class ObstacleLogic : MonoBehaviour
 
     public void SetBlockedStarPlace(TileHelper tile)
     {
+        if (_startBlockTile.Contains(tile))
+            return;
+
         _startBlockTile.Add(tile);
     }
 
     public void SetSpesialBlockedStarPlace(TileHelper tile)
     {
+        if (_startSpesialBlockTile.Contains(tile))
+            return;
+
         _startSpesialBlockTile.Add(tile);
     }
 
@@ -88,7 +94,7 @@ public class ObstacleLogic : MonoBehaviour
         }
     }
 
-    public void RemoveObstacle(List<TileHelper> filedTile)
+    public void ResetObstacle(List<TileHelper> filedTile)
     {
         _filedTileCoordX = new List<int>();
         _filedTileCoordY = new List<int>();

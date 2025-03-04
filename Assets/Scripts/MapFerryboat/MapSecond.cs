@@ -36,23 +36,15 @@ public class MapSecond : Map
         for (int i = 0; i < 3; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
             _logic.AddVoid(4, i);
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
             _logic.AddVoid(5, i);
-
-        for (int i = 0; i <12; i++)
-            _logic.AddVoid(6, i);
 
         for (int i = 5; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
-
-        _logic.AddWall(0, 10, 2);
-        _logic.AddWall(1, 10, 2);
-        _logic.AddWall(4, 10, 0);
-        _logic.AddWall(5, 10, 0);
 
         for (int i = 0; i < 4; i++)
             _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(i, Height - 1));
@@ -75,5 +67,9 @@ public class MapSecond : Map
         _logic.AddSpesialCarStartPoint(1, 2);
         _logic.AddSpesialCarStartPoint(3, 1);
         _logic.AddSpesialCarStartPoint(2, 1);
+
+        _logic.AddWall(0, 10, 2);
+        _logic.AddWall(1, 10, 2);
+        _logic.AddWall(4, 10, 2);
     }
 }
