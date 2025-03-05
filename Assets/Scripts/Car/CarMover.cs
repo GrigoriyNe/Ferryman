@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CarAnimator))]  
 public class CarMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
@@ -9,6 +11,7 @@ public class CarMover : MonoBehaviour
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private CarTextViewer _viewer;
 
+    private CarAnimator _animator;
     private TileHelper _startPositionTile;
     private TileHelper _finishPositionTile;
 
@@ -19,8 +22,15 @@ public class CarMover : MonoBehaviour
     private Coroutine _moving;
     private bool _isSelected;
 
+    private WaitForSeconds _wait1Millisecond;
+    private float _delay1Millisecond = 0.1f;
+    private WaitForSeconds _wait15Millisecond;
+    private float _delay15Millisecond = 1.5f;
+
     private void OnEnable()
     {
+        _animator = GetComponent<CarAnimator>();
+        SetWaitings();
         _isMoving = false;
         _inParking = false;
         _isSelected = false;
@@ -34,6 +44,12 @@ public class CarMover : MonoBehaviour
         _moving = null;
         _startPositionTile = null;
         _finishPositionTile = null;
+    }
+
+    private void SetWaitings()
+    {
+        _wait1Millisecond = new WaitForSeconds(_delay1Millisecond);
+        _wait15Millisecond = new WaitForSeconds(_delay15Millisecond);
     }
 
     public void MoveInQuenue()
@@ -57,7 +73,6 @@ public class CarMover : MonoBehaviour
             return;
 
         _isSelected = true;
-
 
         if (_inParking)
         {
@@ -83,12 +98,12 @@ public class CarMover : MonoBehaviour
         {
             if (CheckPosition(_startPositionTile.cordX, _startPositionTile.cordY + 1))
             {
-                yield return new WaitForSeconds(0.1f);
                 TeleportTo(_startPositionTile.cordY + 1);
+                yield return _wait1Millisecond;
             }
             else
             {
-                yield return new WaitForSeconds(1.5f);
+                yield return _wait15Millisecond;
             }
         }
 
@@ -121,6 +136,7 @@ public class CarMover : MonoBehaviour
 
         if (hashPath == null || IsPathCorrect(hashPath) == false)
         {
+            _animator.WrongAnimationStart();
             _map.AddObstacle(start.cordX, start.cordY);
             _isMoving = false;
             return;

@@ -16,6 +16,8 @@ public class PlayWindow : Window
         _shop.onClick.AddListener(OnButtonShopClick);
         _restart.onClick.AddListener(OnButtonRestartShopClick);
         _game.StartSceneDone += Activate;
+        _game.FinishSceneStart += Deactivate;
+        
         Deactivate();
     }
 

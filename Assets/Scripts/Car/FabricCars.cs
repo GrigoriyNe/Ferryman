@@ -14,7 +14,6 @@ public class FabricCars : MonoBehaviour
     private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
 
     private Namer _places;
-    private Coroutine _creating;
 
     public int NotCreatedCarCount { get; private set; }
     public int NotCreatedSpesialCarCount { get; private set; }
@@ -32,7 +31,7 @@ public class FabricCars : MonoBehaviour
 
     public void Create()
     {
-        if (_map.CountFinishPlace == 0)// || _map.GetFinihCarPosition() == null)
+        if (_map.CountFinishPlace == 0)
         {
             NotCreatedCarCount += 1;
 
@@ -55,7 +54,7 @@ public class FabricCars : MonoBehaviour
 
     public void CreateSpesial()
     {
-        if (_map.CountFinishSpesialPlace == 0 )//|| _map.GetSpesialFinihCarPosition() == null)
+        if (_map.CountFinishSpesialPlace == 0 )
         {
             NotCreatedSpesialCarCount += 1;
 

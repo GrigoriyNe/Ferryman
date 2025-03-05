@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class MapLogic : MonoBehaviour
@@ -144,7 +143,6 @@ public class MapLogic : MonoBehaviour
 
         if (_end.Parent == null)
         {
-            Debug.Log("No way");
             return null;
         }
 
@@ -152,13 +150,11 @@ public class MapLogic : MonoBehaviour
         {
             if (path.Count > MaxStep)
             {
-                Debug.Log("No way");
                 return null;
             }
 
             if (temp == null)
             {
-                Debug.Log("No way");
                 return null;
             }
 

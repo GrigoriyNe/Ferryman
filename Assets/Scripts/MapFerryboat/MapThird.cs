@@ -55,6 +55,10 @@ public class MapThird : Map
 
         _logic.AddSpesialCarFinishPoint(6, Height - 2);
         _logic.AddSpesialCarFinishPoint(6, Height - 4);
+        _logic.AddSpesialCarFinishPoint(6, Height - 6);
+        _logic.AddSpesialCarFinishPoint(0, Height - 2);
+        _logic.AddSpesialCarFinishPoint(0, Height - 4);
+        _logic.AddSpesialCarFinishPoint(0, Height - 6);
 
         _logic.AddSpesialCarStartPoint(1, 1);
         _logic.AddSpesialCarStartPoint(3, 1);
@@ -69,7 +73,6 @@ public class MapThird : Map
         _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 6));
         _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(6, Height - 2));
         _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(6, Height - 4));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(6, Height - 6));
 
         _logic.AddWall(0, Height - 7, 2);
         _logic.AddWall(4, Height - 7, 2);

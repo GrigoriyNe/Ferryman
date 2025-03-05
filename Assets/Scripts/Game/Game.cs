@@ -16,13 +16,37 @@ public class Game : MonoBehaviour
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
 
+    private WaitForSeconds _wait4Millisecond;
+    private float _delay4Millisecond = 0.4f;
+    private WaitForSeconds _wait38Millisecond;
+    private float _delay38Millisecond = 3.8f;
+    private WaitForSeconds _wait1Second;
+    private float _delay1Second = 1f;
+    private WaitForSeconds _wait2Second;
+    private float _delay2Second = 2f;
+    private WaitForSeconds _wait3Second;
+    private float _delay3Second = 3f;
+    private WaitForSeconds _wait4Second;
+    private float _delay4Second = 4f;
+
     public event Action StartSceneDone;
     public event Action FinishSceneStart;
     
     private void Start()
     {
+        SetWaitings();
         SetStartFerryboat();
         StartScene();
+    }
+
+    private void SetWaitings()
+    {
+        _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
+        _wait4Millisecond = new WaitForSeconds(_delay4Millisecond);
+        _wait1Second = new WaitForSeconds(_delay1Second);
+        _wait2Second = new WaitForSeconds(_delay2Second);
+        _wait3Second = new WaitForSeconds(_delay3Second);
+        _wait4Second = new WaitForSeconds(_delay4Second);
     }
 
     public bool TryPay(int coust)
@@ -48,8 +72,6 @@ public class Game : MonoBehaviour
 
     public void RoundOver()
     {
-        FinishSceneStart?.Invoke();
-
         if (_ferryboat.IsFuelEnough())
         {
             StartCoroutine(ChangeRound());
@@ -79,7 +101,7 @@ public class Game : MonoBehaviour
     private IEnumerator ChangeRound()
     {
         EndScene();
-        yield return new WaitForSeconds(3.8f);
+        yield return _wait38Millisecond;
         StartScene();
     }
 
@@ -97,7 +119,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator ChangingFerryboat()
     {
-        yield return new WaitForSeconds(3f);
+        yield return _wait3Second;
         _ferryboat = _shipAdder.GetNextFerryboat();
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
         StartScene();
@@ -117,13 +139,14 @@ public class Game : MonoBehaviour
 
     private void EndScene()
     {
+        FinishSceneStart?.Invoke();
         _bridge.Close();
         StartCoroutine(CloseCargo());
     }
 
     private IEnumerator OpenCargo()
     {
-        yield return new WaitForSeconds(3f);
+        yield return _wait3Second;
         _obstacle.CreateObstacle();
 
         _counter.Activate();
@@ -137,25 +160,25 @@ public class Game : MonoBehaviour
         _counter.Deactivate();
         _fabricCars.DeactivateCars();
 
-        yield return new WaitForSeconds(4f);
+        yield return _wait4Second;
     }
 
     private IEnumerator CreatingCars()
     {
-        yield return new WaitForSeconds(1f);
+        yield return _wait1Second;
 
         int count = _mapLogic.CountFinishPlace;
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
 
         for (int i = 0; i < count; i++)
         {
-            yield return new WaitForSeconds(0.4f);
+            yield return _wait4Millisecond;
             _fabricCars.Create();
         }
 
         if (_fabricCars.NotCreatedCarCount > 0)
         {
-            yield return new WaitForSeconds(2f);
+            yield return _wait2Second;
             _fabricCars.Create();
         }
 
@@ -163,13 +186,13 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < countSpesial; i++)
         {
-            yield return new WaitForSeconds(0.4f);
+            yield return _wait4Millisecond;
             _fabricCars.CreateSpesial();
         }
 
         if (_fabricCars.NotCreatedSpesialCarCount > 0)
         {
-            yield return new WaitForSeconds(2f);
+            yield return _wait2Second;
             _fabricCars.CreateSpesial();
         }
 
