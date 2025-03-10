@@ -65,16 +65,16 @@ public class ObstacleLogic : MonoBehaviour
         if (_filedTileCoordX.Count < 1)
         {
             TileHelper boofer = _mapLogic.GetTile(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
-            _mapLogic.CreatingObstacle(boofer);
+            _mapLogic.CreatingObstacle(boofer, false);
 
             foreach (TileHelper tile in _startBlockTile)
             {
-                _mapLogic.CreatingObstacle(tile);
+                _mapLogic.CreatingObstacle(tile, false);
             }
 
             foreach (TileHelper tile in _startSpesialBlockTile)
             {
-                _mapLogic.CreatingObstacle(tile);
+                _mapLogic.CreatingObstacle(tile, true);
             }
         }
 
@@ -138,9 +138,16 @@ public class ObstacleLogic : MonoBehaviour
 
     private void SetCreatedEarlier()
     {
+        bool isSpesial = false;
+
         for (int i = 0; i < _filedTileCoordX.Count;)
         {
-            _mapLogic.CreatingObstacle(_mapLogic.GetTile(_filedTileCoordX[i], _filedTileCoordY[i]));
+            if (_startSpesialBlockTile.Contains(_mapLogic.GetTile(_filedTileCoordX[i], _filedTileCoordY[i])))
+            {
+                isSpesial = true;
+            }
+
+            _mapLogic.CreatingObstacle(_mapLogic.GetTile(_filedTileCoordX[i], _filedTileCoordY[i]), isSpesial);
             i += 1;
         }
     }

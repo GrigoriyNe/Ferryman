@@ -161,6 +161,7 @@ public class MapLogic : MonoBehaviour
             path.Add(_tiles[temp.X, temp.Y]);
             temp = temp.Parent;
         }
+        path.Add(GetTile(_start.X, _start.Y));
 
         return path;
     }
@@ -249,13 +250,14 @@ public class MapLogic : MonoBehaviour
 
         _tiles[x, y].gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
-        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
+        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial();
         _carSpesialFinishPoints.Add(_tiles[x, y]);
     }
 
     public void AddVoid(int x, int y)
     {
         _map[x, y].ChangeObstacle(true);
+        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteEmpty();
         _tiles[x, y].gameObject.SetActive(false);
     }
 
@@ -409,10 +411,10 @@ public class MapLogic : MonoBehaviour
     public void CreateObstacle()
     {
         TileHelper tile = _emptyCellObstacle[UnityEngine.Random.Range(0, _emptyCellObstacle.Count)];
-        CreatingObstacle(tile);
+        CreatingObstacle(tile, false);
     }
 
-    public void CreatingObstacle(TileHelper tile)
+    public void CreatingObstacle(TileHelper tile, bool isSpesial)
     {
         if (_map[tile.cordX, tile.cordY].IsObstacle)
             return;
@@ -432,6 +434,9 @@ public class MapLogic : MonoBehaviour
         tile.spriteRenderer.gameObject.SetActive(true);
         tile.spriteRenderer.sprite = _obstacleView.GetSpriteClose();
 
+        if (isSpesial)
+            tile.spriteRenderer.sprite = _obstacleView.GetSpriteCloseSpesial();
+
         AddObstacle(tile.cordX, tile.cordY);
 
         List<TileHelper> allObstales = _filledCellObstacle.Concat(_filledSpesialCellObstacle).ToList();
@@ -450,18 +455,17 @@ public class MapLogic : MonoBehaviour
         {
             AddCarFinishPoint(tile.cordX, tile.cordY);
             _filledCellObstacle.Remove(tile);
+            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
         }
 
         if (_filledSpesialCellObstacle.Contains(tile))
         {
             AddSpesialCarFinishPoint(tile.cordX, tile.cordY);
             _filledSpesialCellObstacle.Remove(tile);
+            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial();
         }
 
         List<TileHelper> allObstales = _filledCellObstacle.Concat(_filledSpesialCellObstacle).ToList();
         _obstaleLogic.ResetObstacle(allObstales);
-
-        tile.spriteRenderer.gameObject.SetActive(true);
-        tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
     }
 }
