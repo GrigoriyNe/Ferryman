@@ -1,41 +1,24 @@
 using System;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] private Transform _cameraTransform;
-    [SerializeField] private CameraButtonsChange _botton;
 
-    private void OnEnable()
+    public void DragMove(Vector2 direction)
     {
-        _botton.ButtonVerticalClicked += OnUpClick;
-        _botton.ButtonZoomClicked += OnZoomClick;
-        _botton.ButtonHorizontalClicked += OnHorizontalClick;
-    }
+        float time = Time.deltaTime;
+        float vertical = 0f;
+        float horizontal = 0f;
 
-    private void OnDisable()
-    {
-        _botton.ButtonVerticalClicked -= OnUpClick;
-        _botton.ButtonZoomClicked -= OnZoomClick;
-        _botton.ButtonHorizontalClicked -= OnHorizontalClick;
-    }
+        vertical += direction.y * time;
+        horizontal += direction.x * time;
+        Math.Clamp((vertical), 2f, 10f);
+        Math.Clamp((horizontal), 2f, 4f);
 
-    private void OnHorizontalClick(int value)
-    {
-        float valueX = Math.Clamp((_cameraTransform.position.x + value), 2f, 4f);
-        _cameraTransform.position = new Vector3(valueX, _cameraTransform.position.y, _cameraTransform.position.z);
-    }
-
-    private void OnZoomClick(int value)
-    {
-        float valueY = Math.Clamp((_cameraTransform.position.y + value), 3f, 15f);
-        _cameraTransform.position = new Vector3(_cameraTransform.position.x, valueY, _cameraTransform.position.z);
-    }
-
-    private void OnUpClick(int value)
-    {
-        float valueZ = Math.Clamp((_cameraTransform.position.z + value), 2f, 10f);
-        _cameraTransform.position = new Vector3(_cameraTransform.position.x, _cameraTransform.position.y, valueZ);
+        _cameraTransform.position = new Vector3(
+            Math.Clamp((_cameraTransform.position.x - horizontal), 2f, 4f),
+            _cameraTransform.position.y,
+            Math.Clamp((_cameraTransform.position.z - vertical), 2f, 10f));
     }
 }

@@ -8,11 +8,12 @@ public class PlayerInputController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _lookSpeed;
-    [SerializeField] private Camera _camera;
+    [SerializeField] private CameraMover _cameraMover;
 
     private PlayerInput _input;
 
     private Vector2 _tapPoint;
+    private Vector2 _cameraDelta;
 
     public event Action<int, int> Clicked;
 
@@ -22,19 +23,41 @@ public class PlayerInputController : MonoBehaviour
         _input.Player.Click.started += OnClick;
         _input.Player.Click.performed += OnClick;
         _input.Player.Click.canceled += OnClick;
+
+        _input.Player.CameraMover.started += OnClickMover;
+        _input.Player.CameraMover.performed += OnClickMover;
+        _input.Player.CameraMover.canceled += OnClickMover;
     }
 
     private void OnDisable()
     {
         _input.Disable();
-        _input.Player.Click.started -= OnClick;
-        _input.Player.Click.performed -= OnClick;
-        _input.Player.Click.canceled -= OnClick;
+        _input.Player.Click.started -= OnClickMover;
+        _input.Player.Click.performed -= OnClickMover;
+        _input.Player.Click.canceled -= OnClickMover;
+
+        _input.Player.CameraMover.started -= OnClickMover;
+        _input.Player.CameraMover.performed -= OnClickMover;
+        _input.Player.CameraMover.canceled -= OnClickMover;
     }
 
     private void Awake()
     {
         _input = new PlayerInput();
+    }
+
+    public void OnClickMover(InputAction.CallbackContext context)
+    {
+
+        if (context.canceled)
+        {
+            _cameraDelta = Vector2.zero;
+        }
+        else if (context.performed)
+        {
+            _cameraDelta = context.ReadValue<Vector2>();
+            _cameraMover.DragMove(_cameraDelta);
+        }
     }
 
     public void OnClick(InputAction.CallbackContext context)

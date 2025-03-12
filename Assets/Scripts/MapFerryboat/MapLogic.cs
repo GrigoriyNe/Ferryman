@@ -125,7 +125,7 @@ public class MapLogic : MonoBehaviour
     {
         int countClosed = 0;
 
-        for (int i = 0; i < RoadOffVerticalValue; i++)
+        for (int i = 0; i <= RoadOffVerticalValue; i++)
         {
             if (_map[x, i].IsObstacle)
             {
@@ -133,7 +133,7 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 2)];
+        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 1)];
     }
 
     public List<TileHelper> GetPath()
