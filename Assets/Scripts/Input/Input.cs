@@ -46,9 +46,8 @@ public class PlayerInputController : MonoBehaviour
         _input = new PlayerInput();
     }
 
-    public void OnClickMover(InputAction.CallbackContext context)
+    private void OnClickMover(InputAction.CallbackContext context)
     {
-
         if (context.canceled)
         {
             _cameraDelta = Vector2.zero;
@@ -60,7 +59,7 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
-    public void OnClick(InputAction.CallbackContext context)
+    private void OnClick(InputAction.CallbackContext context)
     {
         if (context.canceled)
         {

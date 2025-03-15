@@ -11,6 +11,7 @@ public class CarMover : MonoBehaviour
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private CarTextViewer _viewer;
     [SerializeField] private AnimationCurve _animCurve;
+    [SerializeField] private CarMoverParticles _smokeEffect;
 
     private CarAnimator _animator;
     private TileHelper _startPositionTile;
@@ -145,7 +146,6 @@ public class CarMover : MonoBehaviour
             return;
         }
 
-
         if (_inParking)
         {
             _map.AddObstacle(_startPositionTile.cordX, _startPositionTile.cordY);
@@ -155,6 +155,10 @@ public class CarMover : MonoBehaviour
         {
             _map.AddObstacle(_finishPositionTile.cordX, _finishPositionTile.cordY);
         }
+
+        ParticleSystemRenderer smokeEffect = Instantiate(_smokeEffect.Play(), transform);
+        ParticleSystemRenderer trailEffect = Instantiate(_smokeEffect.PlayTrail(), transform);
+        trailEffect.transform.rotation = transform.rotation;
 
         _moving = StartCoroutine(MoveToPath(hashPath));
         hashPath = new List<TileHelper>();
