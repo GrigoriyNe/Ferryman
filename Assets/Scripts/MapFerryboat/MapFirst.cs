@@ -45,23 +45,21 @@ public class MapFirst : Map
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        
-        _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(4, Height - 1));
-        _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(4, Height - 2));
         _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 12));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, Height - 1));
+        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, Height - 2));
 
         for (int i = 0; i < 4; i++)
             for (int j = 11; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
-
-        _logic.AddCarFinishPoint(4, Height - 1);
-        _logic.AddCarFinishPoint(4, Height - 2);
 
         for (int i = 1; i < 4; i++)
             for (int j = 0; j < 3; j++)
                 _logic.AddCarStartPoint(i, j);
 
         _logic.AddSpesialCarFinishPoint(4, 12);
+        _logic.AddSpesialCarFinishPoint(4, Height - 1);
+        _logic.AddSpesialCarFinishPoint(4, Height - 2);
         _logic.AddSpesialCarStartPoint(3, 1);
 
         _logic.AddWall(0, 10, 2);

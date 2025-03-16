@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ObstacleLogic : MonoBehaviour
@@ -9,8 +9,7 @@ public class ObstacleLogic : MonoBehaviour
 
     [SerializeField] private PlayerInputController _input;
 
-    private List<int> _filedTileCoordX = new();
-    private List<int> _filedTileCoordY = new();
+    private List<int[]> _filedTileCoord = new();
 
     private List<TileHelper> _startBlockTile = new();
     private List<TileHelper> _startSpesialBlockTile = new();
@@ -20,8 +19,7 @@ public class ObstacleLogic : MonoBehaviour
 
     public void Clean()
     {
-        _filedTileCoordX = new List<int>();
-        _filedTileCoordY = new List<int>();
+        _filedTileCoord = new List<int[]>();
         _startBlockTile = new List<TileHelper>();
         _startSpesialBlockTile = new List<TileHelper>();
     }
@@ -62,43 +60,35 @@ public class ObstacleLogic : MonoBehaviour
 
     public void CreateObstacle()
     {
-        if (_filedTileCoordX.Count < 1)
+        if (_filedTileCoord.Count > 0)
+            SetCreatedEarlier();
+
+        if (_filedTileCoord.Count < 1)
         {
-            TileHelper boofer = _mapLogic.GetTile(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
-            _mapLogic.CreatingObstacle(boofer, false);
+            //      TileHelper boofer = _mapLogic.GetTile(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
+            //      _mapLogic.CreatingObstacle(boofer);
 
             foreach (TileHelper tile in _startBlockTile)
             {
-                _mapLogic.CreatingObstacle(tile, false);
+                _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
             }
 
             foreach (TileHelper tile in _startSpesialBlockTile)
             {
-                _mapLogic.CreatingObstacle(tile, true);
+                _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
             }
         }
-
-        if (_filedTileCoordX.Count > 0)
-            SetCreatedEarlier();
-
-        if (UnityEngine.Random.Range(0, _maxRangeForRandomCreatigVarible) % 5 == 0)
-            _mapLogic.CreateObstacle();
     }
 
-    public void RememberObstacle(List<TileHelper> filedTile)
+    public void SetRandomObstacle()
     {
-        foreach (TileHelper tile in filedTile)
-        {
-            _filedTileCoordX.Add(tile.cordX);
-            _filedTileCoordY.Add(tile.cordY);
-        }
+        if (UnityEngine.Random.Range(0, _maxRangeForRandomCreatigVarible) % 3 == 0)
+            _mapLogic.CreateRandomObstacle();
     }
 
-    public void ResetObstacle(List<TileHelper> filedTile)
+    public void RememberObstacle(TileHelper filedTile)
     {
-        _filedTileCoordX = new List<int>();
-        _filedTileCoordY = new List<int>();
-        RememberObstacle(filedTile);
+        _filedTileCoord.Add(new int[] { filedTile.cordX, filedTile.cordY });
     }
 
     private void OnClicked(int x, int y)
@@ -127,9 +117,7 @@ public class ObstacleLogic : MonoBehaviour
         }
 
         _input.Clicked -= OnClicked;
-
-        _filedTileCoordX.Remove(tile.cordX);
-        _filedTileCoordY.Remove(tile.cordY);
+        _filedTileCoord.Remove(new int[] { tile.cordX, tile.cordY });
 
         _mapLogic.DeleteObstacle(tile.cordX, tile.cordY);
         _game.CreateNewCar();
@@ -138,16 +126,9 @@ public class ObstacleLogic : MonoBehaviour
 
     private void SetCreatedEarlier()
     {
-        bool isSpesial = false;
-
-        for (int i = 0; i < _filedTileCoordX.Count;)
+        for (int i = 0; i < _filedTileCoord.Count;)
         {
-            if (_startSpesialBlockTile.Contains(_mapLogic.GetTile(_filedTileCoordX[i], _filedTileCoordY[i])))
-            {
-                isSpesial = true;
-            }
-
-            _mapLogic.CreatingObstacle(_mapLogic.GetTile(_filedTileCoordX[i], _filedTileCoordY[i]), isSpesial);
+            _mapLogic.CreatingObstacle(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>());
             i += 1;
         }
     }

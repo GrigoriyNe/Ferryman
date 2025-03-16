@@ -148,6 +148,7 @@ public class Game : MonoBehaviour
     {
         yield return _wait3Second;
         _obstacle.CreateObstacle();
+        _obstacle.SetRandomObstacle();
 
         _counter.Activate();
         _creatigCars = StartCoroutine(CreatingCars());

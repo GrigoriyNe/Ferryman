@@ -11,7 +11,7 @@ public class CarMover : MonoBehaviour
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private CarTextViewer _viewer;
     [SerializeField] private AnimationCurve _animCurve;
-    [SerializeField] private CarMoverParticles _smokeEffect;
+    [SerializeField] private CarMoverEffector _effector;
 
     private CarAnimator _animator;
     private TileHelper _startPositionTile;
@@ -28,6 +28,9 @@ public class CarMover : MonoBehaviour
     private float _delay1Millisecond = 0.1f;
     private WaitForSeconds _wait15Millisecond;
     private float _delay15Millisecond = 1.5f;
+
+    private ParticleSystemRenderer _verticalTrailEffect = null;
+    private ParticleSystemRenderer _horizontalTrailEffect = null;
 
     private void OnEnable()
     {
@@ -46,6 +49,8 @@ public class CarMover : MonoBehaviour
         _moving = null;
         _startPositionTile = null;
         _finishPositionTile = null;
+        _verticalTrailEffect = null;
+        _horizontalTrailEffect = null;
     }
 
     private void SetWaitings()
@@ -114,7 +119,12 @@ public class CarMover : MonoBehaviour
         _viewer.ActivateBackground();
 
         if (transform.position == _map.GetTile(_startPositionTile.cordX, _map.RoadOffVerticalValue).transform.position)
+        {
             _isMoving = false;
+
+            if (_verticalTrailEffect == null)
+                _verticalTrailEffect = Instantiate(_effector.PlayTrailVertical(), transform);
+        }
     }
 
     private void TeleportTo(int coordY)
@@ -156,9 +166,7 @@ public class CarMover : MonoBehaviour
             _map.AddObstacle(_finishPositionTile.cordX, _finishPositionTile.cordY);
         }
 
-        ParticleSystemRenderer smokeEffect = Instantiate(_smokeEffect.Play(), transform);
-        ParticleSystemRenderer trailEffect = Instantiate(_smokeEffect.PlayTrail(), transform);
-        trailEffect.transform.rotation = transform.rotation;
+        Instantiate(_effector.PlaySmoke(), transform);
 
         _moving = StartCoroutine(MoveToPath(hashPath));
         hashPath = new List<TileHelper>();
@@ -179,11 +187,21 @@ public class CarMover : MonoBehaviour
         {
             float count = targets.Count;
 
+            if (transform.position.x - 1 == targets[i].cordX)
+            {
+                _verticalTrailEffect.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (_verticalTrailEffect.gameObject.activeSelf)
+                    _verticalTrailEffect.gameObject.SetActive(false);
+            }
+
             while (transform.position != targets[i].transform.position)
             {
                 float timeLerp = Math.Clamp(1, 0, i / count);
                 float speed = _animCurve.Evaluate(timeLerp);
-                float step = speed * 0.01f;
+                float step = speed * 0.015f;
 
                 transform.position = Vector3.MoveTowards(transform.position, targets[i].transform.position, step);
                 transform.LookAt(targets[i].transform);

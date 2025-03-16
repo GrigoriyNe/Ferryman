@@ -17,7 +17,7 @@ public class CameraMover : MonoBehaviour
         Math.Clamp((horizontal), 2f, 4f);
 
         _cameraTransform.position = new Vector3(
-            Math.Clamp((_cameraTransform.position.x - horizontal), 2f, 4f),
+            Math.Clamp((_cameraTransform.position.x - horizontal), 2f, 5f),
             _cameraTransform.position.y,
             Math.Clamp((_cameraTransform.position.z - vertical), 2f, 10f));
     }
