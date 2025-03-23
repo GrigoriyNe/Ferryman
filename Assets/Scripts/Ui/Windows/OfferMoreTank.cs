@@ -10,7 +10,5 @@ public class OfferMoreTank : OfferWindow
         {
             Shop.SellMoreTank();
         }
-
-        Close();
     }
 }

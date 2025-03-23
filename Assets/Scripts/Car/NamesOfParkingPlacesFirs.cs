@@ -21,7 +21,6 @@ public class NamesOfParkingPlacesFirs : Namer
         _placesVertical.Add(1, "B");
         _placesVertical.Add(2, "C");
         _placesVertical.Add(3, "D");
-        _placesVertical.Add(4, "E");
 
         int height = _map.GetHeight();
 
@@ -41,9 +40,22 @@ public class NamesOfParkingPlacesFirs : Namer
         string resultVertical = string.Empty;
         string resultHorizontal = string.Empty;
 
-        if (_placesVertical.ContainsKey(vertical) && vertical == 4)
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == _map.GetHeight() - 3)
+        if (vertical == 4)
+        {
+            if ( horizontal == _map.GetHeight() - 1)
+            {
                 return "e";
+            }
+            else if (horizontal == _map.GetHeight() - 2)
+            {
+                return "f";
+            }
+            else if (horizontal == _map.GetHeight() - 3)
+            {
+                return "g";
+            }
+        }
+
 
         if (_placesVertical.ContainsKey(vertical))
             resultVertical = _placesVertical[vertical].ToString();

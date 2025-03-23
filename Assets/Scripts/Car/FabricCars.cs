@@ -76,12 +76,14 @@ public class FabricCars : MonoBehaviour
     {
         foreach (Car car in _createdCars)
         {
+            car.transform.position = Vector3.zero;
             car.gameObject.SetActive(false);
             _createdEarlierCars.Enqueue(car);
         }
 
         foreach (SpesialCar car in _createdSpesialCars)
         {
+            car.transform.position = Vector3.zero;
             car.gameObject.SetActive(false);
         }
 

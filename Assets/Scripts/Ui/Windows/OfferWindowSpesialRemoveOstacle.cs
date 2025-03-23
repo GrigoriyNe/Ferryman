@@ -10,7 +10,5 @@ public class OfferWindowSpesialRemoveOstacle : OfferWindow
         {
             Shop.SellSpesialRemoveObstacle();
         }
-
-        Close();
     }
 }

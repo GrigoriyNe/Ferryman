@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -12,6 +11,7 @@ public class Game : MonoBehaviour
     [SerializeField] private ObstacleLogic _obstacle;
     [SerializeField] private ShipAdder _shipAdder;
     [SerializeField] private MapLogic _mapLogic;
+    [SerializeField] private CameraMover _cameraMover;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
@@ -30,8 +30,10 @@ public class Game : MonoBehaviour
     private float _delay4Second = 4f;
 
     public event Action StartSceneDone;
+    public event Action StartSceneStart;
     public event Action FinishSceneStart;
-    
+    public event Action FinishSceneDone;
+
     private void Start()
     {
         SetWaitings();
@@ -114,6 +116,7 @@ public class Game : MonoBehaviour
             _obstacle.Clean();
             _mapLogic.Clean();
             StartCoroutine(ChangingFerryboat());
+            _cameraMover.Zoom();
         }
     }
 
@@ -132,6 +135,7 @@ public class Game : MonoBehaviour
 
     private void StartScene()
     {
+        StartSceneStart?.Invoke();
         _bridge.Open();
         _ferryboat.Activate();
         StartCoroutine(OpenCargo());
@@ -162,6 +166,7 @@ public class Game : MonoBehaviour
         _fabricCars.DeactivateCars();
 
         yield return _wait4Second;
+        FinishSceneDone?.Invoke();
     }
 
     private IEnumerator CreatingCars()

@@ -10,7 +10,5 @@ public class OfferNewFerryboat : OfferWindow
         {
             Shop.SellNewFerryboat();
         }
-
-        Close();
     }
 }

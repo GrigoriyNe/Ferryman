@@ -10,7 +10,5 @@ public class OfferSmalerVarible : OfferWindow
         {
             Shop.SellSmalerVarible();
         }
-
-        Close();
     }
 }

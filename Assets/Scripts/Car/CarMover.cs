@@ -12,6 +12,8 @@ public class CarMover : MonoBehaviour
     [SerializeField] private CarTextViewer _viewer;
     [SerializeField] private AnimationCurve _animCurve;
     [SerializeField] private CarMoverEffector _effector;
+    [SerializeField] private List< WheelEffectViewer > _trailEffects;
+    [SerializeField] private Outline _outliner;
 
     private CarAnimator _animator;
     private TileHelper _startPositionTile;
@@ -29,11 +31,9 @@ public class CarMover : MonoBehaviour
     private WaitForSeconds _wait15Millisecond;
     private float _delay15Millisecond = 1.5f;
 
-    private ParticleSystemRenderer _verticalTrailEffect = null;
-    private ParticleSystemRenderer _horizontalTrailEffect = null;
-
     private void OnEnable()
     {
+        _outliner.OutlineWidth = 2;
         _animator = GetComponent<CarAnimator>();
         SetWaitings();
         _isMoving = false;
@@ -49,8 +49,6 @@ public class CarMover : MonoBehaviour
         _moving = null;
         _startPositionTile = null;
         _finishPositionTile = null;
-        _verticalTrailEffect = null;
-        _horizontalTrailEffect = null;
     }
 
     private void SetWaitings()
@@ -118,12 +116,15 @@ public class CarMover : MonoBehaviour
 
         _viewer.ActivateBackground();
 
+        foreach (var item in _trailEffects)
+        {
+            item.DrawLine();
+        }
+
         if (transform.position == _map.GetTile(_startPositionTile.cordX, _map.RoadOffVerticalValue).transform.position)
         {
+            _outliner.OutlineWidth = 8;
             _isMoving = false;
-
-            if (_verticalTrailEffect == null)
-                _verticalTrailEffect = Instantiate(_effector.PlayTrailVertical(), transform);
         }
     }
 
@@ -163,6 +164,7 @@ public class CarMover : MonoBehaviour
         }
         else
         {
+            _outliner.OutlineWidth = 0;
             _map.AddObstacle(_finishPositionTile.cordX, _finishPositionTile.cordY);
         }
 
@@ -187,26 +189,21 @@ public class CarMover : MonoBehaviour
         {
             float count = targets.Count;
 
-            if (transform.position.x - 1 == targets[i].cordX)
-            {
-                _verticalTrailEffect.gameObject.SetActive(true);
-            }
-            else
-            {
-                if (_verticalTrailEffect.gameObject.activeSelf)
-                    _verticalTrailEffect.gameObject.SetActive(false);
-            }
-
             while (transform.position != targets[i].transform.position)
             {
                 float timeLerp = Math.Clamp(1, 0, i / count);
                 float speed = _animCurve.Evaluate(timeLerp);
-                float step = speed * 0.015f;
+                float step = speed * Time.deltaTime;
 
                 transform.position = Vector3.MoveTowards(transform.position, targets[i].transform.position, step);
                 transform.LookAt(targets[i].transform);
 
                 yield return null;
+             
+                foreach (var item in _trailEffects)
+                {
+                    item.DrawLine();
+                }
             }
         }
 
@@ -217,7 +214,6 @@ public class CarMover : MonoBehaviour
 
         OnFinishPosition();
     }
-
 
     private void OnFinishPosition()
     {

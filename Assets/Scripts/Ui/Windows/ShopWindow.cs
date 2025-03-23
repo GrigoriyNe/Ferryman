@@ -92,6 +92,4 @@ public class ShopWindow : Window
         _sellInfo.gameObject.SetActive(false);
         Close();
     }
-
-    
 }

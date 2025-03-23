@@ -98,7 +98,7 @@ public class PlayerInputController : MonoBehaviour
 
     private IEnumerator Cooldown()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         _input.Player.Click.performed += OnClick;
     }
