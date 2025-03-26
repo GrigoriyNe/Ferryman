@@ -12,6 +12,6 @@ public class RestartButtonActivator : MonoBehaviour
 
     public void Deactivate()
     {
-        _restartButton.gameObject.SetActive(false);
+      //  _restartButton.gameObject.SetActive(false);
     }
 }

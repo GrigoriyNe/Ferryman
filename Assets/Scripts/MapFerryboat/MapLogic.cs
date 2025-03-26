@@ -10,6 +10,7 @@ public class MapLogic : MonoBehaviour
     [SerializeField] private Game _game;
     [SerializeField] private ObstacleView _obstacleView;
     [SerializeField] private ObstacleLogic _obstaleLogic;
+    [SerializeField] private RewardCounter _rewarder;
 
     private Point[,] _map;
     private TileHelper[,] _tiles;
@@ -120,6 +121,13 @@ public class MapLogic : MonoBehaviour
         return _map[x, y].IsObstacle;
     }
 
+    public void PrepareReward()
+    {
+        _rewarder.SetStartPositions(_carFinishPoints);
+        _rewarder.SetStartSpesialPositions(_carSpesialFinishPoints);
+        _rewarder.WriteReward();
+    }
+
     public TileHelper GetFreePlaceOnQenue(int x)
     {
         int countClosed = 0;
@@ -220,15 +228,17 @@ public class MapLogic : MonoBehaviour
 
     public void AddCarFinishPoint(int x, int y)
     {
-        if (_map[x, y].IsObstacle)
+        if (_carFinishPoints.Contains(_tiles[x, y]))
             return;
 
-        if (_carFinishPoints.Contains(_tiles[x, y]))
+        _carFinishPoints.Add(_tiles[x, y]);
+
+        if (_map[x, y].IsObstacle)
             return;
 
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
-        _carFinishPoints.Add(_tiles[x, y]);
+        //    _carFinishPoints.Add(_tiles[x, y]);
     }
 
     public void AddSpesialCarStartPoint(int x, int y)
@@ -238,16 +248,18 @@ public class MapLogic : MonoBehaviour
 
     public void AddSpesialCarFinishPoint(int x, int y)
     {
-        if (_map[x, y].IsObstacle)
+        if (_carSpesialFinishPoints.Contains(_tiles[x, y]))
             return;
 
-        if (_carSpesialFinishPoints.Contains(_tiles[x, y]))
+        _carSpesialFinishPoints.Add(_tiles[x, y]);
+
+        if (_map[x, y].IsObstacle)
             return;
 
         _tiles[x, y].gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial();
-        _carSpesialFinishPoints.Add(_tiles[x, y]);
+        // _carSpesialFinishPoints.Add(_tiles[x, y]);
     }
 
     public void AddVoid(int x, int y)
@@ -421,13 +433,13 @@ public class MapLogic : MonoBehaviour
 
         if (_carSpesialFinishPoints.Contains(creatingTile) == false)
         {
-            _carFinishPoints.Remove(creatingTile);
+            // _carFinishPoints.Remove(creatingTile);
             _filledCellObstacle.Add(creatingTile);
             creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteClose();
         }
         else
         {
-            _carSpesialFinishPoints.Remove(creatingTile);
+            //   _carSpesialFinishPoints.Remove(creatingTile);
             _filledSpesialCellObstacle.Add(creatingTile);
             creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteCloseSpesial();
         }
@@ -445,16 +457,18 @@ public class MapLogic : MonoBehaviour
 
         if (_filledCellObstacle.Contains(tile))
         {
-            AddCarFinishPoint(tile.cordX, tile.cordY);
+            //   AddCarFinishPoint(tile.cordX, tile.cordY);
             _filledCellObstacle.Remove(tile);
             tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
+            _rewarder.ChangeRewardCell(tile);
         }
 
         if (_filledSpesialCellObstacle.Contains(tile))
         {
-            AddSpesialCarFinishPoint(tile.cordX, tile.cordY);
+            //   AddSpesialCarFinishPoint(tile.cordX, tile.cordY);
             _filledSpesialCellObstacle.Remove(tile);
             tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial();
+            _rewarder.ChangeRewardSpesialCell(tile);
         }
     }
 }

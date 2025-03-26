@@ -14,7 +14,7 @@ public class PlayWindow : Window
     public override void OnEnabled()
     {
         _shop.onClick.AddListener(OnButtonShopClick);
-        _restart.onClick.AddListener(OnButtonRestartShopClick);
+        _restart.onClick.AddListener(OnButtonRestartClick);
         _game.StartSceneDone += Activate;
         _game.FinishSceneStart += Deactivate;
         
@@ -24,7 +24,7 @@ public class PlayWindow : Window
     public override void OnDisabled()
     {
         _shop.onClick.RemoveListener(OnButtonShopClick);
-        _restart.onClick.RemoveListener(OnButtonRestartShopClick );
+        _restart.onClick.RemoveListener(OnButtonRestartClick);
         _game.StartSceneDone -= Activate;
         _game.FinishSceneStart -= Deactivate;
     }
@@ -39,9 +39,9 @@ public class PlayWindow : Window
         WindowGroup.interactable = false;
     }
 
-    private void OnButtonRestartShopClick()
+    private void OnButtonRestartClick()
     {
-        _game.StepsOver();
+        _game.RoundOver();
     }
 
     private void OnButtonShopClick()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Game : MonoBehaviour
 {
@@ -12,12 +13,13 @@ public class Game : MonoBehaviour
     [SerializeField] private ShipAdder _shipAdder;
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private CameraMover _cameraMover;
+    [SerializeField] private RewardCounter _rewardCounter;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
 
-    private WaitForSeconds _wait4Millisecond;
-    private float _delay4Millisecond = 0.4f;
+    private WaitForSeconds _wait5Millisecond;
+    private float _delay5Millisecond = 0.5f;
     private WaitForSeconds _wait38Millisecond;
     private float _delay38Millisecond = 3.8f;
     private WaitForSeconds _wait1Second;
@@ -44,7 +46,7 @@ public class Game : MonoBehaviour
     private void SetWaitings()
     {
         _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
-        _wait4Millisecond = new WaitForSeconds(_delay4Millisecond);
+        _wait5Millisecond = new WaitForSeconds(_delay5Millisecond);
         _wait1Second = new WaitForSeconds(_delay1Second);
         _wait2Second = new WaitForSeconds(_delay2Second);
         _wait3Second = new WaitForSeconds(_delay3Second);
@@ -65,29 +67,13 @@ public class Game : MonoBehaviour
         }
     }
 
-    public void StepsOver()
-    {
-        _creatigCars = null;
-
-        RoundOver();
-    }
-
     public void RoundOver()
     {
-        if (_ferryboat.IsFuelEnough())
-        {
-            StartCoroutine(ChangeRound());
-        }
-        else
-        {
-            MakeOffer();
-        }
-    }
+        if (_creatigCars != null)
+           StopCoroutine( _creatigCars);
 
-    public void CreateNewCar()
-    {
-        if (_creatigCars == null)
-            StartCoroutine(CreatingCars());
+        _wallet.AddMoney(_rewardCounter.GetRewardValue());
+        StartCoroutine(ChangeRound());
     }
 
     public Fueltank GetTank()
@@ -156,6 +142,7 @@ public class Game : MonoBehaviour
 
         _counter.Activate();
         _creatigCars = StartCoroutine(CreatingCars());
+        _mapLogic.PrepareReward();
         StartSceneDone?.Invoke();
     }
 
@@ -178,7 +165,7 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            yield return _wait4Millisecond;
+            yield return _wait5Millisecond;
             _fabricCars.Create();
         }
 
@@ -192,7 +179,7 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < countSpesial; i++)
         {
-            yield return _wait4Millisecond;
+            yield return _wait5Millisecond;
             _fabricCars.CreateSpesial();
         }
 

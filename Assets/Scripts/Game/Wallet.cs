@@ -27,6 +27,7 @@ public class Wallet : MonoBehaviour
         Money -= value;
         ChangedMoney?.Invoke(Money);
     }
+
     public void AddDollars(int value)
     {
         Dollars += value;

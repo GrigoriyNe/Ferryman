@@ -6,6 +6,7 @@ public class ObstacleLogic : MonoBehaviour
 {
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private Game _game;
+    [SerializeField] private int _valueDividerRanomCreate = 3;
 
     [SerializeField] private PlayerInputController _input;
 
@@ -82,7 +83,7 @@ public class ObstacleLogic : MonoBehaviour
 
     public void SetRandomObstacle()
     {
-        if (UnityEngine.Random.Range(0, _maxRangeForRandomCreatigVarible) % 3 == 0)
+        if (UnityEngine.Random.Range(0, _maxRangeForRandomCreatigVarible) % _valueDividerRanomCreate == 0)
             _mapLogic.CreateRandomObstacle();
     }
 
@@ -117,10 +118,16 @@ public class ObstacleLogic : MonoBehaviour
         }
 
         _input.Clicked -= OnClicked;
-        _filedTileCoord.Remove(new int[] { tile.cordX, tile.cordY });
 
+        for (int i = 0; i < _filedTileCoord.Count; i++)
+        {
+            if (_filedTileCoord[i].GetValue(0).ConvertTo<int>() == tile.cordX)
+                if (_filedTileCoord[i].GetValue(1).ConvertTo<int>() == tile.cordY)
+                    _filedTileCoord.Remove(_filedTileCoord[i]);
+        } 
+
+        Debug.Log(_filedTileCoord.Count);
         _mapLogic.DeleteObstacle(tile.cordX, tile.cordY);
-        _game.CreateNewCar();
         _isSpesialSelected = false;
     }
 

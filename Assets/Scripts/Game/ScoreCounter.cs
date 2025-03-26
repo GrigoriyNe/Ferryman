@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class ScoreCounter : MonoBehaviour
 {
-    private const int RewardOnPanking = 10;
-    private const int RewardOnSpescialPanking = 20;
-    private const int StepMultiplayer = 3;
+    private const int MultiplicationValue = 2;
 
     [SerializeField] private MapLogic _map;
     [SerializeField] private Game _game;
-    [SerializeField] private Wallet _walet;
     [SerializeField] private ScoreSteps _step;
-    [SerializeField] private RestartButtonActivator _restart;
+    [SerializeField] private RewardCounter _rewarder;
+    // [SerializeField] private RestartButtonActivator _restart;
 
     public int MaxPossibleFinishPlaces { get; private set; }
 
@@ -20,42 +19,35 @@ public class ScoreCounter : MonoBehaviour
     {
         gameObject.SetActive(true);
         Score = 0;
-        MaxPossibleFinishPlaces = 0;
-
+        MaxPossibleFinishPlaces = (_map.CountFinishPlace + _map.CountFinishSpesialPlace) * MultiplicationValue;
+        _step.SetStartValue(MaxPossibleFinishPlaces);
     }
 
     public void Deactivate()
     {
         gameObject.SetActive(false);
         Score = 0;
-        _restart.Deactivate();
+        // _restart.Deactivate();
     }
 
-    public void AddMaxScore(int value)
+    public void AddScore(int reward)
     {
-        MaxPossibleFinishPlaces += value;
-        _step.SetStartValue(StepMultiplayer * MaxPossibleFinishPlaces);
-    }
-
-    public void AddScore()
-    {
+        _rewarder.ReckonCell(reward);
         Score += 1;
-        _step.ChangeOn(1);
 
-        if (_restart.gameObject.activeSelf == false)
-            if (Score > MaxPossibleFinishPlaces / 2)
-                _restart.Activate();
+        //if (Score > 5)
+        //    _restart.Activate();
 
         if (Score == MaxPossibleFinishPlaces)
         {
-            _walet.AddMoney(Score * RewardOnPanking + (_map.CountFinishSpesialPlace * RewardOnSpescialPanking));
             _game.RoundOver();
         }
     }
 
-    public void RemoveScore()
+    public void RemoveScore(int reward)
     {
+        _rewarder.ReckonCell(-reward);
         Score -= 1;
-        _step.ChangeOn(1);
+        _step.ChangeOnOne();
     }
 }

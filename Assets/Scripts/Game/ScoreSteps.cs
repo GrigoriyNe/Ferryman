@@ -15,12 +15,12 @@ public class ScoreSteps : MonoBehaviour
         Changed?.Invoke(value);
     }
 
-    public void ChangeOn(int value)
+    public void ChangeOnOne()
     {
-        StepsLeft -= value;
+        StepsLeft -= 1;
 
-        if (StepsLeft == 0)
-            _game.StepsOver();
+        //if (StepsLeft == 0)
+        //    _game.RoundOver();
 
         Changed?.Invoke(StepsLeft);
     }
