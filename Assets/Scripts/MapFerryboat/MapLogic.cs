@@ -140,6 +140,11 @@ public class MapLogic : MonoBehaviour
             }
         }
 
+        if(CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - 1)))
+        {
+            return _tiles[x, 0];
+        }
+
         return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 1)];
     }
 
@@ -237,7 +242,7 @@ public class MapLogic : MonoBehaviour
             return;
 
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
-        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
+        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen(_tiles[x, y].transform);
         //    _carFinishPoints.Add(_tiles[x, y]);
     }
 
@@ -258,7 +263,7 @@ public class MapLogic : MonoBehaviour
 
         _tiles[x, y].gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
-        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial();
+        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial(_tiles[x, y].transform);
         // _carSpesialFinishPoints.Add(_tiles[x, y]);
     }
 
@@ -433,15 +438,13 @@ public class MapLogic : MonoBehaviour
 
         if (_carSpesialFinishPoints.Contains(creatingTile) == false)
         {
-            // _carFinishPoints.Remove(creatingTile);
             _filledCellObstacle.Add(creatingTile);
-            creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteClose();
+            creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteClose(creatingTile.transform);
         }
         else
         {
-            //   _carSpesialFinishPoints.Remove(creatingTile);
             _filledSpesialCellObstacle.Add(creatingTile);
-            creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteCloseSpesial();
+            creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteCloseSpesial(creatingTile.transform);
         }
 
         AddObstacle(creatingTile.cordX, creatingTile.cordY);
@@ -457,17 +460,15 @@ public class MapLogic : MonoBehaviour
 
         if (_filledCellObstacle.Contains(tile))
         {
-            //   AddCarFinishPoint(tile.cordX, tile.cordY);
             _filledCellObstacle.Remove(tile);
-            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen();
+            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen(tile.transform);
             _rewarder.ChangeRewardCell(tile);
         }
 
         if (_filledSpesialCellObstacle.Contains(tile))
         {
-            //   AddSpesialCarFinishPoint(tile.cordX, tile.cordY);
             _filledSpesialCellObstacle.Remove(tile);
-            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial();
+            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial(tile.transform);
             _rewarder.ChangeRewardSpesialCell(tile);
         }
     }

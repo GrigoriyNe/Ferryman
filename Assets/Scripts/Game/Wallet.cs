@@ -4,16 +4,19 @@ using UnityEngine;
 public class Wallet : MonoBehaviour
 {
     public event Action<int> ChangedMoney;
-    public event Action<int> ChangedDollars;
+    public event Action<int> ChangedBomb;
+    public event Action BombUse;
+
     public int Money { get; private set; }
-    public int Dollars { get; private set; }
+
+    public int Bomb { get; private set; }
+
 
     private void Start()
     {
         Money = 200;
-        Dollars = 5;
+        Bomb = 2;
         ChangedMoney?.Invoke(Money);
-        ChangedDollars?.Invoke(Dollars);
     }
 
     public void AddMoney(int value)
@@ -28,25 +31,26 @@ public class Wallet : MonoBehaviour
         ChangedMoney?.Invoke(Money);
     }
 
-    public void AddDollars(int value)
-    {
-        Dollars += value;
-        ChangedDollars?.Invoke(Money);
-    }
-
-    public void RemoveDollars(int value)
-    {
-        Dollars -= value;
-        ChangedDollars?.Invoke(Dollars);
-    }
-
     public bool IsEnoughMoney(int value)
     {
         return Money - value > 0;
     }
 
-    public bool IsEnoughDillars(int value)
+    public void AddBomb(int value)
     {
-        return Dollars - value > 0;
+        Bomb += value;
+        ChangedBomb?.Invoke(Bomb);
+    }
+
+    public void RemoveBomb()
+    {
+        Bomb -= 1;
+        ChangedBomb?.Invoke(Bomb);
+        BombUse?.Invoke();
+    }
+
+    public bool IsEnoughBomb()
+    {
+        return Bomb  > 0;
     }
 }

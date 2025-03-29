@@ -43,13 +43,12 @@ public class CarMover : MonoBehaviour
         _inParking = false;
         _isSelected = false;
         _moving = null;
-    //    _counter.AddMaxScore(1);
     }
 
     private void OnDisable()
     {
         _isEmptyFinisPlace = true;
-        StopCoroutine(MovingInQuenue());
+        StopCoroutine(ChangingPositionOnQuenue());
         _moving = null;
         _startPositionTile = null;
         _finishPositionTile = null;
@@ -63,7 +62,7 @@ public class CarMover : MonoBehaviour
 
     public void MoveInQuenue()
     {
-        StartCoroutine(MovingInQuenue());
+        StartCoroutine(ChangingPositionOnQuenue());
     }
 
     public void Init(TileHelper startPositionTile, TileHelper finishPositionTile, Namer parkPlace)
@@ -79,7 +78,6 @@ public class CarMover : MonoBehaviour
             return;
 
         _isSelected = true;
-
 
         if (_inParking)
         {
@@ -97,13 +95,13 @@ public class CarMover : MonoBehaviour
                     return;
 
                 _isEmptyFinisPlace = false;
+                _animator.TurnAnimationStart();
                 TryMoving(_startPositionTile, _map.GetFreePlaceOnQenue(_startPositionTile.cordX));
                 _startPositionTile = _map.GetFreePlaceOnQenue(_startPositionTile.cordX);
                 return;
             }
 
             TryMoving(_startPositionTile, _finishPositionTile);
-            
         }
     }
 
@@ -112,7 +110,7 @@ public class CarMover : MonoBehaviour
         return !_map.CheckObstacle(x, y);
     }
 
-    private IEnumerator MovingInQuenue()
+    private IEnumerator ChangingPositionOnQuenue()
     {
         _isMoving = true;
 
@@ -182,6 +180,8 @@ public class CarMover : MonoBehaviour
             _animator.WrongAnimationStart();
             _map.AddObstacle(start.cordX, start.cordY);
             _isMoving = false;
+            _isSelected = false;
+
             return;
         }
 
@@ -263,7 +263,7 @@ public class CarMover : MonoBehaviour
             if (_isEmptyFinisPlace)
                 _map.RemoveObstacle(_finishPositionTile.cordX, _finishPositionTile.cordY);
 
-            StartCoroutine(MovingInQuenue());
+            StartCoroutine(ChangingPositionOnQuenue());
             transform.LookAt(_map.GetTile(_startPositionTile.cordX, _startPositionTile.cordY + 2).transform);
             _viewer.ActivateBackground();
         }

@@ -18,10 +18,6 @@ public class ScoreSteps : MonoBehaviour
     public void ChangeOnOne()
     {
         StepsLeft -= 1;
-
-        //if (StepsLeft == 0)
-        //    _game.RoundOver();
-
         Changed?.Invoke(StepsLeft);
     }
 }

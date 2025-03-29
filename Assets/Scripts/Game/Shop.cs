@@ -10,16 +10,12 @@ public class Shop : MonoBehaviour
     [SerializeField] private PlayWindow _playWindow;
     [SerializeField] private OfferWindow _offer;
     [SerializeField] private OfferWindow _offerSpesial;
-    [SerializeField] private OfferWindow _offerMoreTank;
     [SerializeField] private OfferWindow _offerSmalerVarible;
-    [SerializeField] private OfferWindow _offerImproveEngine;
     [SerializeField] private OfferWindow _offerNewFerryboat;
 
     [Header(nameof(ShopWindow))]
     [SerializeField] private string _infoCleanTile;
-    [SerializeField] private string _infoUpgradeMoreTank;
     [SerializeField] private string _infoUpgradeSmalerVarible;
-    [SerializeField] private string _infoUpgradeImproveEngine;
     [SerializeField] private string _infoUpgradeNewFerryboat;
 
 
@@ -28,9 +24,7 @@ public class Shop : MonoBehaviour
         _shopWindow.ButtonClicked += OnExitClicked;
         _shopWindow.OnItem1Click += OnDeleteBoxs;
         _shopWindow.OnItem2Click += OnDeleteSpesialBoxs;
-        _shopWindow.OnItem3Click += OnBiggerTank;
         _shopWindow.OnItem4Click += OnSmallerVarible;
-        _shopWindow.OnItem5Click += OnImproveEngine;
         _shopWindow.OnItem6Click += OnNewFerryboat;
     }
 
@@ -39,9 +33,7 @@ public class Shop : MonoBehaviour
         _shopWindow.ButtonClicked -= OnExitClicked;
         _shopWindow.OnItem1Click -= OnDeleteBoxs;
         _shopWindow.OnItem2Click -= OnDeleteSpesialBoxs;
-        _shopWindow.OnItem3Click -= OnBiggerTank;
         _shopWindow.OnItem4Click -= OnSmallerVarible;
-        _shopWindow.OnItem5Click -= OnImproveEngine;
         _shopWindow.OnItem5Click -= OnNewFerryboat;
     }
 
@@ -55,19 +47,9 @@ public class Shop : MonoBehaviour
 
     public void SellSpesialRemoveObstacle()
     {
-        _shopWindow.SetText(_infoCleanTile);
-        _shopWindow.ShowSellInfo();
         _obstacle.ActivateSpesialClicked();
-        _offerSpesial.ButtonClicked -= OnExitOffer;
     }
 
-    public void SellMoreTank()
-    {
-        _game.GetTank().SetMoreTank();
-        _shopWindow.SetText(_infoUpgradeMoreTank);
-        _shopWindow.ShowSellInfo();
-        _offerMoreTank.ButtonClicked -= OnExitOffer;
-    }
 
     public void SellSmalerVarible()
     {
@@ -77,13 +59,6 @@ public class Shop : MonoBehaviour
         _offerSmalerVarible.ButtonClicked -= OnExitOffer;
     }
 
-    public void SellImproveEngine()
-    {
-        _game.GetTank().ImproveEngine();
-        _shopWindow.ShowSellInfo();
-        _shopWindow.SetText(_infoUpgradeImproveEngine);
-        _offerImproveEngine.ButtonClicked -= OnExitOffer;
-    }
 
     public  void SellNewFerryboat()
     {
@@ -112,22 +87,8 @@ public class Shop : MonoBehaviour
 
     }
 
-    private void OnBiggerTank()
-    {
-        _offerMoreTank.gameObject.SetActive(true);
-        _offerMoreTank.ButtonClicked += OnExitOffer;
-    }
-
-    private void OnImproveEngine()
-    {
-
-        _offerImproveEngine.gameObject.SetActive(true);
-        _offerImproveEngine.ButtonClicked += OnExitOffer;
-    }
-
     private void OnNewFerryboat()
     {
-
         _offerNewFerryboat.gameObject.SetActive(true);
         _offerNewFerryboat.ButtonClicked += OnExitOffer;
     }
@@ -142,9 +103,7 @@ public class Shop : MonoBehaviour
     {
         _offer.Close();
         _offerSpesial.Close();
-        _offerMoreTank.Close();
         _offerSmalerVarible.Close();
-        _offerImproveEngine.Close();
         _offerNewFerryboat.Close();
     }
 }

@@ -3,12 +3,14 @@
 public class OfferWindowSpesialRemoveOstacle : OfferWindow
 {
     [SerializeField] private int _goldPrice;
+    [SerializeField] private Wallet _wallet;
 
     public override void OnButtonGoldClick()
     {
         if (TryPay(_goldPrice))
         {
-            Shop.SellSpesialRemoveObstacle();
+            _wallet.AddBomb(1);
+            Close();
         }
     }
 }

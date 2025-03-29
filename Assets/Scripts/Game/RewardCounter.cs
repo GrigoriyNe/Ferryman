@@ -105,7 +105,7 @@ public class RewardCounter : MonoBehaviour
 
     public void ChangeRewardSpesialCell(TileHelper tile)
     {
-        tile.SetRewardValue(_cellPositiveEffect[Random.Range(0, _cellPositiveEffect.Count)]);
+        tile.SetRewardValue(_cellSpesialPositiveEffect[Random.Range(0, _cellSpesialPositiveEffect.Count)]);
     }
 
     private void SetCellListEffects()

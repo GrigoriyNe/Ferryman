@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class ObstacleView : MonoBehaviour
 {
@@ -8,27 +11,85 @@ public class ObstacleView : MonoBehaviour
     [SerializeField] private ObstaclesSprites _spritesOpenParkSpesial;
     [SerializeField] private ObstaclesSprites _spritesCloseParkSpesial;
 
-    public Sprite GetSpriteClose()
+    [SerializeField] private GameObject _obstaclePrefab;
+    [SerializeField] private GameObject _obstacleSpesialPrefab;
+    [SerializeField] private GameObject _obstacleSpesialDamagemaledPrefab;
+
+    private List<GameObject> _filedObstacle = new();
+
+    private void OnDisable()
     {
-        return _spritesClosePark.GetSprite(); 
+        foreach (GameObject item in _filedObstacle)
+        {
+            item.gameObject.SetActive(false);
+        }
+
+        _filedObstacle = new();
     }
 
-    public Sprite GetSpriteOpen()
+    public Sprite GetSpriteClose(Transform target)
     {
+        SetObstale(target);
+        return _spritesClosePark.GetSprite();
+    }
+
+    public Sprite GetSpriteOpen(Transform target)
+    {
+        RemoveObstacle(target);
         return _spritesOpenPark.GetSprite();
     }
 
-    public Sprite GetSpriteOpenSpesial()
+    public Sprite GetSpriteOpenSpesial(Transform target)
     {
+        RemoveObstacle(target);
         return _spritesOpenParkSpesial.GetSprite();
     }
-    public Sprite GetSpriteCloseSpesial()
+    public Sprite GetSpriteCloseSpesial(Transform target)
     {
+        SetObstaleSpesial(target);
         return _spritesCloseParkSpesial.GetSprite();
+    }
+
+    public void GetDamgaeBox(Transform target)
+    {
+        RemoveObstacle(target);
+
+        GameObject obstacle = Instantiate(_obstacleSpesialDamagemaledPrefab, target.position, Quaternion.identity);
+
+        _filedObstacle.Add(obstacle);
+        obstacle.gameObject.SetActive(true);
     }
 
     public Sprite GetSpriteEmpty()
     {
         return _spritesEmpty.GetSprite();
+    }
+
+    private void SetObstale(Transform target)
+    {
+        GameObject obstacle = Instantiate(_obstaclePrefab, target.position, Quaternion.identity);
+        
+        _filedObstacle.Add(obstacle);
+        obstacle.gameObject.SetActive(true);
+    }
+
+    private void SetObstaleSpesial(Transform target)
+    {
+        GameObject obstacle = Instantiate(_obstacleSpesialPrefab, target.position, Quaternion.identity);
+
+        _filedObstacle.Add(obstacle);
+        obstacle.gameObject.SetActive(true);
+    }
+
+    private void RemoveObstacle(Transform target)
+    {
+        for (int i = 0; i < _filedObstacle.Count; i++)
+        {
+            if (_filedObstacle[i].transform.position == target.position)
+            {
+                _filedObstacle[i].gameObject.SetActive(false);
+                _filedObstacle.Remove(_filedObstacle[i]);
+            }
+        }
     }
 }

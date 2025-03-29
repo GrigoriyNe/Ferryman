@@ -4,6 +4,7 @@
 public class CarAnimator : MonoBehaviour
 {
     private const string Wrong = "Wrong";
+    private const string Turn = "Turn";
 
     private Animator _animator;
 
@@ -15,5 +16,10 @@ public class CarAnimator : MonoBehaviour
     public void WrongAnimationStart()
     {
         _animator.SetTrigger(Wrong);
+    }
+
+    public void TurnAnimationStart()
+    {
+        _animator.SetTrigger(Turn);
     }
 }

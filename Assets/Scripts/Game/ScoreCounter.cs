@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class ScoreCounter : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class ScoreCounter : MonoBehaviour
     [SerializeField] private Game _game;
     [SerializeField] private ScoreSteps _step;
     [SerializeField] private RewardCounter _rewarder;
-    // [SerializeField] private RestartButtonActivator _restart;
 
     public int MaxPossibleFinishPlaces { get; private set; }
 
@@ -27,16 +25,12 @@ public class ScoreCounter : MonoBehaviour
     {
         gameObject.SetActive(false);
         Score = 0;
-        // _restart.Deactivate();
     }
 
     public void AddScore(int reward)
     {
         _rewarder.ReckonCell(reward);
         Score += 1;
-
-        //if (Score > 5)
-        //    _restart.Activate();
 
         if (Score == MaxPossibleFinishPlaces)
         {

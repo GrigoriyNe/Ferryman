@@ -3,17 +3,23 @@
 public class AnimationResources : MonoBehaviour
 {
     private const string Start = "Start";
+    private const string IsPlay = "IsPlay";
 
     [SerializeField] private Animator _animatorMoney;
-    [SerializeField] private Animator _animatorDollars;
+    [SerializeField] private Animator _animatorBombUi;
 
     public void ActivateMoney()
     {
         _animatorMoney.SetTrigger(Start);
     }
 
-    public void ActivateDollars()
+    public void ActivateBombUi()
     {
-        _animatorDollars.SetTrigger(Start);
+        _animatorBombUi.SetBool(IsPlay, true);
+    }
+
+    public void DeactivateBombUi()
+    {
+        _animatorBombUi.SetBool(IsPlay, false);
     }
 }

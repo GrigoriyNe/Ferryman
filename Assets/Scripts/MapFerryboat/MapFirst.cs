@@ -46,9 +46,9 @@ public class MapFirst : Map
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 12));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, Height - 1));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, Height - 2));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, 12));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 1));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 2));
 
         for (int i = 0; i < 4; i++)
             for (int j = 11; j < Height; j++)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,20 +10,25 @@ public class ObstacleLogic : MonoBehaviour
     [SerializeField] private int _valueDividerRanomCreate = 3;
 
     [SerializeField] private PlayerInputController _input;
-
+    [SerializeField] private ObstacleView _obstacleView;
+    
     private List<int[]> _filedTileCoord = new();
 
-    private List<TileHelper> _startBlockTile = new();
-    private List<TileHelper> _startSpesialBlockTile = new();
+    private List<TileHelper> _finishBlockTile = new();
+    private List<TileHelper> _finishSpesialBlockTile = new();
+    private List<int[]> _damagebaleTile = new();
 
     private bool _isSpesialSelected = false;
     private int _maxRangeForRandomCreatigVarible = 20;
 
+    public event Action BombUsed;
+
     public void Clean()
     {
         _filedTileCoord = new List<int[]>();
-        _startBlockTile = new List<TileHelper>();
-        _startSpesialBlockTile = new List<TileHelper>();
+        _damagebaleTile = new List<int[]>();
+        _finishBlockTile = new List<TileHelper>();
+        _finishSpesialBlockTile = new List<TileHelper>();
     }
 
     public void ActivateClicked()
@@ -37,20 +43,20 @@ public class ObstacleLogic : MonoBehaviour
         _isSpesialSelected = true;
     }
 
-    public void SetBlockedStarPlace(TileHelper tile)
+    public void SetBlockedFinishPlace(TileHelper tile)
     {
-        if (_startBlockTile.Contains(tile))
+        if (_finishBlockTile.Contains(tile))
             return;
 
-        _startBlockTile.Add(tile);
+        _finishBlockTile.Add(tile);
     }
 
-    public void SetSpesialBlockedStarPlace(TileHelper tile)
+    public void SetSpesialFinishPlace(TileHelper tile)
     {
-        if (_startSpesialBlockTile.Contains(tile))
+        if (_finishSpesialBlockTile.Contains(tile))
             return;
 
-        _startSpesialBlockTile.Add(tile);
+        _finishSpesialBlockTile.Add(tile);
     }
 
     public void SmalerVaribleCreating()
@@ -66,15 +72,14 @@ public class ObstacleLogic : MonoBehaviour
 
         if (_filedTileCoord.Count < 1)
         {
-            //      TileHelper boofer = _mapLogic.GetTile(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
-            //      _mapLogic.CreatingObstacle(boofer);
+            _mapLogic.CreatingObstacle(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
 
-            foreach (TileHelper tile in _startBlockTile)
+            foreach (TileHelper tile in _finishBlockTile)
             {
                 _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
             }
 
-            foreach (TileHelper tile in _startSpesialBlockTile)
+            foreach (TileHelper tile in _finishSpesialBlockTile)
             {
                 _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
             }
@@ -101,32 +106,43 @@ public class ObstacleLogic : MonoBehaviour
             return;
 
         TileHelper tile = _mapLogic.GetTile(x, y);
+        bool isDamagebaleTakenErlear = false;
 
-        if (_isSpesialSelected)
+        if (_finishSpesialBlockTile.Contains(tile))
         {
-            if (_startSpesialBlockTile.Contains(tile) == false)
+            for (int i = 0; i < _damagebaleTile.Count; i++)
             {
-                return;
+                if (_damagebaleTile[i].GetValue(0).ConvertTo<int>() == tile.cordX)
+                {
+                    if (_damagebaleTile[i].GetValue(1).ConvertTo<int>() == tile.cordY)
+                    {
+                        _damagebaleTile.Remove(_damagebaleTile[i]);
+                        isDamagebaleTakenErlear = true;
+                    }
+                }
             }
-        }
-        else
-        {
-            if (_startSpesialBlockTile.Contains(tile))
+
+            if (isDamagebaleTakenErlear == false)
             {
+                _damagebaleTile.Add(new int[] { tile.cordX, tile.cordY });
+                _input.Clicked -= OnClicked;
+                BombUsed?.Invoke();
+                _obstacleView.GetDamgaeBox(tile.transform);
+
                 return;
             }
         }
 
         _input.Clicked -= OnClicked;
+        BombUsed?.Invoke();
 
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
             if (_filedTileCoord[i].GetValue(0).ConvertTo<int>() == tile.cordX)
                 if (_filedTileCoord[i].GetValue(1).ConvertTo<int>() == tile.cordY)
                     _filedTileCoord.Remove(_filedTileCoord[i]);
-        } 
+        }
 
-        Debug.Log(_filedTileCoord.Count);
         _mapLogic.DeleteObstacle(tile.cordX, tile.cordY);
         _isSpesialSelected = false;
     }

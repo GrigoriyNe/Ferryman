@@ -30,6 +30,7 @@ public class MapThird : Map
     public override void SetVaribleObstaclePlaces()
     {
         _logic.SetVaribleObstaclePlaces(Height - 1, 1, 4);
+        _logic.SetVaribleObstaclePlaces(Height - 2, 2, 3);
     }
 
     private void CreateItemOnMap()
@@ -66,13 +67,13 @@ public class MapThird : Map
         _logic.AddSpesialCarStartPoint(3, 2);
 
         for (int i = 1; i < 6; i++)
-            _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(i, Height - 1));
+            _obstaleLogic.SetBlockedFinishPlace(_logic.GetTile(i, Height - 1));
 
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 2));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 4));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(0, Height - 6));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(6, Height - 2));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(6, Height - 4));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(0, Height - 2));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(0, Height - 4));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(0, Height - 6));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(6, Height - 2));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(6, Height - 4));
 
         _logic.AddWall(0, Height - 7, 2);
         _logic.AddWall(4, Height - 7, 2);

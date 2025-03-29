@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class Game : MonoBehaviour
 {
@@ -10,10 +9,11 @@ public class Game : MonoBehaviour
     [SerializeField] private ScoreCounter _counter;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private ObstacleLogic _obstacle;
-    [SerializeField] private ShipAdder _shipAdder;
+    [SerializeField] private FerryboatFabric _shipAdder;
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private CameraMover _cameraMover;
     [SerializeField] private RewardCounter _rewardCounter;
+    [SerializeField] private OfferWindowSpesialRemoveOstacle _offerBomb;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
@@ -67,6 +67,19 @@ public class Game : MonoBehaviour
         }
     }
 
+    public void TryUseBomb()
+    {
+        if (_wallet.IsEnoughBomb())
+        {
+            _wallet.RemoveBomb();
+            _obstacle.ActivateSpesialClicked();
+        }
+        else
+        {
+            MakeOffer();
+        }
+    }
+
     public void RoundOver()
     {
         if (_creatigCars != null)
@@ -76,14 +89,9 @@ public class Game : MonoBehaviour
         StartCoroutine(ChangeRound());
     }
 
-    public Fueltank GetTank()
-    {
-        return _ferryboat.GetFueltank();
-    }
-
     private void MakeOffer()
     {
-        throw new NotImplementedException();
+        _offerBomb.Open();
     }
 
     private IEnumerator ChangeRound()

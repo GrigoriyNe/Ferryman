@@ -29,6 +29,7 @@ public class MapSecond : Map
     public override void SetVaribleObstaclePlaces()
     {
         _logic.SetVaribleObstaclePlaces(Height - 1, 0, 4);
+        _logic.SetVaribleObstaclePlaces(Height - 2, 1, 3);
     }
 
     private void CreateItemOnMap()
@@ -47,10 +48,10 @@ public class MapSecond : Map
                 _logic.AddVoid(i, j);
 
         for (int i = 0; i < 4; i++)
-            _obstaleLogic.SetBlockedStarPlace(_logic.GetTile(i, Height - 1));
+            _obstaleLogic.SetBlockedFinishPlace(_logic.GetTile(i, Height - 1));
 
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 16));
-        _obstaleLogic.SetSpesialBlockedStarPlace(_logic.GetTile(4, 14));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, 16));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, 14));
 
         for (int i = 0; i < 4; i++)
             for (int j = 11; j < Height; j++)
