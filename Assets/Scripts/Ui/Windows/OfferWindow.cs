@@ -7,7 +7,6 @@ public abstract class OfferWindow : Window
     [SerializeField] private Button _gold;
     [SerializeField] private Button _revard;
     [SerializeField] private Game _game;
-    [SerializeField] protected Shop Shop;
     
     public override void OnEnabled()
     {

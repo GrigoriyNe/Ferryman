@@ -90,6 +90,8 @@ public class RewardCounter : MonoBehaviour
             int reward = _cellSpesialNegativeEffect[Random.Range(0, _cellSpesialNegativeEffect.Count)];
             tile.SetRewardValue(reward);
         }
+
+        _textWonCell.text = GetRewardValue().ToString();
     }
 
     public void ReckonCell(int tileReward)
@@ -101,11 +103,13 @@ public class RewardCounter : MonoBehaviour
     public void ChangeRewardCell(TileHelper tile)
     {
         tile.SetRewardValue(_cellPositiveEffect[Random.Range(0, _cellPositiveEffect.Count)]);
+        _textWonCell.text = GetRewardValue().ToString();
     }
 
     public void ChangeRewardSpesialCell(TileHelper tile)
     {
         tile.SetRewardValue(_cellSpesialPositiveEffect[Random.Range(0, _cellSpesialPositiveEffect.Count)]);
+        _textWonCell.text = GetRewardValue().ToString();
     }
 
     private void SetCellListEffects()

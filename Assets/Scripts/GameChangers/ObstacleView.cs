@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
+using static UnityEditor.Progress;
 
 public class ObstacleView : MonoBehaviour
 {
@@ -19,9 +19,10 @@ public class ObstacleView : MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (GameObject item in _filedObstacle)
+        for (int i = 0; i < _filedObstacle.Count; i++)
         {
-            item.gameObject.SetActive(false);
+            if (_filedObstacle[i].IsDestroyed() == false)
+                _filedObstacle[i].gameObject.SetActive(false);
         }
 
         _filedObstacle = new();
@@ -44,6 +45,7 @@ public class ObstacleView : MonoBehaviour
         RemoveObstacle(target);
         return _spritesOpenParkSpesial.GetSprite();
     }
+
     public Sprite GetSpriteCloseSpesial(Transform target)
     {
         SetObstaleSpesial(target);
@@ -68,7 +70,7 @@ public class ObstacleView : MonoBehaviour
     private void SetObstale(Transform target)
     {
         GameObject obstacle = Instantiate(_obstaclePrefab, target.position, Quaternion.identity);
-        
+
         _filedObstacle.Add(obstacle);
         obstacle.gameObject.SetActive(true);
     }

@@ -1,9 +1,16 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Game : MonoBehaviour
 {
+    private const int RoundSecondBoat = 5;
+    private const int RoundThirdBoat = 10;
+    private const int RoundRandomBoat = 15;
+    private const int StartFerryboat = 0;
+
+
     [SerializeField] private FabricCars _fabricCars;
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
@@ -17,6 +24,7 @@ public class Game : MonoBehaviour
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
+    private int _thisRound = 0;
 
     private WaitForSeconds _wait5Millisecond;
     private float _delay5Millisecond = 0.5f;
@@ -31,15 +39,15 @@ public class Game : MonoBehaviour
     private WaitForSeconds _wait4Second;
     private float _delay4Second = 4f;
 
-    public event Action StartSceneDone;
     public event Action StartSceneStart;
+    public event Action StartSceneDone;
     public event Action FinishSceneStart;
     public event Action FinishSceneDone;
 
     private void Start()
     {
         SetWaitings();
-        SetStartFerryboat();
+        _ferryboat = _shipAdder.GetFerryboat(StartFerryboat);
         StartScene();
     }
 
@@ -83,10 +91,20 @@ public class Game : MonoBehaviour
     public void RoundOver()
     {
         if (_creatigCars != null)
-           StopCoroutine( _creatigCars);
+            StopCoroutine(_creatigCars);
 
         _wallet.AddMoney(_rewardCounter.GetRewardValue());
         StartCoroutine(ChangeRound());
+
+        _thisRound += 1;
+
+        if (_thisRound > RoundSecondBoat)
+            SetNextFerryboat(1);
+        if (_thisRound > RoundThirdBoat)
+            SetNextFerryboat(2);
+        if (_thisRound > RoundRandomBoat)
+            SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+
     }
 
     private void MakeOffer()
@@ -101,30 +119,22 @@ public class Game : MonoBehaviour
         StartScene();
     }
 
-    public void SetNextFerryboat()
+    public void SetNextFerryboat(int value)
     {
-        if (_shipAdder.IsAmout())
-        {
-            _creatigCars = null;
-            EndScene();
-            _obstacle.Clean();
-            _mapLogic.Clean();
-            StartCoroutine(ChangingFerryboat());
-            _cameraMover.Zoom();
-        }
+        _creatigCars = null;
+        EndScene();
+        _obstacle.Clean();
+        _mapLogic.Clean();
+        StartCoroutine(ChangingFerryboat(value));
+        _cameraMover.Zoom();
     }
 
-    private IEnumerator ChangingFerryboat()
+    private IEnumerator ChangingFerryboat(int value)
     {
         yield return _wait3Second;
-        _ferryboat = _shipAdder.GetNextFerryboat();
+        _ferryboat = _shipAdder.GetFerryboat(value);
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
         StartScene();
-    }
-
-    private void SetStartFerryboat()
-    {
-        _ferryboat = _shipAdder.GetFerryboat();
     }
 
     private void StartScene()
