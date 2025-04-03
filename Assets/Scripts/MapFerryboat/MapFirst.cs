@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class MapFirst : Map
 {
-    private const int Width = 15;
-    private const int Height = 15;
+    private const int Width = 24;
+    private const int Height = 24;
+    private int _roadOffVerticalValue;
 
     [SerializeField] private MapLogic _logic;
     [SerializeField] private ObstacleLogic _obstaleLogic;
 
     public override void Activate()
     {
+        _roadOffVerticalValue = Width - 9;
         gameObject.SetActive(true);
-        _logic.Init(Width, Height);
+        _logic.Init(Width, Height, _roadOffVerticalValue);
         CreateItemOnMap();
         SetVaribleObstaclePlaces();
     }
@@ -30,8 +32,8 @@ public class MapFirst : Map
 
     public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetVaribleObstaclePlaces(Height - 1, 0, 4);
-        _logic.SetVaribleObstaclePlaces(Height - 2, 1, 3);
+        _logic.SetVaribleObstaclePlaces(Height - 3, 0, 4);
+        _logic.SetVaribleObstaclePlaces(Height - 4, 1, 3);
     }
 
     private void CreateItemOnMap()
@@ -39,34 +41,35 @@ public class MapFirst : Map
         for (int i = 4; i < 7; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < _roadOffVerticalValue + 2; i++)
             _logic.AddVoid(4, i);
 
         for (int i = 5; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, 12));
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 1));
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 2));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, _roadOffVerticalValue + 4));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, _roadOffVerticalValue + 5));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, _roadOffVerticalValue + 6));
 
         for (int i = 0; i < 4; i++)
-            for (int j = 11; j < Height; j++)
+            for (int j = Height - 6; j < Height - 2; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int i = 1; i < 4; i++)
-            for (int j = 0; j < 3; j++)
+        for (int j = 4; j < 5; j++)
+            for (int i = 1; i < 4; i++)
                 _logic.AddCarStartPoint(i, j);
 
-        _logic.AddSpesialCarFinishPoint(4, 12);
-        _logic.AddSpesialCarFinishPoint(4, Height - 1);
-        _logic.AddSpesialCarFinishPoint(4, Height - 2);
+        _logic.AddSpesialCarFinishPoint(4, _roadOffVerticalValue + 6);
+        _logic.AddSpesialCarFinishPoint(4, _roadOffVerticalValue + 4);
+        _logic.AddSpesialCarFinishPoint(4, _roadOffVerticalValue + 5);
         _logic.AddSpesialCarStartPoint(3, 1);
+        _logic.AddSpesialCarStartPoint(2, 1);
 
-        _logic.AddWall(0, 10, 2);
-        _logic.AddWall(3, 10, 2);
-        _logic.AddWall(4, 10, 2);
-        _logic.AddWall(5, 10, 2);
+        _logic.AddWall(0, _roadOffVerticalValue + 2, 2);
+        _logic.AddWall(3, _roadOffVerticalValue + 2, 2);
+        _logic.AddWall(4, _roadOffVerticalValue + 2, 2);
+        _logic.AddWall(5, _roadOffVerticalValue + 2, 2);
 
     }
 }

@@ -10,7 +10,6 @@ public class Game : MonoBehaviour
     private const int RoundRandomBoat = 15;
     private const int StartFerryboat = 0;
 
-
     [SerializeField] private FabricCars _fabricCars;
     [SerializeField] private BridgeAnimator _bridge;
     [SerializeField] private ScoreCounter _counter;
@@ -21,10 +20,12 @@ public class Game : MonoBehaviour
     [SerializeField] private CameraMover _cameraMover;
     [SerializeField] private RewardCounter _rewardCounter;
     [SerializeField] private OfferWindowSpesialRemoveOstacle _offerBomb;
+    [SerializeField] private Soungs _soungs;
+    [SerializeField] private Scenes _scenes;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
-    private int _thisRound = 0;
+    private int _currentRound = 0;
 
     private WaitForSeconds _wait5Millisecond;
     private float _delay5Millisecond = 0.5f;
@@ -43,22 +44,13 @@ public class Game : MonoBehaviour
     public event Action StartSceneDone;
     public event Action FinishSceneStart;
     public event Action FinishSceneDone;
+    public event Action<int> LevelChange;
 
     private void Start()
     {
         SetWaitings();
         _ferryboat = _shipAdder.GetFerryboat(StartFerryboat);
         StartScene();
-    }
-
-    private void SetWaitings()
-    {
-        _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
-        _wait5Millisecond = new WaitForSeconds(_delay5Millisecond);
-        _wait1Second = new WaitForSeconds(_delay1Second);
-        _wait2Second = new WaitForSeconds(_delay2Second);
-        _wait3Second = new WaitForSeconds(_delay3Second);
-        _wait4Second = new WaitForSeconds(_delay4Second);
     }
 
     public bool TryPay(int coust)
@@ -90,21 +82,60 @@ public class Game : MonoBehaviour
 
     public void RoundOver()
     {
+        if (_wallet.Money < -200)
+        {
+            Fail();
+            return;
+        }
+
         if (_creatigCars != null)
             StopCoroutine(_creatigCars);
 
+        _soungs.PlayGarageSoung();
+        _soungs.PlayRestartSoung();
+
         _wallet.AddMoney(_rewardCounter.GetRewardValue());
-        StartCoroutine(ChangeRound());
+        _wallet.AddBomb(1);
 
-        _thisRound += 1;
+        _currentRound += 1;
+        LevelChange?.Invoke(_currentRound);
 
-        if (_thisRound > RoundSecondBoat)
+        if (_currentRound == RoundSecondBoat)
+        {
             SetNextFerryboat(1);
-        if (_thisRound > RoundThirdBoat)
+            return;
+        }
+        else if (_currentRound == RoundThirdBoat)
+        {
             SetNextFerryboat(2);
-        if (_thisRound > RoundRandomBoat)
+            return;
+        }
+        else if (_currentRound == RoundRandomBoat)
+        {
             SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+            return;
+        }
+        else if (_currentRound > RoundRandomBoat && _currentRound % 3 == 0)
+        {
+            SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+            return;
+        }
 
+        StartCoroutine(ChangeRound());
+    }
+    private void SetWaitings()
+    {
+        _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
+        _wait5Millisecond = new WaitForSeconds(_delay5Millisecond);
+        _wait1Second = new WaitForSeconds(_delay1Second);
+        _wait2Second = new WaitForSeconds(_delay2Second);
+        _wait3Second = new WaitForSeconds(_delay3Second);
+        _wait4Second = new WaitForSeconds(_delay4Second);
+    }
+
+    private void Fail()
+    {
+        _scenes.ReastartLevel();
     }
 
     private void MakeOffer()
@@ -126,7 +157,7 @@ public class Game : MonoBehaviour
         _obstacle.Clean();
         _mapLogic.Clean();
         StartCoroutine(ChangingFerryboat(value));
-        _cameraMover.Zoom();
+       // _cameraMover.Zoom();
     }
 
     private IEnumerator ChangingFerryboat(int value)
@@ -142,23 +173,32 @@ public class Game : MonoBehaviour
         StartSceneStart?.Invoke();
         _bridge.Open();
         _ferryboat.Activate();
+        PlayFerryboatEngineSoung();
         StartCoroutine(OpenCargo());
     }
 
     private void EndScene()
     {
         FinishSceneStart?.Invoke();
+        PlayFerryboatEngineSoung();
         _bridge.Close();
         StartCoroutine(CloseCargo());
+    }
+
+    private void PlayFerryboatEngineSoung()
+    {
+        _soungs.PlayFerryboatEngineSoung();
     }
 
     private IEnumerator OpenCargo()
     {
         yield return _wait3Second;
+        _soungs.PlayGarageSoung();
         _obstacle.CreateObstacle();
         _obstacle.SetRandomObstacle();
 
         _counter.Activate();
+        _soungs.PlayCreatCar();
         _creatigCars = StartCoroutine(CreatingCars());
         _mapLogic.PrepareReward();
         StartSceneDone?.Invoke();
@@ -178,7 +218,7 @@ public class Game : MonoBehaviour
     {
         yield return _wait1Second;
 
-        int count = _mapLogic.CountFinishPlace;
+        int count = _mapLogic.GetMaxFinishPlaceCount();
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
 
         for (int i = 0; i < count; i++)
@@ -187,24 +227,13 @@ public class Game : MonoBehaviour
             _fabricCars.Create();
         }
 
-        if (_fabricCars.NotCreatedCarCount > 0)
-        {
-            yield return _wait2Second;
-            _fabricCars.Create();
-        }
-
-        int countSpesial = _mapLogic.CountFinishSpesialPlace;
+        int countSpesial = _mapLogic.GetMaxSpesialFinishPlaceCount();
 
         for (int i = 0; i < countSpesial; i++)
         {
             yield return _wait5Millisecond;
             _fabricCars.CreateSpesial();
-        }
 
-        if (_fabricCars.NotCreatedSpesialCarCount > 0)
-        {
-            yield return _wait2Second;
-            _fabricCars.CreateSpesial();
         }
 
         _creatigCars = null;

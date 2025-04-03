@@ -36,6 +36,6 @@ public abstract class Window : MonoBehaviour
 
     protected void OnButtonClick()
     {
-        ButtonClicked?.Invoke();
+        Close();
     }
 }

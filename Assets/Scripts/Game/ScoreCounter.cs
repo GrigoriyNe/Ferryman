@@ -17,7 +17,7 @@ public class ScoreCounter : MonoBehaviour
     {
         gameObject.SetActive(true);
         Score = 0;
-        MaxPossibleFinishPlaces = (_map.CountFinishPlace + _map.CountFinishSpesialPlace) * MultiplicationValue;
+        MaxPossibleFinishPlaces = _map.GetMaxPlaceCount() * MultiplicationValue;
         _step.SetStartValue(MaxPossibleFinishPlaces);
     }
 
@@ -25,6 +25,7 @@ public class ScoreCounter : MonoBehaviour
     {
         gameObject.SetActive(false);
         Score = 0;
+        _step.SetStartValue(Score);
     }
 
     public void AddScore(int reward)
@@ -42,6 +43,10 @@ public class ScoreCounter : MonoBehaviour
     {
         _rewarder.ReckonCell(-reward);
         Score -= 1;
+    }
+
+    public void RemoveStep()
+    {
         _step.ChangeOnOne();
     }
 }

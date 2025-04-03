@@ -9,6 +9,7 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _lookSpeed;
     [SerializeField] private CameraMover _cameraMover;
+    [SerializeField] private Soungs _soung;
 
     private PlayerInput _input;
 
@@ -69,6 +70,7 @@ public class PlayerInputController : MonoBehaviour
         {
             context.ReadValue<Vector2>();
             _tapPoint = context.ReadValue<Vector2>();
+            _soung.PlayClickSoung();
 
             if (_tapPoint != Vector2.zero)
             {
@@ -98,6 +100,7 @@ public class PlayerInputController : MonoBehaviour
 
     private IEnumerator Cooldown()
     {
+        
         yield return new WaitForSeconds(0.2f);
 
         _input.Player.Click.performed += OnClick;

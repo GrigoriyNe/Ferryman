@@ -18,7 +18,10 @@ public class ViewSteps : MonoBehaviour
 
     private void OnChanged(int value)
     {
-        _stepsCount.text = value.ToString();
+        if (value == 0)
+            _stepsCount.text = "";
+        else
+            _stepsCount.text = value.ToString();
     }
 }
 

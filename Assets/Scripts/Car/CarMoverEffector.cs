@@ -6,42 +6,34 @@ public class CarMoverEffector : MonoBehaviour
 {
 
     [SerializeField] private ParticleSystemRenderer _smokeEffect;
-    [SerializeField] private ParticleSystemRenderer _trailEffectVertical;
-    //[SerializeField] private ParticleSystemRenderer _trailEffectHorizontal;
+    [SerializeField] private Soungs _sougs;
 
 
     private Queue<ParticleSystemRenderer> _smokeEffects = new Queue<ParticleSystemRenderer> ();
-    private Queue<ParticleSystemRenderer> _trailsVertical = new Queue<ParticleSystemRenderer> ();
-  //  private Queue<ParticleSystemRenderer> _trailsHorizontal= new Queue<ParticleSystemRenderer> ();
 
     private void OnEnable()
     {
         if (_smokeEffects.Count < 1)
             _smokeEffects.Enqueue(_smokeEffect);
-
-        if (_trailsVertical.Count < 1)
-            _trailsVertical.Enqueue(_trailEffectVertical);
-
-        //if (_trailsHorizontal.Count < 1)
-        //    _trailsHorizontal.Enqueue(_trailEffectHorizontal);
     }
 
-
-    public ParticleSystemRenderer PlaySmoke()
+    public ParticleSystemRenderer PlayMoveEffects()
     {
         ParticleSystemRenderer cash = _smokeEffects.Dequeue();
         _smokeEffects.Enqueue (cash);
-        cash.gameObject.SetActive (true);  
+        cash.gameObject.SetActive (true);
+        PlaySoungMove();
 
         return cash;
     }
 
-    public ParticleSystemRenderer PlayTrailVertical()
+    public void PlayMoveQuenue()
     {
-        ParticleSystemRenderer cash = _trailsVertical.Dequeue();
-        _trailsVertical.Enqueue(cash);
-        cash.gameObject.SetActive(true);
+        _sougs.PlayQuenueMovingCars();
+    }
 
-        return cash;
+    private void PlaySoungMove()
+    {
+        _sougs.PlayMovedSoung();
     }
 }

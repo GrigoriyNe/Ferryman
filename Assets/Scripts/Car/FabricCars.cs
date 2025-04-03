@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,20 +7,13 @@ public class FabricCars : MonoBehaviour
     [SerializeField] private SpesialCars _carsSpesials;
     [SerializeField] private MapLogic _map;
 
-    private Queue<Car> _createdEarlierCars = new Queue<Car>();
+    [SerializeField] private CarPool _carPool;
+    [SerializeField] private CarSpesialPool _carSpesialPool;
+
     private List<Car> _createdCars = new List<Car>();
     private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
 
     private Namer _places;
-
-    public int NotCreatedCarCount { get; private set; }
-    public int NotCreatedSpesialCarCount { get; private set; }
-
-    private void Start()
-    {
-        NotCreatedCarCount = 0;
-        NotCreatedSpesialCarCount = 0;
-    }
 
     public void SetPlacesNames(Namer places)
     {
@@ -31,39 +22,23 @@ public class FabricCars : MonoBehaviour
 
     public void Create()
     {
-        if (_map.CountFinishPlace == 0)
-        {
-            NotCreatedCarCount += 1;
-
-            return;
-        }
-
         Car car = null;
-
-        if (_createdEarlierCars.Count == 0)
-            car = Instantiate(_cars.GetRandomCar());
-        else
-            car = _createdEarlierCars.Dequeue();
+        car = _carPool.GetItem().GetComponent<Car>();
+        _carPool.ChangePrefab(_cars.GetRandomCar());
 
         car.transform.rotation = Quaternion.identity;
         car.gameObject.SetActive(true);
         _createdCars.Add(car);
-
+        
         car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition(), _places);
     }
 
     public void CreateSpesial()
     {
-        if (_map.CountFinishSpesialPlace == 0 )
-        {
-            NotCreatedSpesialCarCount += 1;
-
-            return;
-        }
-
         SpesialCar car = null;
+        car = _carSpesialPool.GetItem().GetComponent<SpesialCar>();
+        _carSpesialPool.ChangePrefab(_carsSpesials.GetRandomCar());
 
-        car = Instantiate(_carsSpesials.GetRandomCar());
         car.transform.rotation = Quaternion.identity;
         car.gameObject.SetActive(true);
 
@@ -78,18 +53,17 @@ public class FabricCars : MonoBehaviour
         {
             car.transform.position = Vector3.zero;
             car.gameObject.SetActive(false);
-            _createdEarlierCars.Enqueue(car);
+            _carPool.ReturnItem(car);
         }
 
         foreach (SpesialCar car in _createdSpesialCars)
         {
             car.transform.position = Vector3.zero;
             car.gameObject.SetActive(false);
+            _carSpesialPool.ReturnItem(car);
         }
 
         _createdCars = new List<Car>();
         _createdSpesialCars = new List<SpesialCar>();
-        NotCreatedSpesialCarCount = 0;
-        NotCreatedCarCount = 0;
     }
 }

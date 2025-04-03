@@ -7,6 +7,7 @@ public class ObstacleLogic : MonoBehaviour
 {
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private Game _game;
+    [SerializeField] private Soungs _soungs;
     [SerializeField] private int _valueDividerRanomCreate = 3;
 
     [SerializeField] private PlayerInputController _input;
@@ -33,13 +34,13 @@ public class ObstacleLogic : MonoBehaviour
 
     public void ActivateClicked()
     {
-        _input.Clicked += OnClicked;
+        _input.Clicked += OnBombClicked;
         _isSpesialSelected = false;
     }
 
     public void ActivateSpesialClicked()
     {
-        _input.Clicked += OnClicked;
+        _input.Clicked += OnBombClicked;
         _isSpesialSelected = true;
     }
 
@@ -57,12 +58,6 @@ public class ObstacleLogic : MonoBehaviour
             return;
 
         _finishSpesialBlockTile.Add(tile);
-    }
-
-    public void SmalerVaribleCreating()
-    {
-        if (_maxRangeForRandomCreatigVarible + 1 < 25)
-            _maxRangeForRandomCreatigVarible += 1;
     }
 
     public void CreateObstacle()
@@ -97,7 +92,7 @@ public class ObstacleLogic : MonoBehaviour
         _filedTileCoord.Add(new int[] { filedTile.cordX, filedTile.cordY });
     }
 
-    private void OnClicked(int x, int y)
+    private void OnBombClicked(int x, int y)
     {
         if (_mapLogic.CheckObstacle(x, y) == false)
             return;
@@ -107,6 +102,7 @@ public class ObstacleLogic : MonoBehaviour
 
         TileHelper tile = _mapLogic.GetTile(x, y);
         bool isDamagebaleTakenErlear = false;
+        _soungs.PlayBombSoung();
 
         if (_finishSpesialBlockTile.Contains(tile))
         {
@@ -125,7 +121,7 @@ public class ObstacleLogic : MonoBehaviour
             if (isDamagebaleTakenErlear == false)
             {
                 _damagebaleTile.Add(new int[] { tile.cordX, tile.cordY });
-                _input.Clicked -= OnClicked;
+                _input.Clicked -= OnBombClicked;
                 BombUsed?.Invoke();
                 _obstacleView.GetDamgaeBox(tile.transform);
 
@@ -133,7 +129,7 @@ public class ObstacleLogic : MonoBehaviour
             }
         }
 
-        _input.Clicked -= OnClicked;
+        _input.Clicked -= OnBombClicked;
         BombUsed?.Invoke();
 
         for (int i = 0; i < _filedTileCoord.Count; i++)

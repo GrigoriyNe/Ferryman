@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Car : MonoBehaviour
+public class Car : SpawnableObject
 {
     [SerializeField] private CarMover _mover;
     [SerializeField] private CarTextViewer _textViewer;

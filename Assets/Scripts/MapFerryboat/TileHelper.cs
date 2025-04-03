@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class TileHelper : MonoBehaviour
+public class TileHelper : SpawnableObject
 {
     [SerializeField] private TextMeshProUGUI _rewardView;
 
@@ -16,13 +16,19 @@ public class TileHelper : MonoBehaviour
 
     public int Reward => _rewardValue;
 
+    private void OnDisable()
+    {
+        _rewardValue = 0;
+        _rewardView.text = "";
+    }
+
     public void SetRewardValue(int value)
     {
         _rewardValue = value;
 
         if (value > 0)
         {
-            _rewardView.color = Color.green;
+            _rewardView.color = Color.yellow;
             _rewardView.text = value.ToString();
         }
         else

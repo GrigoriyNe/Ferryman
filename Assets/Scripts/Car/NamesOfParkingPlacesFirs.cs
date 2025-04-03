@@ -24,9 +24,9 @@ public class NamesOfParkingPlacesFirs : Namer
 
         int height = _map.GetHeight();
 
-        for (int i = height - 4; i < height;)
+        for (int i = height - 6; i < height;)
         {
-            for (int j = 1; j <= (height - 4);)
+            for (int j = 1; j <= (height - 5);)
             {
                 _placesHorizontal.Add(i, j);
                 i++;
@@ -42,15 +42,15 @@ public class NamesOfParkingPlacesFirs : Namer
 
         if (vertical == 4)
         {
-            if ( horizontal == _map.GetHeight() - 1)
+            if ( horizontal == _map.GetHeight() - 3)
             {
                 return "e";
             }
-            else if (horizontal == _map.GetHeight() - 2)
+            else if (horizontal == _map.GetHeight() - 4)
             {
                 return "f";
             }
-            else if (horizontal == _map.GetHeight() - 3)
+            else if (horizontal == _map.GetHeight() - 5)
             {
                 return "g";
             }

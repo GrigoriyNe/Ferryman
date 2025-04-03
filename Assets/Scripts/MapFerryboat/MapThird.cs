@@ -8,9 +8,12 @@ public class MapThird : Map
     [SerializeField] private MapLogic _logic;
     [SerializeField] private ObstacleLogic _obstaleLogic;
 
+    private int _roadOffVerticalValue;
+
     public override void Activate()
     {
-        _logic.Init(Width, Height);
+        _roadOffVerticalValue = Width - 9;
+        _logic.Init(Width, Height, _roadOffVerticalValue);
         gameObject.SetActive(true);
         CreateItemOnMap();
         SetVaribleObstaclePlaces();
@@ -50,8 +53,8 @@ public class MapThird : Map
             for (int j = Height - 6; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int i = 1; i < 4; i++)
-            for (int j = 0; j < 5; j++)
+        for (int j = 1; j < 2; j++)
+            for (int i = 1; i < 4; i++)
                 _logic.AddCarStartPoint(i, j);
 
         _logic.AddSpesialCarFinishPoint(6, Height - 2);

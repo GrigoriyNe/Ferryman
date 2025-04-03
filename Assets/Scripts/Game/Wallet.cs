@@ -19,6 +19,13 @@ public class Wallet : MonoBehaviour
         ChangedMoney?.Invoke(Money);
     }
 
+    public void OnResetGame()
+    {
+        Money = 200;
+        Bomb = 2;
+        ChangedMoney?.Invoke(Money);
+    }
+
     public void AddMoney(int value)
     {
         Money += value;

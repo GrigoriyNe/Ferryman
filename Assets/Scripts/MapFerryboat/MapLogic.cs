@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapLogic : MonoBehaviour
 {
     private const int MaxStep = 30;
 
-    [SerializeField] private GameObject _prefabMapTile;
+  //  [SerializeField] private GameObject _prefabMapTile; 
+    [SerializeField] private TilePool _tilePool; 
     [SerializeField] private Game _game;
     [SerializeField] private ObstacleView _obstacleView;
     [SerializeField] private ObstacleLogic _obstaleLogic;
@@ -43,27 +45,15 @@ public class MapLogic : MonoBehaviour
 
     public int RoadOffVerticalValue { get; private set; }
 
-    public void Init(int width, int height)
+    public void Init(int width, int height, int roadOffVerticalValue)
     {
+        RoadOffVerticalValue = roadOffVerticalValue;
+
         _width = width;
         _height = height;
 
         _map = new Point[_height, _width];
         _tiles = new TileHelper[_height, _width];
-
-        RoadOffVerticalValue = 8;
-
-        if (_width == 17)
-        {
-            RoadOffVerticalValue = 8;
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-        }
-
-        if (_width > 17)
-        {
-            RoadOffVerticalValue = _width - 9;
-            transform.position = new Vector3(transform.position.x, transform.position.y, -7);
-        }
 
         Activate();
         InitLogicMap();
@@ -81,26 +71,56 @@ public class MapLogic : MonoBehaviour
         foreach (var tile in _tiles)
         {
             _map[tile.cordX, tile.cordY].ChangeObstacle(false);
-            tile.gameObject.SetActive(false);
+            _tilePool.ReturnItem(tile);
         }
     }
 
     public void Clean()
     {
-        _carFinishPoints.Clear();
-        _carSpesialFinishPoints.Clear();
-        _filledCellObstacle.Clear();
-        _filledSpesialCellObstacle.Clear();
-        _emptyCellObstacle.Clear();
+        _carFinishPoints = new List<TileHelper>();
+        _carSpesialFinishPoints = new List<TileHelper>();
+        _filledCellObstacle = new List<TileHelper>();
+        _filledSpesialCellObstacle = new List<TileHelper>();
+        _emptyCellObstacle = new List<TileHelper>();
+        _tilePool.Clean();
 
-        foreach (TileHelper item in _tiles)
-        {
-            item.RemoveWalls();
-            item.spriteRenderer.sprite = _obstacleView.GetSpriteEmpty();
-            item.spriteRenderer.gameObject.SetActive(false);
-            item.gameObject.SetActive(false);
-        }
+        //foreach (TileHelper item in _tiles)
+        //{
+        //    item.RemoveWalls();
+        //    item.spriteRenderer.sprite = _obstacleView.GetSpriteEmpty();
+        //    item.spriteRenderer.gameObject.SetActive(false);
+        //    item.gameObject.SetActive(false);
+        //}
+        _tiles = null;
     }
+
+    public int GetMaxPlaceCount()
+    {
+        return GetMaxFinishPlaceCount() + GetMaxSpesialFinishPlaceCount();
+    }
+
+    public int GetMaxFinishPlaceCount()
+    {
+        int result = 0;
+
+        foreach (TileHelper tile in _carFinishPoints)
+            if (tile.gameObject.activeSelf)
+                result++;
+
+        return result;
+    }
+
+    public int GetMaxSpesialFinishPlaceCount()
+    {
+        int result = 0;
+
+        foreach (TileHelper tile in _carSpesialFinishPoints)
+            if (tile.gameObject.activeSelf)
+                result++;
+
+        return result;
+    }
+
 
     public void SetStart(TileHelper tile)
     {
@@ -140,7 +160,7 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        if(CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - 1)))
+        if (CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - 1)))
         {
             return _tiles[x, 0];
         }
@@ -286,8 +306,9 @@ public class MapLogic : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                _tiles[i, j] = Instantiate(_prefabMapTile, new Vector3(i, 0, j), Quaternion.identity).GetComponent<TileHelper>();
+                _tiles[i, j] = _tilePool.GetItem().GetComponent<TileHelper>();
                 _tiles[i, j].transform.SetParent(transform, false);
+                _tiles[i, j].transform.position = new Vector3(i + 1, 0, j - 7);
                 _tiles[i, j].cordX = i;
                 _tiles[i, j].cordY = j;
                 _map[i, j] = new Point(i, j);

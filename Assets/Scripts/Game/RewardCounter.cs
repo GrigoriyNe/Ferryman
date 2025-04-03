@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RewardCounter : MonoBehaviour
 {
     [SerializeField] private MapLogic _map;
     [SerializeField] private TextMeshProUGUI _textWonCell;
+    [SerializeField] private int _minValueForPayBonusStepsLeft = 10;
+    [SerializeField] private int _multiplicateValuePayBonusStepsLeft = 10;
+    [SerializeField] private ScoreSteps _stepCounter;
 
     private List<TileHelper> _startPositions = new List<TileHelper>();
     private List<TileHelper> _startSpesialPositions = new List<TileHelper>();
@@ -20,35 +24,46 @@ public class RewardCounter : MonoBehaviour
 
     private int _wonValue = 0;
 
+    private void OnDisable()
+    {
+        _startPositions = new List<TileHelper>();
+        _startSpesialPositions = new List<TileHelper>();
+        _filledStartPositions = new List<TileHelper>();
+        _filledStartSpesialPositions = new List<TileHelper>();
+        _wonValue = 0;
+        _textWonCell.text = "";
+    }
+
     public int GetRewardValue()
     {
         int resultNegative = 0;
+        int result = 0;
 
         foreach (TileHelper tileHelper in _filledStartPositions)
-            resultNegative += tileHelper.Reward;
+            if (tileHelper.Reward < 0)
+                resultNegative += tileHelper.Reward;
 
         foreach (TileHelper tileHelper in _filledStartSpesialPositions)
-            resultNegative += tileHelper.Reward;
+            if (tileHelper.Reward < 0)
+                resultNegative += tileHelper.Reward;
 
-        return _wonValue + resultNegative;
-    }
-    private void OnDisable()
-    {
-        _startPositions.Clear();
-        _startSpesialPositions.Clear();
-        _filledStartPositions.Clear();
-        _filledStartSpesialPositions.Clear();
-        _wonValue = 0;
+        result = _wonValue + resultNegative;
+
+        if (_stepCounter.StepsLeft < _minValueForPayBonusStepsLeft)
+            result += _stepCounter.StepsLeft * _multiplicateValuePayBonusStepsLeft;
+
+        return result;
     }
 
     public void SetStartPositions(List<TileHelper> startPositions)
     {
         foreach (TileHelper tile in startPositions)
         {
-            if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
-                _startPositions.Add(tile);
-            else
-                _filledStartPositions.Add(tile);
+            if (tile.gameObject.activeSelf)
+                if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
+                    _startPositions.Add(tile);
+                else
+                    _filledStartPositions.Add(tile);
         }
     }
 
@@ -56,10 +71,11 @@ public class RewardCounter : MonoBehaviour
     {
         foreach (TileHelper tile in startSpesialPositions)
         {
-            if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
-                _startSpesialPositions.Add(tile);
-            else
-                _filledStartSpesialPositions.Add(tile);
+            if (tile.gameObject.activeSelf)
+                if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
+                    _startSpesialPositions.Add(tile);
+                else
+                    _filledStartSpesialPositions.Add(tile);
         }
     }
 
@@ -69,26 +85,38 @@ public class RewardCounter : MonoBehaviour
 
         foreach (TileHelper tile in _startPositions)
         {
-            int reward = _cellPositiveEffect[Random.Range(0, _cellPositiveEffect.Count)];
-            tile.SetRewardValue(reward);
+            if (tile.gameObject.activeSelf)
+            {
+                int reward = _cellPositiveEffect[Random.Range(0, _cellPositiveEffect.Count)];
+                tile.SetRewardValue(reward);
+            }
         }
 
         foreach (TileHelper tile in _startSpesialPositions)
         {
-            int reward = _cellSpesialPositiveEffect[Random.Range(0, _cellSpesialPositiveEffect.Count)];
-            tile.SetRewardValue(reward);
+            if (tile.gameObject.activeSelf)
+            {
+                int reward = _cellSpesialPositiveEffect[Random.Range(0, _cellSpesialPositiveEffect.Count)];
+                tile.SetRewardValue(reward);
+            }
         }
 
         foreach (TileHelper tile in _filledStartPositions)
         {
-            int reward = _cellNegativEffect[Random.Range(0, _cellNegativEffect.Count)];
-            tile.SetRewardValue(reward);
+            if (tile.gameObject.activeSelf)
+            {
+                int reward = _cellNegativEffect[Random.Range(0, _cellNegativEffect.Count)];
+                tile.SetRewardValue(reward);
+            }
         }
 
         foreach (TileHelper tile in _filledStartSpesialPositions)
         {
-            int reward = _cellSpesialNegativeEffect[Random.Range(0, _cellSpesialNegativeEffect.Count)];
-            tile.SetRewardValue(reward);
+            if (tile.gameObject.activeSelf)
+            {
+                int reward = _cellSpesialNegativeEffect[Random.Range(0, _cellSpesialNegativeEffect.Count)];
+                tile.SetRewardValue(reward);
+            }
         }
 
         _textWonCell.text = GetRewardValue().ToString();
