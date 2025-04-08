@@ -1,9 +1,13 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileHelper : SpawnableObject
 {
     [SerializeField] private TextMeshProUGUI _rewardView;
+    [SerializeField] private Sprite _defaultSprite;
+    [SerializeField] private Image _ligter;
 
     public int cordX;
     public int cordY;
@@ -16,8 +20,13 @@ public class TileHelper : SpawnableObject
 
     public int Reward => _rewardValue;
 
+    private Vector3 _spriteDefaultScale = new Vector3(0.7f,0.7f,0.7f);
+
+
     private void OnDisable()
     {
+        spriteRenderer.sprite = _defaultSprite;
+        spriteRenderer.transform.localScale = _spriteDefaultScale;
         _rewardValue = 0;
         _rewardView.text = "";
     }
@@ -38,6 +47,18 @@ public class TileHelper : SpawnableObject
         }
     }
 
+    public void SetWinnerState()
+    {
+        spriteRenderer.transform.localScale = Vector3.one;
+        _rewardView.color = Color.green;
+    }
+
+    public void SetDefaultState()
+    {
+        spriteRenderer.transform.localScale = _spriteDefaultScale;
+        _rewardView.color = Color.yellow;
+    }
+
     public void SetWalls(int walls_int)
     {
         wallsBool[walls_int] = true;
@@ -51,5 +72,15 @@ public class TileHelper : SpawnableObject
             wallsBool[i] = false;
             walls[i].SetActive(false);
         }
+    }
+
+    public void DectivateLigther()
+    {
+        _ligter.gameObject.SetActive(false);
+    }
+
+    public void ActivateLigther()
+    {
+        _ligter.gameObject.SetActive(true);
     }
 }

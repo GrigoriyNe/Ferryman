@@ -7,8 +7,7 @@ public class MapLogic : MonoBehaviour
 {
     private const int MaxStep = 30;
 
-  //  [SerializeField] private GameObject _prefabMapTile; 
-    [SerializeField] private TilePool _tilePool; 
+    [SerializeField] private TilePool _tilePool;
     [SerializeField] private Game _game;
     [SerializeField] private ObstacleView _obstacleView;
     [SerializeField] private ObstacleLogic _obstaleLogic;
@@ -160,12 +159,18 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        if (CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - 1)))
+        if (CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - 2)))
         {
-            return _tiles[x, 0];
+            for (int i = 1; i < RoadOffVerticalValue - 1; i++)
+            {
+                if (CheckObstacle(x, i) == false)
+                {
+                    return _tiles[x, i];
+                }
+            }
         }
 
-        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 1)];
+        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 2)];
     }
 
     public List<TileHelper> GetPath()
@@ -455,17 +460,16 @@ public class MapLogic : MonoBehaviour
 
         TileHelper creatingTile = GetTile(x, y);
         creatingTile.gameObject.SetActive(true);
-        creatingTile.spriteRenderer.gameObject.SetActive(true);
 
         if (_carSpesialFinishPoints.Contains(creatingTile) == false)
         {
             _filledCellObstacle.Add(creatingTile);
-            creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteClose(creatingTile.transform);
+            _obstacleView.GetSpriteClose(creatingTile.transform);
         }
         else
         {
             _filledSpesialCellObstacle.Add(creatingTile);
-            creatingTile.spriteRenderer.sprite = _obstacleView.GetSpriteCloseSpesial(creatingTile.transform);
+            _obstacleView.GetSpriteCloseSpesial(creatingTile.transform);
         }
 
         AddObstacle(creatingTile.cordX, creatingTile.cordY);

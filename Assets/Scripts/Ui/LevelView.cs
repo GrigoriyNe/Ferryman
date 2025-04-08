@@ -5,6 +5,7 @@ public class LevelView : MonoBehaviour
 {
     [SerializeField] private Game _game;
     [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private AnimationResources _animator;
 
     private void OnEnable()
     {
@@ -19,6 +20,7 @@ public class LevelView : MonoBehaviour
     private void OnLevelChange(int level)
     {
         string result = (level + 1).ToString();
-        _text.text = result;
+        _text.text =  result;
+        _animator.ActivateLevelUi();
     }
 }

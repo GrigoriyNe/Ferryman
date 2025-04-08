@@ -89,7 +89,6 @@ public class PlayerInputController : MonoBehaviour
                         Clicked?.Invoke(tile.cordX, tile.cordY);
                     }
 
-                    //Clicked?.Invoke(hit);
                     context = new InputAction.CallbackContext();
                     _input.Player.Click.performed -= OnClick;
                     StartCoroutine(Cooldown());
@@ -101,7 +100,7 @@ public class PlayerInputController : MonoBehaviour
     private IEnumerator Cooldown()
     {
         
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
 
         _input.Player.Click.performed += OnClick;
     }

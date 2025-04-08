@@ -5,6 +5,7 @@ public class ViewSteps : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _stepsCount;
     [SerializeField] private ScoreSteps _steps;
+    [SerializeField] private AnimationResources _animator;
 
     private void OnEnable()
     {
@@ -18,10 +19,15 @@ public class ViewSteps : MonoBehaviour
 
     private void OnChanged(int value)
     {
-        if (value == 0)
+        if (value == -1)
+        {
             _stepsCount.text = "";
+        }
         else
+        {
             _stepsCount.text = value.ToString();
+            _animator.ActivateStep();
+        }
     }
 }
 

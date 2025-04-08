@@ -45,19 +45,19 @@ public class NamesOfParkingPlacesSecond : Namer
 
         if (_placesVertical.ContainsKey(vertical) && vertical == 4)
         {
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 16)
-            {
-                return "h";
-            }
-
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 14)
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal ==  _map.GetHeight() - 3)
             {
                 return "g";
             }
 
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == 12)
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == _map.GetHeight() - 4)
             {
-                return "f";
+                return "h";
+            }
+
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == _map.GetHeight() - 5)
+            {
+                return "i";
             }
         }
 

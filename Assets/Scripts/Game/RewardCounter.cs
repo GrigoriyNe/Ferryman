@@ -10,6 +10,7 @@ public class RewardCounter : MonoBehaviour
     [SerializeField] private int _minValueForPayBonusStepsLeft = 10;
     [SerializeField] private int _multiplicateValuePayBonusStepsLeft = 10;
     [SerializeField] private ScoreSteps _stepCounter;
+    [SerializeField] private AnimationResources _animation;
 
     private List<TileHelper> _startPositions = new List<TileHelper>();
     private List<TileHelper> _startSpesialPositions = new List<TileHelper>();
@@ -126,18 +127,25 @@ public class RewardCounter : MonoBehaviour
     {
         _wonValue += tileReward;
         _textWonCell.text = GetRewardValue().ToString();
+
+        if (tileReward > 0)
+            AnimatedChanged();
+        else
+            AnimatedNegativeChanged();
     }
 
     public void ChangeRewardCell(TileHelper tile)
     {
         tile.SetRewardValue(_cellPositiveEffect[Random.Range(0, _cellPositiveEffect.Count)]);
         _textWonCell.text = GetRewardValue().ToString();
+        AnimatedChanged();
     }
 
     public void ChangeRewardSpesialCell(TileHelper tile)
     {
         tile.SetRewardValue(_cellSpesialPositiveEffect[Random.Range(0, _cellSpesialPositiveEffect.Count)]);
         _textWonCell.text = GetRewardValue().ToString();
+        AnimatedChanged();
     }
 
     private void SetCellListEffects()
@@ -157,5 +165,15 @@ public class RewardCounter : MonoBehaviour
         _cellSpesialNegativeEffect.Add(-20);
         _cellSpesialNegativeEffect.Add(-25);
         _cellSpesialNegativeEffect.Add(-30);
+    }
+
+    private void AnimatedChanged()
+    {
+        _animation.ActivateAnimatorRestart();
+    }
+
+    private void AnimatedNegativeChanged()
+    {
+        _animation.ActivateAnimatorNegativeRestart();
     }
 }

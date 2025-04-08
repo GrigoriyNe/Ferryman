@@ -12,13 +12,6 @@ public class CarTextViewer : MonoBehaviour
 
     private Namer _parkPlace;
     private TileHelper _finishPositionTile;
-    private WaitForSeconds _wait;
-    private Coroutine _activating = null;
-
-    private void Start()
-    {
-        _wait = new WaitForSeconds(Delay);
-    }
 
     public void Init(Namer parkPlace, TileHelper finishPositionTile)
     {
@@ -26,7 +19,7 @@ public class CarTextViewer : MonoBehaviour
         _finishPositionTile = finishPositionTile;
         _viewFinishPosition.text = GetTextPosition();
 
-        _activating = StartCoroutine(SmoothActivate());
+        ActivateBackground();
     }
 
     public void ActivateBackground()
@@ -36,9 +29,6 @@ public class CarTextViewer : MonoBehaviour
 
     public void DeactivateBackground()
     {
-        if (_activating != null)
-            _activating = null;
-
         _backgroundImage.gameObject.SetActive(false);
     }
 
@@ -46,12 +36,5 @@ public class CarTextViewer : MonoBehaviour
     {
         string result = _parkPlace.GetTextPlace(_finishPositionTile.cordX, _finishPositionTile.cordY).ToString();
         return result;
-    }
-
-    private IEnumerator SmoothActivate()
-    {
-        yield return _wait;
-
-        ActivateBackground();
     }
 }

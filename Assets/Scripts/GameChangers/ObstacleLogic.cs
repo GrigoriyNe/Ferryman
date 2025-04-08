@@ -9,17 +9,17 @@ public class ObstacleLogic : MonoBehaviour
     [SerializeField] private Game _game;
     [SerializeField] private Soungs _soungs;
     [SerializeField] private int _valueDividerRanomCreate = 3;
+    [SerializeField] private ObstacleExplosiveEffector _effector;
 
     [SerializeField] private PlayerInputController _input;
     [SerializeField] private ObstacleView _obstacleView;
-    
+
     private List<int[]> _filedTileCoord = new();
 
     private List<TileHelper> _finishBlockTile = new();
     private List<TileHelper> _finishSpesialBlockTile = new();
     private List<int[]> _damagebaleTile = new();
 
-    private bool _isSpesialSelected = false;
     private int _maxRangeForRandomCreatigVarible = 20;
 
     public event Action BombUsed;
@@ -32,16 +32,14 @@ public class ObstacleLogic : MonoBehaviour
         _finishSpesialBlockTile = new List<TileHelper>();
     }
 
-    public void ActivateClicked()
+    public void TryActivateSpesialClicked()
     {
         _input.Clicked += OnBombClicked;
-        _isSpesialSelected = false;
-    }
 
-    public void ActivateSpesialClicked()
-    {
-        _input.Clicked += OnBombClicked;
-        _isSpesialSelected = true;
+        for (int i = 0; i < _filedTileCoord.Count; i++)
+        {
+            _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).ActivateLigther();
+        }
     }
 
     public void SetBlockedFinishPlace(TileHelper tile)
@@ -103,6 +101,12 @@ public class ObstacleLogic : MonoBehaviour
         TileHelper tile = _mapLogic.GetTile(x, y);
         bool isDamagebaleTakenErlear = false;
         _soungs.PlayBombSoung();
+        _effector.ExplosiveEffects(tile.transform.position);
+
+        for (int i = 0; i < _filedTileCoord.Count; i++)
+        {
+            _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).DectivateLigther();
+        }
 
         if (_finishSpesialBlockTile.Contains(tile))
         {
@@ -140,7 +144,6 @@ public class ObstacleLogic : MonoBehaviour
         }
 
         _mapLogic.DeleteObstacle(tile.cordX, tile.cordY);
-        _isSpesialSelected = false;
     }
 
     private void SetCreatedEarlier()

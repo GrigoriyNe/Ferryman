@@ -12,7 +12,7 @@ public class MapThird : Map
 
     public override void Activate()
     {
-        _roadOffVerticalValue = Width - 9;
+        _roadOffVerticalValue = Width - 8;
         _logic.Init(Width, Height, _roadOffVerticalValue);
         gameObject.SetActive(true);
         CreateItemOnMap();
@@ -32,7 +32,7 @@ public class MapThird : Map
 
     public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetVaribleObstaclePlaces(Height - 1, 1, 4);
+        _logic.SetVaribleObstaclePlaces(Height - 1, 1, 3);
         _logic.SetVaribleObstaclePlaces(Height - 2, 2, 3);
     }
 
@@ -42,14 +42,13 @@ public class MapThird : Map
         {
             _logic.AddVoid(4, i);
             _logic.AddVoid(5, i);
-            _logic.AddVoid(6, i);
         }
             
-        for (int i = 7; i < Height; i++)
+        for (int i = 6; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        for (int i = 1; i < 6; i++)
+        for (int i = 1; i < 5; i++)
             for (int j = Height - 6; j < Height; j++)
                 _logic.AddCarFinishPoint(i, j);
 
@@ -57,9 +56,9 @@ public class MapThird : Map
             for (int i = 1; i < 4; i++)
                 _logic.AddCarStartPoint(i, j);
 
-        _logic.AddSpesialCarFinishPoint(6, Height - 2);
-        _logic.AddSpesialCarFinishPoint(6, Height - 4);
-        _logic.AddSpesialCarFinishPoint(6, Height - 6);
+        _logic.AddSpesialCarFinishPoint(5, Height - 2);
+        _logic.AddSpesialCarFinishPoint(5, Height - 4);
+        _logic.AddSpesialCarFinishPoint(5, Height - 6);
         _logic.AddSpesialCarFinishPoint(0, Height - 2);
         _logic.AddSpesialCarFinishPoint(0, Height - 4);
         _logic.AddSpesialCarFinishPoint(0, Height - 6);
@@ -69,16 +68,17 @@ public class MapThird : Map
         _logic.AddSpesialCarStartPoint(2, 1);
         _logic.AddSpesialCarStartPoint(3, 2);
 
-        for (int i = 1; i < 6; i++)
+        for (int i = 1; i < 5; i++)
             _obstaleLogic.SetBlockedFinishPlace(_logic.GetTile(i, Height - 1));
 
         _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(0, Height - 2));
         _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(0, Height - 4));
         _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(0, Height - 6));
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(6, Height - 2));
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(6, Height - 4));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(5, Height - 2));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(5, Height - 4));
 
         _logic.AddWall(0, Height - 7, 2);
+        _logic.AddWall(3, Height - 7, 2);
         _logic.AddWall(4, Height - 7, 2);
         _logic.AddWall(5, Height - 7, 2);
         _logic.AddWall(6, Height - 7, 2);

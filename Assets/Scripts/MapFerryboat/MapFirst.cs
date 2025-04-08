@@ -12,7 +12,7 @@ public class MapFirst : Map
 
     public override void Activate()
     {
-        _roadOffVerticalValue = Width - 9;
+        _roadOffVerticalValue = Width - 8;
         gameObject.SetActive(true);
         _logic.Init(Width, Height, _roadOffVerticalValue);
         CreateItemOnMap();
@@ -41,35 +41,35 @@ public class MapFirst : Map
         for (int i = 4; i < 7; i++)
             _logic.AddVoid(6, i);
 
-        for (int i = 0; i < _roadOffVerticalValue + 2; i++)
+        for (int i = 0; i < Height; i++)
+            for (int j = Height - 2; j < Height; j++)
+                _logic.AddVoid(i, j);
+
+        for (int i = 0; i < _roadOffVerticalValue + 1; i++)
             _logic.AddVoid(4, i);
 
         for (int i = 5; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, _roadOffVerticalValue + 4));
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, _roadOffVerticalValue + 5));
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, _roadOffVerticalValue + 6));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 5));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 3));
 
         for (int i = 0; i < 4; i++)
             for (int j = Height - 6; j < Height - 2; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int j = 4; j < 5; j++)
+        for (int j = 1; j < 2; j++)
             for (int i = 1; i < 4; i++)
                 _logic.AddCarStartPoint(i, j);
 
-        _logic.AddSpesialCarFinishPoint(4, _roadOffVerticalValue + 6);
-        _logic.AddSpesialCarFinishPoint(4, _roadOffVerticalValue + 4);
-        _logic.AddSpesialCarFinishPoint(4, _roadOffVerticalValue + 5);
+        _logic.AddSpesialCarFinishPoint(4, Height - 5);
+        _logic.AddSpesialCarFinishPoint(4, Height - 3);
         _logic.AddSpesialCarStartPoint(3, 1);
         _logic.AddSpesialCarStartPoint(2, 1);
 
-        _logic.AddWall(0, _roadOffVerticalValue + 2, 2);
-        _logic.AddWall(3, _roadOffVerticalValue + 2, 2);
-        _logic.AddWall(4, _roadOffVerticalValue + 2, 2);
-        _logic.AddWall(5, _roadOffVerticalValue + 2, 2);
-
+        _logic.AddWall(0, _roadOffVerticalValue + 1, 2);
+        _logic.AddWall(3, _roadOffVerticalValue + 1, 2);
+        _logic.AddWall(4, _roadOffVerticalValue + 1, 2);
     }
 }

@@ -10,13 +10,11 @@ public class ScoreCounter : MonoBehaviour
     [SerializeField] private RewardCounter _rewarder;
 
     public int MaxPossibleFinishPlaces { get; private set; }
-
-    public int Score { get; private set; }
+    public int ScoreLess => _step.StepsLeft;
 
     public void Activate()
     {
         gameObject.SetActive(true);
-        Score = 0;
         MaxPossibleFinishPlaces = _map.GetMaxPlaceCount() * MultiplicationValue;
         _step.SetStartValue(MaxPossibleFinishPlaces);
     }
@@ -24,25 +22,17 @@ public class ScoreCounter : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
-        Score = 0;
-        _step.SetStartValue(Score);
+        _step.SetStartValue(0);
     }
 
     public void AddScore(int reward)
     {
         _rewarder.ReckonCell(reward);
-        Score += 1;
-
-        if (Score == MaxPossibleFinishPlaces)
-        {
-            _game.RoundOver();
-        }
     }
 
     public void RemoveScore(int reward)
     {
         _rewarder.ReckonCell(-reward);
-        Score -= 1;
     }
 
     public void RemoveStep()

@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class ObstacleView : MonoBehaviour
 {
-    [SerializeField] private ObstaclesSprites _spritesClosePark;
     [SerializeField] private ObstaclesSprites _spritesOpenPark;
     [SerializeField] private ObstaclesSprites _spritesEmpty;
     [SerializeField] private ObstaclesSprites _spritesOpenParkSpesial;
-    [SerializeField] private ObstaclesSprites _spritesCloseParkSpesial;
 
     [SerializeField] private GameObject _obstaclePrefab;
     [SerializeField] private GameObject _obstacleSpesialPrefab;
@@ -27,10 +25,9 @@ public class ObstacleView : MonoBehaviour
         _filedObstacle = new();
     }
 
-    public Sprite GetSpriteClose(Transform target)
+    public void GetSpriteClose(Transform target)
     {
         SetObstale(target);
-        return _spritesClosePark.GetSprite();
     }
 
     public Sprite GetSpriteOpen(Transform target)
@@ -45,10 +42,9 @@ public class ObstacleView : MonoBehaviour
         return _spritesOpenParkSpesial.GetSprite();
     }
 
-    public Sprite GetSpriteCloseSpesial(Transform target)
+    public void GetSpriteCloseSpesial(Transform target)
     {
         SetObstaleSpesial(target);
-        return _spritesCloseParkSpesial.GetSprite();
     }
 
     public void GetDamgaeBox(Transform target)

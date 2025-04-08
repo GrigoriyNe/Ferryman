@@ -29,6 +29,7 @@ public abstract class ItemPool<T> : MonoBehaviour where T : SpawnableObject
 
     public void ReturnItem(T item)
     {
+        item.gameObject.SetActive(false);
         Pool.Enqueue(item);
     }
 

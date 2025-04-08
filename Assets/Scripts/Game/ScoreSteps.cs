@@ -12,19 +12,19 @@ public class ScoreSteps : MonoBehaviour
     private void OnDisable()
     {
         StepsLeft = 0;
-        Changed?.Invoke(0);
+        Changed?.Invoke(StepsLeft);
     }
 
     public void SetStartValue(int value)
     {
         StepsLeft = value;
-        Changed?.Invoke(value);
+        Changed?.Invoke(StepsLeft - 1);
     }
 
     public void ChangeOnOne()
     {
         StepsLeft -= 1;
-        Changed?.Invoke(StepsLeft);
+        Changed?.Invoke(StepsLeft - 1);
     
         if(StepsLeft == 0)
             _game.RoundOver();

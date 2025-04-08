@@ -21,7 +21,7 @@ public abstract class OfferWindow : Window
 
     public void OnButtonRevard()
     {
-        throw new NotImplementedException();
+        Close();
     }
 
     public abstract void OnButtonGoldClick();

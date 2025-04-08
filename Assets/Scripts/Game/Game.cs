@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.Rendering;
+using YG;
 
 public class Game : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class Game : MonoBehaviour
     [SerializeField] private OfferWindowSpesialRemoveOstacle _offerBomb;
     [SerializeField] private Soungs _soungs;
     [SerializeField] private Scenes _scenes;
+    [SerializeField] private Canvas _offerRestart; 
+    [SerializeField] private LeaderbordCounter _leaderbordCounter;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
@@ -46,11 +49,19 @@ public class Game : MonoBehaviour
     public event Action FinishSceneDone;
     public event Action<int> LevelChange;
 
+
     private void Start()
     {
         SetWaitings();
         _ferryboat = _shipAdder.GetFerryboat(StartFerryboat);
         StartScene();
+    }
+
+    public void Fail()
+    {
+        _scenes.ReastartLevel();
+        Time.timeScale = 1;
+        _offerRestart.gameObject.SetActive(false);
     }
 
     public bool TryPay(int coust)
@@ -71,8 +82,8 @@ public class Game : MonoBehaviour
     {
         if (_wallet.IsEnoughBomb())
         {
-            _wallet.RemoveBomb();
-            _obstacle.ActivateSpesialClicked();
+            _obstacle.TryActivateSpesialClicked();
+            _wallet.ActivateBomb();
         }
         else
         {
@@ -82,9 +93,14 @@ public class Game : MonoBehaviour
 
     public void RoundOver()
     {
+        _wallet.AddMoney(_rewardCounter.GetRewardValue());
+        _leaderbordCounter.ChangeCounter();
+
         if (_wallet.Money < -200)
         {
-            Fail();
+            _offerRestart.gameObject.SetActive(true);
+            Time.timeScale = 0;
+
             return;
         }
 
@@ -94,19 +110,27 @@ public class Game : MonoBehaviour
         _soungs.PlayGarageSoung();
         _soungs.PlayRestartSoung();
 
-        _wallet.AddMoney(_rewardCounter.GetRewardValue());
         _wallet.AddBomb(1);
-
         _currentRound += 1;
         LevelChange?.Invoke(_currentRound);
 
         if (_currentRound == RoundSecondBoat)
         {
+            if (YandexGame.EnvironmentData.isMobile == true)
+            {
+                _cameraMover.Zoom();
+            }
+
             SetNextFerryboat(1);
             return;
         }
         else if (_currentRound == RoundThirdBoat)
         {
+            if (YandexGame.EnvironmentData.isMobile == true)
+            {
+                _cameraMover.Zoom();
+            }
+
             SetNextFerryboat(2);
             return;
         }
@@ -133,11 +157,6 @@ public class Game : MonoBehaviour
         _wait4Second = new WaitForSeconds(_delay4Second);
     }
 
-    private void Fail()
-    {
-        _scenes.ReastartLevel();
-    }
-
     private void MakeOffer()
     {
         _offerBomb.Open();
@@ -157,7 +176,6 @@ public class Game : MonoBehaviour
         _obstacle.Clean();
         _mapLogic.Clean();
         StartCoroutine(ChangingFerryboat(value));
-       // _cameraMover.Zoom();
     }
 
     private IEnumerator ChangingFerryboat(int value)
