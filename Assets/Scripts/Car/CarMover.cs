@@ -46,10 +46,10 @@ public class CarMover : MonoBehaviour
         _isSelected = false;
         _moving = null;
 
-        foreach (MeshRenderer renderer in _meshRenderers)
-        {
-            renderer.enabled = true;
-        }
+        //foreach (MeshRenderer renderer in _meshRenderers)
+        //{
+        //    renderer.enabled = true;
+        //}
     }
 
     private void OnDisable()
@@ -91,10 +91,10 @@ public class CarMover : MonoBehaviour
             _startPositionTile = _map.GetFreePlaceOnQenue(_startPositionTile.cordX);
             TryMoving(_finishPositionTile, _startPositionTile);
 
-            foreach (MeshRenderer renderer in _meshRenderers)
-            {
-                renderer.enabled = true;
-            }
+            //foreach (MeshRenderer renderer in _meshRenderers)
+            //{
+            //    renderer.enabled = true;
+            //}
 
             _effector.PlayFinishEffects(transform.position);
             _finishPositionTile.SetDefaultState();
@@ -292,10 +292,10 @@ public class CarMover : MonoBehaviour
             _map.AddObstacle(_finishPositionTile.cordX, _finishPositionTile.cordY);
             _counter.AddScore(_finishPositionTile.Reward);
 
-            foreach (MeshRenderer renderer in _meshRenderers)
-            {
-                renderer.enabled = false;
-            }
+            //foreach (MeshRenderer renderer in _meshRenderers)
+            //{
+            //    renderer.enabled = false;
+            //}
 
             _effector.PlayFinishEffects(transform.position);
             _finishPositionTile.SetWinnerState();

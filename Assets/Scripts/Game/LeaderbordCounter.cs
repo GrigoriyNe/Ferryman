@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using YG.Utils.LB;
 using YG;
-using Unity.VisualScripting;
 
 public class LeaderbordCounter : MonoBehaviour
 {
-    private const string TechnoName = "MaxMoney";
+    private const string TechnoName = "Money";
 
     [SerializeField] private Wallet _wallet;
     [SerializeField] private LeaderboardYG _board;
@@ -14,8 +13,8 @@ public class LeaderbordCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        YandexGame.GetLeaderboard(TechnoName, 6, 6, 6, "small");
         YandexGame.onGetLeaderboard += OnGetLeaderboards;
+        YandexGame.GetLeaderboard(TechnoName, 7, 3, 3, "Small");
     }
 
     private void OnDisable()
@@ -29,12 +28,13 @@ public class LeaderbordCounter : MonoBehaviour
         {
             _scorePlayer = _wallet.Money;
             _board.NewScore(_scorePlayer);
+            _board.UpdateLB();
         }
     }
 
     private void OnGetLeaderboards(LBData lb)
     {
-        if (lb.thisPlayer != null)
+        if (lb.technoName == TechnoName)
             _scorePlayer = lb.thisPlayer.score;
     }
 }

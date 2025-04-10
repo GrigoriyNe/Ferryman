@@ -49,7 +49,6 @@ public class Game : MonoBehaviour
     public event Action FinishSceneDone;
     public event Action<int> LevelChange;
 
-
     private void Start()
     {
         SetWaitings();

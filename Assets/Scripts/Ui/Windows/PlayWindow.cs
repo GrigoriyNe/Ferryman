@@ -14,7 +14,7 @@ public class PlayWindow : Window
 
     [SerializeField] private Button _leaderbod;
     [SerializeField] private Button _leaderbodExit;
-    [SerializeField] private Canvas _leaderbodCanvas;
+    [SerializeField] private GameObject _leaderbodCanvas;
 
     public override void OnEnabled()
     {
