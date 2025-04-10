@@ -1,25 +1,27 @@
 ﻿using UnityEngine;
-using YG.Utils.LB;
 using YG;
+using YG.Utils.LB;
 
-public class LeaderbordCounter : MonoBehaviour
+
+
+    public class LeaderbordCounter : MonoBehaviour
 {
     private const string TechnoName = "Money";
 
     [SerializeField] private Wallet _wallet;
     [SerializeField] private LeaderboardYG _board;
 
-    private long _scorePlayer;
+    private int _scorePlayer;
 
     private void OnEnable()
     {
-        YandexGame.onGetLeaderboard += OnGetLeaderboards;
-        YandexGame.GetLeaderboard(TechnoName, 7, 3, 3, "Small");
+        YG2.onGetLeaderboard += OnGetLeaderboards;
+      //  YG2.GetLeaderboard(TechnoName, 7, 3, 3, "Small");
     }
 
     private void OnDisable()
     {
-        YandexGame.onGetLeaderboard -= OnGetLeaderboards;
+        YG2.onGetLeaderboard -= OnGetLeaderboards;
     }
 
     public void ChangeCounter()
@@ -27,7 +29,7 @@ public class LeaderbordCounter : MonoBehaviour
         if (_scorePlayer < _wallet.Money)
         {
             _scorePlayer = _wallet.Money;
-            _board.NewScore(_scorePlayer);
+            _board.SetLeaderboard(_scorePlayer);
             _board.UpdateLB();
         }
     }
@@ -35,6 +37,7 @@ public class LeaderbordCounter : MonoBehaviour
     private void OnGetLeaderboards(LBData lb)
     {
         if (lb.technoName == TechnoName)
-            _scorePlayer = lb.thisPlayer.score;
+            if(lb.currentPlayer != null)
+            _scorePlayer = lb.currentPlayer.score;
     }
 }

@@ -89,15 +89,10 @@ public class CarMover : MonoBehaviour
         if (_inParking)
         {
             _startPositionTile = _map.GetFreePlaceOnQenue(_startPositionTile.cordX);
-            TryMoving(_finishPositionTile, _startPositionTile);
-
-            //foreach (MeshRenderer renderer in _meshRenderers)
-            //{
-            //    renderer.enabled = true;
-            //}
-
-            _effector.PlayFinishEffects(transform.position);
+            _effector.PlayFinishNegativeEffects(transform.position);
             _finishPositionTile.SetDefaultState();
+
+            TryMoving(_finishPositionTile, _startPositionTile);
         }
         else
         {
@@ -291,11 +286,6 @@ public class CarMover : MonoBehaviour
         {
             _map.AddObstacle(_finishPositionTile.cordX, _finishPositionTile.cordY);
             _counter.AddScore(_finishPositionTile.Reward);
-
-            //foreach (MeshRenderer renderer in _meshRenderers)
-            //{
-            //    renderer.enabled = false;
-            //}
 
             _effector.PlayFinishEffects(transform.position);
             _finishPositionTile.SetWinnerState();

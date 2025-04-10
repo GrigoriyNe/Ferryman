@@ -83,13 +83,6 @@ public class MapLogic : MonoBehaviour
         _emptyCellObstacle = new List<TileHelper>();
         _tilePool.Clean();
 
-        //foreach (TileHelper item in _tiles)
-        //{
-        //    item.RemoveWalls();
-        //    item.spriteRenderer.sprite = _obstacleView.GetSpriteEmpty();
-        //    item.spriteRenderer.gameObject.SetActive(false);
-        //    item.gameObject.SetActive(false);
-        //}
         _tiles = null;
     }
 
@@ -268,7 +261,6 @@ public class MapLogic : MonoBehaviour
 
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen(_tiles[x, y].transform);
-        //    _carFinishPoints.Add(_tiles[x, y]);
     }
 
     public void AddSpesialCarStartPoint(int x, int y)
@@ -289,7 +281,6 @@ public class MapLogic : MonoBehaviour
         _tiles[x, y].gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
         _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial(_tiles[x, y].transform);
-        // _carSpesialFinishPoints.Add(_tiles[x, y]);
     }
 
     public void AddVoid(int x, int y)

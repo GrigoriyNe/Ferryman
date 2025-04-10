@@ -12,7 +12,7 @@ public class CameraMover : MonoBehaviour
 
     private void Awake()
     {
-        if (YandexGame.EnvironmentData.isMobile == true)
+        if (YG2.platform == "Mobile")
         {
             Vector3 mobileCameraPosition = new Vector3(
                 _cameraTransform.position.x,

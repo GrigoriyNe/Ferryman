@@ -5,6 +5,11 @@ using UnityEngine.UI;
 public class PlayWindow : Window
 {
     [SerializeField] private Button _restart;
+    [SerializeField] private Button _restartExecleyDone;
+    [SerializeField] private Button _restartExecleyNone;
+    [SerializeField] private Image _imageExecley;
+    [SerializeField] private RewardCounter _rewardCounter;
+
     [SerializeField] private Button _useBomb;
     [SerializeField] private Game _game;
 
@@ -67,7 +72,31 @@ public class PlayWindow : Window
 
     private void OnButtonRestartClick()
     {
+        if (_rewardCounter.GetRewardValue() < 0)
+        {
+            _imageExecley.gameObject.SetActive(true);
+            _restartExecleyDone.onClick.AddListener(OnRestartExecleyDoneClick);
+            _restartExecleyNone.onClick.AddListener(OnRestartExecleyNoneClick);
+
+            return;
+        }
+
         _game.RoundOver();
+    }
+
+    private void OnRestartExecleyDoneClick()
+    {
+        _game.RoundOver();
+        _imageExecley.gameObject.SetActive(false);
+        _restartExecleyDone.onClick.RemoveListener(OnRestartExecleyDoneClick);
+        _restartExecleyNone.onClick.RemoveListener(OnRestartExecleyNoneClick);
+    }
+
+    private void OnRestartExecleyNoneClick()
+    {
+        _imageExecley.gameObject.SetActive(false);
+        _restartExecleyDone.onClick.RemoveListener(OnRestartExecleyDoneClick);
+        _restartExecleyNone.onClick.RemoveListener(OnRestartExecleyNoneClick);
     }
 
     public void OnButtonSettingsClick()

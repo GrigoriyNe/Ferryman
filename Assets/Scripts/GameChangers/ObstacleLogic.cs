@@ -8,7 +8,7 @@ public class ObstacleLogic : MonoBehaviour
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private Game _game;
     [SerializeField] private Soungs _soungs;
-    [SerializeField] private int _valueDividerRanomCreate = 3;
+    [SerializeField] private int _valueDividerRanomCreate = 2;
     [SerializeField] private ObstacleExplosiveEffector _effector;
 
     [SerializeField] private PlayerInputController _input;
@@ -21,6 +21,7 @@ public class ObstacleLogic : MonoBehaviour
     private List<int[]> _damagebaleTile = new();
 
     private int _maxRangeForRandomCreatigVarible = 20;
+    private bool _isBombUsing = false;
 
     public event Action BombUsed;
 
@@ -34,7 +35,10 @@ public class ObstacleLogic : MonoBehaviour
 
     public void TryActivateSpesialClicked()
     {
-        _input.Clicked += OnBombClicked;
+        if (_isBombUsing == false)
+            _input.Clicked += OnBombClicked;
+        
+        _isBombUsing = true;
 
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
@@ -98,6 +102,8 @@ public class ObstacleLogic : MonoBehaviour
         if (y < _mapLogic.RoadOffVerticalValue + 2)
             return;
 
+        _isBombUsing = false;
+        _input.Clicked -= OnBombClicked;
         TileHelper tile = _mapLogic.GetTile(x, y);
         bool isDamagebaleTakenErlear = false;
         _soungs.PlayBombSoung();
@@ -133,7 +139,6 @@ public class ObstacleLogic : MonoBehaviour
             }
         }
 
-        _input.Clicked -= OnBombClicked;
         BombUsed?.Invoke();
 
         for (int i = 0; i < _filedTileCoord.Count; i++)

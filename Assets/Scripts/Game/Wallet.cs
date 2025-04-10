@@ -28,7 +28,7 @@ public class Wallet : MonoBehaviour
         _obstacle.BombUsed -= RemoveBomb;
     }
 
-    private void OnRewardBomb(int _)
+    private void OnRewardBomb(string _)
     {
         AddBomb(_bombValueForReward);
     }

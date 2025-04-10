@@ -5,21 +5,21 @@ namespace YG
 {
     public class VideoRewarder : MonoBehaviour
     {
-        [SerializeField] private int _adID;
+        [SerializeField] private string _adID;
 
-        public event Action<int> RewardBomb;
+        public event Action<string> RewardBomb;
 
         private void OnEnable()
         {
-            YandexGame.RewardVideoEvent += Rewarded;
+            YG2.onRewardAdv += Rewarded;
         }
 
         private void OnDisable()
         {
-            YandexGame.RewardVideoEvent -= Rewarded;
+            YG2.onRewardAdv -= Rewarded;
         }
 
-        private void Rewarded(int id)
+        private void Rewarded(string id)
         {
             if (id == _adID)
                 RewardBomb?.Invoke(id);

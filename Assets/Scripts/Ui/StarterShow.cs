@@ -6,31 +6,25 @@ namespace YG
 {
     public class StarterShow : MonoBehaviour
     {
-        [SerializeField] private int _adID;
-        [SerializeField] private Button _actionButton;
+        [SerializeField] private string _adID;
 
         private void OnEnable()
         {
-            YandexGame.OpenVideoEvent += OnOpen;
-            YandexGame.CloseVideoEvent += OnClose;
-            YandexGame.ErrorVideoEvent += OnError;
+            YG2.onOpenAnyAdv += OnOpen;
+            YG2.onCloseRewardedAdv += OnClose;
+            YG2.onErrorRewardedAdv += OnError;
         }
 
         private void OnDisable()
         {
-            YandexGame.OpenVideoEvent -= OnOpen;
-            YandexGame.CloseVideoEvent -= OnClose;
-            YandexGame.ErrorVideoEvent -= OnError;
+            YG2.onOpenAnyAdv -= OnOpen;
+            YG2.onCloseRewardedAdv -= OnClose;
+            YG2.onErrorRewardedAdv -= OnError;
         }
 
-        private void Start()
+        public void ButtonRewardClick()
         {
-            _actionButton.onClick.AddListener(OnButtonClick);
-        }
-
-        private void OnButtonClick()
-        {
-            YandexGame.RewVideoShow(_adID);
+            YG2.RewardedAdvShow(_adID);
         }
 
         private void OnOpen()

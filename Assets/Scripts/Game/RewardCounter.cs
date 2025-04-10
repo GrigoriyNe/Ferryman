@@ -7,10 +7,9 @@ public class RewardCounter : MonoBehaviour
 {
     [SerializeField] private MapLogic _map;
     [SerializeField] private TextMeshProUGUI _textWonCell;
-    [SerializeField] private int _minValueForPayBonusStepsLeft = 10;
-    [SerializeField] private int _multiplicateValuePayBonusStepsLeft = 10;
     [SerializeField] private ScoreSteps _stepCounter;
     [SerializeField] private AnimationResources _animation;
+    [SerializeField] private Soungs _soungs;
 
     private List<TileHelper> _startPositions = new List<TileHelper>();
     private List<TileHelper> _startSpesialPositions = new List<TileHelper>();
@@ -49,9 +48,6 @@ public class RewardCounter : MonoBehaviour
                 resultNegative += tileHelper.Reward;
 
         result = _wonValue + resultNegative;
-
-        if (_stepCounter.StepsLeft < _minValueForPayBonusStepsLeft)
-            result += _stepCounter.StepsLeft * _multiplicateValuePayBonusStepsLeft;
 
         return result;
     }
@@ -129,9 +125,15 @@ public class RewardCounter : MonoBehaviour
         _textWonCell.text = GetRewardValue().ToString();
 
         if (tileReward > 0)
+        {
             AnimatedChanged();
+            _soungs.PlayCoinPositiveSoung();
+        }
         else
+        {
             AnimatedNegativeChanged();
+            _soungs.PlayCoinNegativeSoung();
+        }
     }
 
     public void ChangeRewardCell(TileHelper tile)

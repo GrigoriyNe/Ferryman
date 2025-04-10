@@ -13,6 +13,20 @@ public class Soungs : MonoBehaviour
     [SerializeField] private AudioSource _garageSoung;
     [SerializeField] private AudioSource _startCreateCars;
 
+    [SerializeField] private List<AudioClip> _audioClipsPositive;
+    [SerializeField] private List<AudioClip> _audioClipsNegative;
+    [SerializeField] private AudioSource _audioSource;
+
+    public void PlayCoinPositiveSoung()
+    {
+        _audioSource.PlayOneShot(_audioClipsPositive[Random.Range(0, _audioClipsPositive.Count)]);
+    }
+
+    public void PlayCoinNegativeSoung()
+    {
+        _audioSource.PlayOneShot(_audioClipsNegative[Random.Range(0, _audioClipsNegative.Count)]);
+    }
+
     public void PlayMovedSoung()
     {
         _movedCarSoungs[Random.Range(0, _movedCarSoungs.Count)].Play();

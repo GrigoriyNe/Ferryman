@@ -20,8 +20,7 @@ public class TileHelper : SpawnableObject
 
     public int Reward => _rewardValue;
 
-    private Vector3 _spriteDefaultScale = new Vector3(0.7f,0.7f,0.7f);
-    private Vector3 _spriteWinScale = new Vector3(0.8f,0.8f,0.8f);
+    private float _offsetY = 0.57f;
 
 
     private void OnDisable()
@@ -50,14 +49,12 @@ public class TileHelper : SpawnableObject
 
     public void SetWinnerState()
     {
-      //  spriteRenderer.transform.localScale = _spriteWinScale;
-        spriteRenderer.transform.position = new Vector3(spriteRenderer.transform.position.x, 0.66f, spriteRenderer.transform.position.z);
+        spriteRenderer.transform.position = new Vector3(spriteRenderer.transform.position.x, _offsetY, spriteRenderer.transform.position.z);
         _rewardView.color = Color.green;
     }
 
     public void SetDefaultState()
     {
-      //  spriteRenderer.transform.localScale = _spriteDefaultScale;
         spriteRenderer.transform.position = new Vector3 (spriteRenderer.transform.position.x, 0, spriteRenderer.transform.position.z);
         _rewardView.color = Color.yellow;
     }

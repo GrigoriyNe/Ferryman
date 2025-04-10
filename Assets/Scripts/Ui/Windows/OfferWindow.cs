@@ -1,13 +1,15 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public abstract class OfferWindow : Window
 {
     [SerializeField] private Button _gold;
     [SerializeField] private Button _revard;
-    [SerializeField] private Game _game;
-    
+    [SerializeField] private Game _game; 
+    [SerializeField] private StarterShow _videoRewarder; 
+
     public override void OnEnabled()
     {
         _gold.onClick.AddListener(OnButtonGoldClick);
@@ -21,7 +23,7 @@ public abstract class OfferWindow : Window
 
     public void OnButtonRevard()
     {
-        Close();
+        _videoRewarder.ButtonRewardClick();
     }
 
     public abstract void OnButtonGoldClick();

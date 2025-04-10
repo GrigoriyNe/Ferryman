@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CarMoverEffector : MonoBehaviour
 {
@@ -53,6 +54,11 @@ public class CarMoverEffector : MonoBehaviour
     public void PlayFinishEffects(Vector3 target)
     {
         _effectorObstacle.ChangeViewCarEffects(target);
+    }
+
+    public void PlayFinishNegativeEffects(Vector3 target)
+    {
+        _effectorObstacle.ChangeViewCarNegativeEffects(target);
     }
 
     private IEnumerator RemoveEffect(ParticleSystemRenderer effect)

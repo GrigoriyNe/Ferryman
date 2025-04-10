@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using YG;
 
 public class Game : MonoBehaviour
@@ -20,7 +19,6 @@ public class Game : MonoBehaviour
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private CameraMover _cameraMover;
     [SerializeField] private RewardCounter _rewardCounter;
-    [SerializeField] private OfferWindowSpesialRemoveOstacle _offerBomb;
     [SerializeField] private Soungs _soungs;
     [SerializeField] private Scenes _scenes;
     [SerializeField] private Canvas _offerRestart; 
@@ -72,7 +70,6 @@ public class Game : MonoBehaviour
         }
         else
         {
-            MakeOffer();
             return false;
         }
     }
@@ -83,10 +80,6 @@ public class Game : MonoBehaviour
         {
             _obstacle.TryActivateSpesialClicked();
             _wallet.ActivateBomb();
-        }
-        else
-        {
-            MakeOffer();
         }
     }
 
@@ -115,7 +108,7 @@ public class Game : MonoBehaviour
 
         if (_currentRound == RoundSecondBoat)
         {
-            if (YandexGame.EnvironmentData.isMobile == true)
+            if (YG2.platform == "Mobile")
             {
                 _cameraMover.Zoom();
             }
@@ -125,7 +118,7 @@ public class Game : MonoBehaviour
         }
         else if (_currentRound == RoundThirdBoat)
         {
-            if (YandexGame.EnvironmentData.isMobile == true)
+            if (YG2.platform == "Mobile")
             {
                 _cameraMover.Zoom();
             }
@@ -154,11 +147,6 @@ public class Game : MonoBehaviour
         _wait2Second = new WaitForSeconds(_delay2Second);
         _wait3Second = new WaitForSeconds(_delay3Second);
         _wait4Second = new WaitForSeconds(_delay4Second);
-    }
-
-    private void MakeOffer()
-    {
-        _offerBomb.Open();
     }
 
     private IEnumerator ChangeRound()

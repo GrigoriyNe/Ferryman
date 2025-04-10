@@ -2,14 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ObstacleExplosiveEffector : MonoBehaviour
 {
     [SerializeField] private ParticleSystemRenderer _explosiveEffect;
     [SerializeField] private ParticleSystemRenderer _changeViewCarEffect;
+    [SerializeField] private ParticleSystemRenderer _changeViewCarNegativeEffect;
 
     private Queue<ParticleSystemRenderer> _explosiveEffects = new Queue<ParticleSystemRenderer>();
     private Queue<ParticleSystemRenderer> _changeViewCarEffects = new Queue<ParticleSystemRenderer>();
+    private Queue<ParticleSystemRenderer> _changeViewCarNegativeEffects = new Queue<ParticleSystemRenderer>();
 
     private float _delayValue = 0.3f;
     private WaitForSeconds _delay;
@@ -24,7 +27,11 @@ public class ObstacleExplosiveEffector : MonoBehaviour
         if (_changeViewCarEffects.Count == 0)
             _changeViewCarEffects.Enqueue(_changeViewCarEffect);
 
+        if (_changeViewCarNegativeEffects.Count == 0)
+            _changeViewCarNegativeEffects.Enqueue(_changeViewCarNegativeEffect);
+
         StartCoroutine(RemoveEffect(_changeViewCarEffects.Dequeue()));
+        StartCoroutine(RemoveEffectNegative(_changeViewCarNegativeEffects.Dequeue()));
     }
 
     public void ExplosiveEffects(Vector3 target)
@@ -65,6 +72,25 @@ public class ObstacleExplosiveEffector : MonoBehaviour
         StartCoroutine(RemoveEffect(effect));
     }
 
+    public void ChangeViewCarNegativeEffects(Vector3 target)
+    {
+        ParticleSystemRenderer effect;
+
+        if (_changeViewCarNegativeEffects.Count == 0)
+        {
+            _changeViewCarNegativeEffects.Enqueue(_changeViewCarNegativeEffect);
+            effect = _changeViewCarNegativeEffects.Dequeue();
+        }
+        else
+        {
+            effect = _changeViewCarNegativeEffects.Dequeue();
+        }
+
+        effect.transform.position = target;
+        effect.gameObject.SetActive(true);
+        StartCoroutine(RemoveEffectNegative(effect));
+    }
+
     private IEnumerator RemoveEffectExplosive(ParticleSystemRenderer effect)
     {
         yield return _delay;
@@ -79,5 +105,13 @@ public class ObstacleExplosiveEffector : MonoBehaviour
 
         effect.gameObject.SetActive(false);
         _changeViewCarEffects.Enqueue(effect);
+    }
+
+    private IEnumerator RemoveEffectNegative(ParticleSystemRenderer effect)
+    {
+        yield return _delay;
+
+        effect.gameObject.SetActive(false);
+        _changeViewCarNegativeEffects.Enqueue(effect);
     }
 }
