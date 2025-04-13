@@ -30,8 +30,7 @@ public class MapSecond : Map
     }
     public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetVaribleObstaclePlaces(Height - 4, 0, 3);  
-        _logic.SetVaribleObstaclePlaces(Height - 3, 1, 3);
+        _logic.SetVaribleObstaclePlaces(1, 5, _roadOffVerticalValue + 3, (Height - 3));
     }
 
     private void CreateItemOnMap()
@@ -56,7 +55,7 @@ public class MapSecond : Map
         for (int i = 0; i < 4; i++)
             _obstaleLogic.SetBlockedFinishPlace(_logic.GetTile(i, Height - 2));
 
-        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 3));
+        _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 2));
         _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(4, Height - 4));
 
         for (int i = 0; i < 4; i++)
@@ -67,9 +66,9 @@ public class MapSecond : Map
             for (int i = 1; i < 4; i++)
                 _logic.AddCarStartPoint(i, j);
 
-        _logic.AddSpesialCarFinishPoint(4, Height - 3);
+        _logic.AddSpesialCarFinishPoint(4, Height - 2);
         _logic.AddSpesialCarFinishPoint(4, Height - 4);
-        _logic.AddSpesialCarFinishPoint(4, Height - 5);
+        _logic.AddSpesialCarFinishPoint(4, Height - 6);
 
         _logic.AddSpesialCarStartPoint(1, 2);
         _logic.AddSpesialCarStartPoint(3, 1);

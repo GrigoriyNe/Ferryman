@@ -32,8 +32,7 @@ public class MapThird : Map
 
     public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetVaribleObstaclePlaces(Height - 1, 1, 3);
-        _logic.SetVaribleObstaclePlaces(Height - 2, 2, 3);
+        _logic.SetVaribleObstaclePlaces(1, 5, _roadOffVerticalValue + 3, (Height - 2));
     }
 
     private void CreateItemOnMap()

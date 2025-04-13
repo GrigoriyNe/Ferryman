@@ -79,6 +79,15 @@ public class PlayerInputController : MonoBehaviour
 
                 if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
                 {
+                    if (hit.collider.TryGetComponent(out WaterZone _))
+                    {
+                        _soung.PlayWaterSplash();
+                    }
+                    else
+                    {
+                        _soung.PlayClickSoung();
+                    }
+
                     if (hit.collider.TryGetComponent(out Car car))
                     {
                         car.Move();

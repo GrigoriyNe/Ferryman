@@ -7,6 +7,7 @@ public class Wallet : MonoBehaviour
     [SerializeField] private VideoRewarder _rewardBomb;
     [SerializeField] int _bombValueForReward = 2;
     [SerializeField] private ObstacleLogic _obstacle;
+    [SerializeField] private Soungs _soungs;
 
     public event Action<int> ChangedMoney;
     public event Action<int> ChangedBomb;
@@ -68,6 +69,7 @@ public class Wallet : MonoBehaviour
     {
         Bomb += value;
         ChangedBomb?.Invoke(Bomb);
+        _soungs.PlayCoinPositiveSoung();
     }
 
     public void RemoveBomb()

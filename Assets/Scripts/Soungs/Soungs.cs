@@ -15,16 +15,25 @@ public class Soungs : MonoBehaviour
 
     [SerializeField] private List<AudioClip> _audioClipsPositive;
     [SerializeField] private List<AudioClip> _audioClipsNegative;
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioSource _audioSourceCoins;
+
+    [SerializeField] private List<AudioClip> _audioSplashs;
+    [SerializeField] private AudioSource _audioSourceSplash;
+
+    public void PlayWaterSplash()
+    {
+        _audioSourceSplash.PlayOneShot(_audioSplashs[Random.Range(0, _audioSplashs.Count)]);
+    }
+
 
     public void PlayCoinPositiveSoung()
     {
-        _audioSource.PlayOneShot(_audioClipsPositive[Random.Range(0, _audioClipsPositive.Count)]);
+        _audioSourceCoins.PlayOneShot(_audioClipsPositive[Random.Range(0, _audioClipsPositive.Count)]);
     }
 
     public void PlayCoinNegativeSoung()
     {
-        _audioSource.PlayOneShot(_audioClipsNegative[Random.Range(0, _audioClipsNegative.Count)]);
+        _audioSourceCoins.PlayOneShot(_audioClipsNegative[Random.Range(0, _audioClipsNegative.Count)]);
     }
 
     public void PlayMovedSoung()

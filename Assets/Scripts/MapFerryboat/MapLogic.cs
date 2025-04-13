@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapLogic : MonoBehaviour
@@ -417,23 +416,17 @@ public class MapLogic : MonoBehaviour
         return point;
     }
 
-    public void SetVaribleObstaclePlaces(int horizontal, int vertical, int length)
+    public void SetVaribleObstaclePlaces(int horizontalMinValue, int horizontalMaxValue, int verticalMinValue, int verticalMaxValue)
     {
-        for (int i = 0; i < length; i++)
+        for (int i = horizontalMinValue; i < horizontalMaxValue; i++)
         {
-            if (_map[i, horizontal].IsObstacle == false)
+            for (int j = verticalMinValue; j < verticalMaxValue; j++)
             {
-                TileHelper tile = GetTile(i, horizontal);
-                _emptyCellObstacle.Add(tile);
-            }
-        }
-
-        for (int i = RoadOffVerticalValue + 3; i < _width - 2; i++)
-        {
-            if (_map[vertical, i].IsObstacle == false)
-            {
-                TileHelper tile = GetTile(vertical, i);
-                _emptyCellObstacle.Add(tile);
+                if (_map[i, j].IsObstacle == false)
+                {
+                    TileHelper tile = GetTile(i, j);
+                    _emptyCellObstacle.Add(tile);
+                }
             }
         }
     }

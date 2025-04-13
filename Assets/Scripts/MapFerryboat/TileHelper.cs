@@ -22,7 +22,6 @@ public class TileHelper : SpawnableObject
 
     private float _offsetY = 0.57f;
 
-
     private void OnDisable()
     {
         spriteRenderer.sprite = _defaultSprite;

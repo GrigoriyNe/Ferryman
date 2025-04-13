@@ -20,9 +20,8 @@ public class CameraMover : MonoBehaviour
                 _cameraTransform.position.z);
 
             _cameraTransform.position = mobileCameraPosition;
+            _sensetivity = _sensetivity / 2;
         }
-
-        _sensetivity = _sensetivity / 2;
     }
 
     public void DragMove(Vector2 direction)

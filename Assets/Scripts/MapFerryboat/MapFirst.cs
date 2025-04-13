@@ -32,8 +32,7 @@ public class MapFirst : Map
 
     public override void SetVaribleObstaclePlaces()
     {
-        _logic.SetVaribleObstaclePlaces(Height - 3, 0, 4);
-        _logic.SetVaribleObstaclePlaces(Height - 4, 1, 3);
+        _logic.SetVaribleObstaclePlaces(1, 4,  _roadOffVerticalValue + 3, _roadOffVerticalValue + 5);
     }
 
     private void CreateItemOnMap()

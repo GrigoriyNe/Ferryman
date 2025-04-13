@@ -8,7 +8,6 @@ public class ObstacleLogic : MonoBehaviour
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private Game _game;
     [SerializeField] private Soungs _soungs;
-    [SerializeField] private int _valueDividerRanomCreate = 2;
     [SerializeField] private ObstacleExplosiveEffector _effector;
 
     [SerializeField] private PlayerInputController _input;
@@ -20,8 +19,9 @@ public class ObstacleLogic : MonoBehaviour
     private List<TileHelper> _finishSpesialBlockTile = new();
     private List<int[]> _damagebaleTile = new();
 
-    private int _maxRangeForRandomCreatigVarible = 20;
+    private int _valueRanomCreateMoveThan = 5;
     private bool _isBombUsing = false;
+    private bool _isFirstRound = true;
 
     public event Action BombUsed;
 
@@ -31,13 +31,14 @@ public class ObstacleLogic : MonoBehaviour
         _damagebaleTile = new List<int[]>();
         _finishBlockTile = new List<TileHelper>();
         _finishSpesialBlockTile = new List<TileHelper>();
+        _isFirstRound = true;
     }
 
     public void TryActivateSpesialClicked()
     {
         if (_isBombUsing == false)
             _input.Clicked += OnBombClicked;
-        
+
         _isBombUsing = true;
 
         for (int i = 0; i < _filedTileCoord.Count; i++)
@@ -64,29 +65,31 @@ public class ObstacleLogic : MonoBehaviour
 
     public void CreateObstacle()
     {
-        if (_filedTileCoord.Count > 0)
-            SetCreatedEarlier();
-
-        if (_filedTileCoord.Count < 1)
+        if (_isFirstRound == false)
         {
-            _mapLogic.CreatingObstacle(_mapLogic.RoadOffVerticalValue, _mapLogic.RoadOffVerticalValue);
-
-            foreach (TileHelper tile in _finishBlockTile)
-            {
-                _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
-            }
-
-            foreach (TileHelper tile in _finishSpesialBlockTile)
-            {
-                _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
-            }
+            SetCreatedEarlier();
+            return;
         }
+
+        foreach (TileHelper tile in _finishBlockTile)
+        {
+            _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
+        }
+
+        foreach (TileHelper tile in _finishSpesialBlockTile)
+        {
+            _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
+        }
+
+        _isFirstRound = false;
     }
 
     public void SetRandomObstacle()
     {
-        if (UnityEngine.Random.Range(0, _maxRangeForRandomCreatigVarible) % _valueDividerRanomCreate == 0)
-            _mapLogic.CreateRandomObstacle();
+        if (UnityEngine.Random.Range(0, _valueRanomCreateMoveThan + 1) >= _valueRanomCreateMoveThan)
+            return;
+
+        _mapLogic.CreateRandomObstacle();
     }
 
     public void RememberObstacle(TileHelper filedTile)

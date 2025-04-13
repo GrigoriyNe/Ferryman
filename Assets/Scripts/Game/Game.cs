@@ -137,6 +137,7 @@ public class Game : MonoBehaviour
             return;
         }
 
+        YG2.MetricaSend(_currentRound.ToString());
         StartCoroutine(ChangeRound());
     }
     private void SetWaitings()
