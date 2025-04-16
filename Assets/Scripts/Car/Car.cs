@@ -18,4 +18,9 @@ public class Car : SpawnableObject
     {
         _mover.Move();
     }
+
+    public void MoveAway()
+    {
+        _mover.MoveAway();
+    }
 }

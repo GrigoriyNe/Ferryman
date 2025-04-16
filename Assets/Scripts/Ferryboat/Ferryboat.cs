@@ -10,6 +10,8 @@ public class Ferryboat : MonoBehaviour
     [SerializeField] private FerryboatAnimator _animator;
     [SerializeField] private Namer _places;
 
+    private bool _isCargoOpen = true;
+
     public void Activate()
     {
         StartCoroutine(Activating());
@@ -38,10 +40,12 @@ public class Ferryboat : MonoBehaviour
     {
         _map.Deactivate();
         _blind.Close();
+
         yield return new WaitForSeconds(1f);
 
         _animator.PlayFinish();
         _numberingText.Deactivate();
+        _isCargoOpen = true;
     }
 
     public Map GetMap()

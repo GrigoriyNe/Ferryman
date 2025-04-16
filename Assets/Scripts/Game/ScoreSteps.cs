@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class ScoreSteps : MonoBehaviour
@@ -7,7 +8,15 @@ public class ScoreSteps : MonoBehaviour
 
     public event Action<int> Changed;
 
+    private float _delayValue = 3f;
+    private WaitForSeconds _delay;
+
     public int StepsLeft { get; private set; }
+
+    private void OnEnable()
+    {
+        _delay = new WaitForSeconds(_delayValue);
+    }
 
     private void OnDisable()
     {
@@ -26,7 +35,14 @@ public class ScoreSteps : MonoBehaviour
         StepsLeft -= 1;
         Changed?.Invoke(StepsLeft - 1);
     
-        if(StepsLeft == 0)
-            _game.RoundOver();
+        if(StepsLeft == 1)
+            StartCoroutine(EndingRound());
+    }
+
+    private IEnumerator EndingRound()
+    {
+        yield return _delay;
+
+        _game.OfferRoundOver();
     }
 }

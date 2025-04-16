@@ -24,7 +24,6 @@ public abstract class OfferWindow : Window
     public void OnButtonRevard()
     {
         _videoRewarder.ButtonRewardClick();
-        Close();
     }
 
     public abstract void OnButtonGoldClick();

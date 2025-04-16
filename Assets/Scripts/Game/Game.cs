@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
@@ -8,6 +9,8 @@ public class Game : MonoBehaviour
     private const int RoundSecondBoat = 5;
     private const int RoundThirdBoat = 10;
     private const int RoundRandomBoat = 15;
+    private const int LowerMoney = -50;
+
     private const int StartFerryboat = 0;
 
     [SerializeField] private FabricCars _fabricCars;
@@ -22,7 +25,8 @@ public class Game : MonoBehaviour
     [SerializeField] private Soungs _soungs;
     [SerializeField] private Scenes _scenes;
     [SerializeField] private Canvas _offerRestart; 
-    [SerializeField] private LeaderbordCounter _leaderbordCounter;
+    [SerializeField] private LeaderbordCounter _leaderbordCounter; 
+    [SerializeField] private AnimationResources _restartInfoView; 
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
@@ -79,16 +83,24 @@ public class Game : MonoBehaviour
         if (_wallet.IsEnoughBomb())
         {
             _obstacle.TryActivateSpesialClicked();
-            _wallet.ActivateBomb();
         }
+    }
+
+    public void OfferRoundOver()
+    {
+        _soungs.PlayCreatCar();
+        _fabricCars.RecoverPositionNotParkCars();
+        _restartInfoView.ActivateRestartButtomAnimatoin();
+        _bridge.CloseOnRound();
     }
 
     public void RoundOver()
     {
         _wallet.AddMoney(_rewardCounter.GetRewardValue());
         _leaderbordCounter.ChangeCounter();
+        _restartInfoView.DeactivateRestartButtomAnimatoin();
 
-        if (_wallet.Money < -200)
+        if (_wallet.Money < LowerMoney)
         {
             _offerRestart.gameObject.SetActive(true);
             Time.timeScale = 0;
@@ -99,7 +111,6 @@ public class Game : MonoBehaviour
         if (_creatigCars != null)
             StopCoroutine(_creatigCars);
 
-        _soungs.PlayGarageSoung();
         _soungs.PlayRestartSoung();
 
         _wallet.AddBomb(1);
@@ -108,7 +119,7 @@ public class Game : MonoBehaviour
 
         if (_currentRound == RoundSecondBoat)
         {
-            if (YG2.platform == "Mobile")
+            if (YG2.envir.isMobile)
             {
                 _cameraMover.Zoom();
             }
@@ -118,7 +129,7 @@ public class Game : MonoBehaviour
         }
         else if (_currentRound == RoundThirdBoat)
         {
-            if (YG2.platform == "Mobile")
+            if (YG2.envir.isMobile)
             {
                 _cameraMover.Zoom();
             }
@@ -140,6 +151,7 @@ public class Game : MonoBehaviour
         YG2.MetricaSend(_currentRound.ToString());
         StartCoroutine(ChangeRound());
     }
+
     private void SetWaitings()
     {
         _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
@@ -199,7 +211,6 @@ public class Game : MonoBehaviour
     private IEnumerator OpenCargo()
     {
         yield return _wait3Second;
-        _soungs.PlayGarageSoung();
         _obstacle.CreateObstacle();
         _obstacle.SetRandomObstacle();
 

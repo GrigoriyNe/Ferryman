@@ -19,11 +19,13 @@ public class ObstacleLogic : MonoBehaviour
     private List<TileHelper> _finishSpesialBlockTile = new();
     private List<int[]> _damagebaleTile = new();
 
-    private int _valueRanomCreateMoveThan = 5;
+    private int _maxValueSpawnOpstacles = 3;
     private bool _isBombUsing = false;
     private bool _isFirstRound = true;
 
     public event Action BombUsed;
+    public event Action BombUse;
+    public event Action BombCanceled;
 
     public void Clean()
     {
@@ -36,10 +38,23 @@ public class ObstacleLogic : MonoBehaviour
 
     public void TryActivateSpesialClicked()
     {
-        if (_isBombUsing == false)
-            _input.Clicked += OnBombClicked;
+        if (_isBombUsing)
+        {
+            _input.Clicked -= OnBombClicked;
+            BombCanceled?.Invoke();
 
+            for (int i = 0; i < _filedTileCoord.Count; i++)
+            {
+                _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).DectivateLigther();
+            }
+            _isBombUsing = false;
+
+            return;
+        }
+
+        BombUse?.Invoke();
         _isBombUsing = true;
+        _input.Clicked += OnBombClicked;
 
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
@@ -86,10 +101,12 @@ public class ObstacleLogic : MonoBehaviour
 
     public void SetRandomObstacle()
     {
-        if (UnityEngine.Random.Range(0, _valueRanomCreateMoveThan + 1) >= _valueRanomCreateMoveThan)
-            return;
+        int countCreateOstacles = UnityEngine.Random.Range(0, _maxValueSpawnOpstacles + 1);
 
-        _mapLogic.CreateRandomObstacle();
+        for (int i = 0; i < countCreateOstacles; i++)
+        {
+            _mapLogic.CreateRandomObstacle();
+        }
     }
 
     public void RememberObstacle(TileHelper filedTile)
@@ -105,8 +122,9 @@ public class ObstacleLogic : MonoBehaviour
         if (y < _mapLogic.RoadOffVerticalValue + 2)
             return;
 
-        _isBombUsing = false;
         _input.Clicked -= OnBombClicked;
+        _isBombUsing = false;
+
         TileHelper tile = _mapLogic.GetTile(x, y);
         bool isDamagebaleTakenErlear = false;
         _soungs.PlayBombSoung();
@@ -160,6 +178,23 @@ public class ObstacleLogic : MonoBehaviour
         {
             _mapLogic.CreatingObstacle(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>());
             i += 1;
+        }
+
+        SetCreatedErlealerHalfDamageObstacles();
+    }
+
+    private void SetCreatedErlealerHalfDamageObstacles()
+    {
+        if (_damagebaleTile.Count > 0)
+        {
+            for (int i = 0; i < _damagebaleTile.Count;)
+            {
+                TileHelper halfDamageBox = _mapLogic.GetTile(_damagebaleTile[i].GetValue(0).ConvertTo<int>(),
+                    _damagebaleTile[i].GetValue(1).ConvertTo<int>());
+
+                _obstacleView.GetDamgaeBox(halfDamageBox.transform);
+                i++;
+            }
         }
     }
 }

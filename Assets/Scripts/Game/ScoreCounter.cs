@@ -2,7 +2,7 @@
 
 public class ScoreCounter : MonoBehaviour
 {
-    private const int MultiplicationValue = 2;
+    private const int MultiplicationValue = 1;
 
     [SerializeField] private MapLogic _map;
     [SerializeField] private Game _game;
@@ -15,7 +15,7 @@ public class ScoreCounter : MonoBehaviour
     public void Activate()
     {
         gameObject.SetActive(true);
-        MaxPossibleFinishPlaces = _map.GetMaxPlaceCount() * MultiplicationValue;
+        MaxPossibleFinishPlaces = _map.GetMaxPlaceCount() +1 * MultiplicationValue;
         _step.SetStartValue(MaxPossibleFinishPlaces);
     }
 

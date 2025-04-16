@@ -7,6 +7,8 @@ public class BridgeAnimator : MonoBehaviour
 
     [SerializeField] private Animator _animator;
 
+    private bool _isClose = true;
+
     public void Open()
     {
         _animator.SetTrigger(Opened);
@@ -14,6 +16,15 @@ public class BridgeAnimator : MonoBehaviour
 
     public void Close()
     {
+        if (_isClose)
+            _animator.SetTrigger(Closed);
+
+        _isClose = true;
+    }
+
+    public void CloseOnRound()
+    {
+        _isClose = false;
         _animator.SetTrigger(Closed);
     }
 }

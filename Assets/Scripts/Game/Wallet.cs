@@ -16,6 +16,9 @@ public class Wallet : MonoBehaviour
     public int Money { get; private set; }
 
     public int Bomb { get; private set; }
+    public int StartMoney { get; private set; } = 50;
+    public int StartBomb { get; private set; } = 2;
+
 
     private void OnEnable()
     {
@@ -36,8 +39,8 @@ public class Wallet : MonoBehaviour
 
     private void Start()
     {
-        Money = 200;
-        Bomb = 2;
+        Money = StartMoney;
+        Bomb = StartBomb;
         ChangedMoney?.Invoke(Money);
     }
 
@@ -76,11 +79,6 @@ public class Wallet : MonoBehaviour
     {
         Bomb -= 1;
         ChangedBomb?.Invoke(Bomb);
-    }
-
-    public void ActivateBomb()
-    {
-        BombUse?.Invoke();
     }
 
     public bool IsEnoughBomb()

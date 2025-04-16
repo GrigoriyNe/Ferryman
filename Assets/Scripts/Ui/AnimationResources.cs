@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AnimationResources : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class AnimationResources : MonoBehaviour
     [SerializeField] private Animator _animatorBombUi;
     [SerializeField] private Animator _animatorStepUi;
     [SerializeField] private Animator _animatorLeveUi;
-    [SerializeField] private Animator _animatorRestart; 
+    [SerializeField] private Animator _animatorRestart;
+    [SerializeField] private ScoreSteps _scoreCounter;
+    [SerializeField] private Button _restartButton;
 
     private Coroutine _deativating = null;
     private float _stepDeativatingValue = 0.5f;
@@ -24,6 +27,18 @@ public class AnimationResources : MonoBehaviour
     {
         _UiDeativatingWaing = new WaitForSeconds(_uiDeativatingValue);
         _stepDeativatingWaing = new WaitForSeconds(_stepDeativatingValue);
+    }
+
+    public void ActivateRestartButtomAnimatoin()
+    {
+        _animatorRestart.SetBool(Start, true);
+        _animatorStepUi.SetBool(Start, true);
+    }
+
+    public void DeactivateRestartButtomAnimatoin()
+    {
+        StartCoroutine(DeactivateAnimation(_animatorRestart, _UiDeativatingWaing));
+        _deativating = StartCoroutine(DeactivateAnimation(_animatorStepUi, _stepDeativatingWaing));
     }
 
     public void ActivateMoney()

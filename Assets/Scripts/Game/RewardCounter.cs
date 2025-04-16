@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class RewardCounter : MonoBehaviour
 {
@@ -11,11 +10,11 @@ public class RewardCounter : MonoBehaviour
     [SerializeField] private AnimationResources _animation;
     [SerializeField] private Soungs _soungs;
 
-    private List<TileHelper> _startPositions = new List<TileHelper>();
-    private List<TileHelper> _startSpesialPositions = new List<TileHelper>();
+    private List<TileHelper> _emptyTiles = new List<TileHelper>();
+    private List<TileHelper> _emptySpesialTiles = new List<TileHelper>();
 
-    private List<TileHelper> _filledStartPositions = new List<TileHelper>();
-    private List<TileHelper> _filledStartSpesialPositions = new List<TileHelper>();
+    private List<TileHelper> _filledFinishTiles = new List<TileHelper>();
+    private List<TileHelper> _filledFinishSpesialTile = new List<TileHelper>();
 
     private List<int> _cellPositiveEffect = new List<int>();
     private List<int> _cellNegativEffect = new List<int>();
@@ -26,10 +25,10 @@ public class RewardCounter : MonoBehaviour
 
     private void OnDisable()
     {
-        _startPositions = new List<TileHelper>();
-        _startSpesialPositions = new List<TileHelper>();
-        _filledStartPositions = new List<TileHelper>();
-        _filledStartSpesialPositions = new List<TileHelper>();
+        _emptyTiles = new List<TileHelper>();
+        _emptySpesialTiles = new List<TileHelper>();
+        _filledFinishTiles = new List<TileHelper>();
+        _filledFinishSpesialTile = new List<TileHelper>();
         _wonValue = 0;
         _textWonCell.text = "";
     }
@@ -39,11 +38,11 @@ public class RewardCounter : MonoBehaviour
         int resultNegative = 0;
         int result = 0;
 
-        foreach (TileHelper tileHelper in _filledStartPositions)
+        foreach (TileHelper tileHelper in _filledFinishTiles)
             if (tileHelper.Reward < 0)
                 resultNegative += tileHelper.Reward;
 
-        foreach (TileHelper tileHelper in _filledStartSpesialPositions)
+        foreach (TileHelper tileHelper in _filledFinishSpesialTile)
             if (tileHelper.Reward < 0)
                 resultNegative += tileHelper.Reward;
 
@@ -58,9 +57,9 @@ public class RewardCounter : MonoBehaviour
         {
             if (tile.gameObject.activeSelf)
                 if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
-                    _startPositions.Add(tile);
+                    _emptyTiles.Add(tile);
                 else
-                    _filledStartPositions.Add(tile);
+                    _filledFinishTiles.Add(tile);
         }
     }
 
@@ -70,9 +69,9 @@ public class RewardCounter : MonoBehaviour
         {
             if (tile.gameObject.activeSelf)
                 if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
-                    _startSpesialPositions.Add(tile);
+                    _emptySpesialTiles.Add(tile);
                 else
-                    _filledStartSpesialPositions.Add(tile);
+                    _filledFinishSpesialTile.Add(tile);
         }
     }
 
@@ -80,7 +79,7 @@ public class RewardCounter : MonoBehaviour
     {
         SetCellListEffects();
 
-        foreach (TileHelper tile in _startPositions)
+        foreach (TileHelper tile in _emptyTiles)
         {
             if (tile.gameObject.activeSelf)
             {
@@ -89,7 +88,7 @@ public class RewardCounter : MonoBehaviour
             }
         }
 
-        foreach (TileHelper tile in _startSpesialPositions)
+        foreach (TileHelper tile in _emptySpesialTiles)
         {
             if (tile.gameObject.activeSelf)
             {
@@ -98,7 +97,7 @@ public class RewardCounter : MonoBehaviour
             }
         }
 
-        foreach (TileHelper tile in _filledStartPositions)
+        foreach (TileHelper tile in _filledFinishTiles)
         {
             if (tile.gameObject.activeSelf)
             {
@@ -107,7 +106,7 @@ public class RewardCounter : MonoBehaviour
             }
         }
 
-        foreach (TileHelper tile in _filledStartSpesialPositions)
+        foreach (TileHelper tile in _filledFinishSpesialTile)
         {
             if (tile.gameObject.activeSelf)
             {
@@ -152,21 +151,21 @@ public class RewardCounter : MonoBehaviour
 
     private void SetCellListEffects()
     {
-        _cellPositiveEffect.Add(5);
-        _cellPositiveEffect.Add(10);
-        _cellPositiveEffect.Add(15);
+        _cellPositiveEffect.Add(1);
+        _cellPositiveEffect.Add(2);
+        _cellPositiveEffect.Add(3);
 
-        _cellNegativEffect.Add(-10);
-        _cellNegativEffect.Add(-15);
-        _cellNegativEffect.Add(-25);
+        _cellNegativEffect.Add(-1);
+        _cellNegativEffect.Add(-2);
+        _cellNegativEffect.Add(-3);
 
-        _cellSpesialPositiveEffect.Add(50);
-        _cellSpesialPositiveEffect.Add(55);
-        _cellSpesialPositiveEffect.Add(65);
+        _cellSpesialPositiveEffect.Add(4);
+        _cellSpesialPositiveEffect.Add(5);
+        _cellSpesialPositiveEffect.Add(6);
 
-        _cellSpesialNegativeEffect.Add(-20);
-        _cellSpesialNegativeEffect.Add(-25);
-        _cellSpesialNegativeEffect.Add(-30);
+        _cellSpesialNegativeEffect.Add(-4);
+        _cellSpesialNegativeEffect.Add(-5);
+        _cellSpesialNegativeEffect.Add(-6);
     }
 
     private void AnimatedChanged()

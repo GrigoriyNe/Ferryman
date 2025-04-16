@@ -16,7 +16,8 @@ public class ViewResources : MonoBehaviour
         _wallet.ChangedMoney += OnChangedMoney;
         _wallet.ChangedBomb += OnChangedCountBomb;
         _obstacleLogic.BombUsed += OnDeactivateBomb;
-        _wallet.BombUse += OnActivatedBomb;
+        _obstacleLogic.BombCanceled += OnDeactivateBomb;
+        _obstacleLogic.BombUse += OnActivatedBomb;
     }
 
     private void OnDisable()
@@ -24,7 +25,8 @@ public class ViewResources : MonoBehaviour
         _wallet.ChangedMoney -= OnChangedMoney;
         _wallet.ChangedBomb -= OnChangedCountBomb;
         _obstacleLogic.BombUsed -= OnDeactivateBomb;
-        _wallet.BombUse -= OnActivatedBomb;
+        _obstacleLogic.BombCanceled -= OnDeactivateBomb;
+        _obstacleLogic.BombUse -= OnActivatedBomb;
     }
 
     private void OnChangedCountBomb(int value)

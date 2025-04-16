@@ -10,7 +10,6 @@ public class OfferWindowSpesialRemoveOstacle : OfferWindow
         if (TryPay(_goldPrice))
         {
             _wallet.AddBomb(1);
-            Close();
         }
     }
 }

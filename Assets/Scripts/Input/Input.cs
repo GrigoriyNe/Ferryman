@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerInputController : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _lookSpeed;
     [SerializeField] private CameraMover _cameraMover;
     [SerializeField] private Soungs _soung;
 
@@ -108,7 +105,6 @@ public class PlayerInputController : MonoBehaviour
 
     private IEnumerator Cooldown()
     {
-        
         yield return new WaitForSeconds(0.3f);
 
         _input.Player.Click.performed += OnClick;

@@ -11,8 +11,6 @@ public class PlayWindow : Window
     [SerializeField] private RewardCounter _rewardCounter;
 
     [SerializeField] private Button _useBomb;
-    [SerializeField] private Button _shopBomb;
-    [SerializeField] private CanvasGroup _shopBombCanvas;
     [SerializeField] private Game _game;
 
     [SerializeField] private Button _settings;
@@ -27,7 +25,6 @@ public class PlayWindow : Window
     {
         _restart.onClick.AddListener(OnButtonRestartClick);
         _useBomb.onClick.AddListener(OnButtonUseBombClick);
-        _shopBomb.onClick.AddListener(OnButtonShopBombClick);
 
         _settings.onClick.AddListener(OnButtonSettingsClick);
         _settingExit.onClick.AddListener(OnExitSettingClick);
@@ -47,7 +44,6 @@ public class PlayWindow : Window
     {
         _restart.onClick.RemoveListener(OnButtonRestartClick);
         _useBomb.onClick.RemoveListener(OnButtonUseBombClick);
-        _shopBomb.onClick.RemoveListener(OnButtonShopBombClick);
 
         _settings.onClick.RemoveListener(OnButtonSettingsClick);
         _settingExit.onClick.RemoveListener(OnExitSettingClick);
@@ -57,11 +53,6 @@ public class PlayWindow : Window
 
         _game.StartSceneDone -= Activate;
         _game.FinishSceneStart -= Deactivate;
-    }
-
-    private void OnButtonShopBombClick()
-    {
-        _shopBombCanvas.gameObject.SetActive(true);
     }
 
     private void OnButtonUseBombClick()
@@ -112,6 +103,9 @@ public class PlayWindow : Window
     {
         _settingCanvas.gameObject.SetActive(true);
         _settingExit.gameObject.SetActive(true);
+
+        _leaderbodCanvas.gameObject.SetActive(false);
+        _leaderbodExit.gameObject.SetActive(false);
     }
 
     private void OnExitSettingClick()
@@ -124,6 +118,9 @@ public class PlayWindow : Window
     {
         _leaderbodCanvas.gameObject.SetActive(true);
         _leaderbodExit.gameObject.SetActive(true);
+
+        _settingCanvas.gameObject.SetActive(false);
+        _settingExit.gameObject.SetActive(false);
     }
 
     private void OnExitLeaderbodClick()

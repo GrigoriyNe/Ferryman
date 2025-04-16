@@ -29,7 +29,7 @@ public class FabricCars : MonoBehaviour
         car.transform.rotation = Quaternion.identity;
         car.gameObject.SetActive(true);
         _createdCars.Add(car);
-        
+
         car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition(), _places);
     }
 
@@ -45,6 +45,19 @@ public class FabricCars : MonoBehaviour
         _createdSpesialCars.Add(car);
 
         car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
+    }
+
+    public void RecoverPositionNotParkCars()
+    {
+        foreach (Car car in _createdCars)
+        {
+            car.MoveAway();
+        }
+
+        foreach (SpesialCar car in _createdSpesialCars)
+        {
+            car.MoveAway();
+        }
     }
 
     public void DeactivateCars()

@@ -45,7 +45,7 @@ public class NamesOfParkingPlacesSecond : Namer
 
         if (_placesVertical.ContainsKey(vertical) && vertical == 4)
         {
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal ==  _map.GetHeight() - 3)
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal ==  _map.GetHeight() - 2)
             {
                 return "g";
             }
@@ -55,7 +55,7 @@ public class NamesOfParkingPlacesSecond : Namer
                 return "h";
             }
 
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == _map.GetHeight() - 5)
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == _map.GetHeight() - 6)
             {
                 return "i";
             }
