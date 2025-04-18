@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ObstacleLogic : MonoBehaviour
 {
+    private const int Offset = 1;
+
     [SerializeField] private MapLogic _mapLogic;
     [SerializeField] private Game _game;
     [SerializeField] private Soungs _soungs;
@@ -88,12 +90,12 @@ public class ObstacleLogic : MonoBehaviour
 
         foreach (TileHelper tile in _finishBlockTile)
         {
-            _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
+            _mapLogic.CreatingObstacle(tile.CordX, tile.CordY);
         }
 
         foreach (TileHelper tile in _finishSpesialBlockTile)
         {
-            _mapLogic.CreatingObstacle(tile.cordX, tile.cordY);
+            _mapLogic.CreatingObstacle(tile.CordX, tile.CordY);
         }
 
         _isFirstRound = false;
@@ -101,7 +103,7 @@ public class ObstacleLogic : MonoBehaviour
 
     public void SetRandomObstacle()
     {
-        int countCreateOstacles = UnityEngine.Random.Range(0, _maxValueSpawnOpstacles + 1);
+        int countCreateOstacles = UnityEngine.Random.Range(0, _maxValueSpawnOpstacles + Offset);
 
         for (int i = 0; i < countCreateOstacles; i++)
         {
@@ -111,7 +113,7 @@ public class ObstacleLogic : MonoBehaviour
 
     public void RememberObstacle(TileHelper filedTile)
     {
-        _filedTileCoord.Add(new int[] { filedTile.cordX, filedTile.cordY });
+        _filedTileCoord.Add(new int[] { filedTile.CordX, filedTile.CordY });
     }
 
     private void OnBombClicked(int x, int y)
@@ -129,7 +131,7 @@ public class ObstacleLogic : MonoBehaviour
         bool isDamagebaleTakenErlear = false;
         _soungs.PlayBombSoung();
         _effector.ExplosiveEffects(tile.transform.position);
-
+        
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
             _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).DectivateLigther();
@@ -139,19 +141,22 @@ public class ObstacleLogic : MonoBehaviour
         {
             for (int i = 0; i < _damagebaleTile.Count; i++)
             {
-                if (_damagebaleTile[i].GetValue(0).ConvertTo<int>() == tile.cordX)
+                if (_damagebaleTile[i].GetValue(0).ConvertTo<int>() == tile.CordX)
                 {
-                    if (_damagebaleTile[i].GetValue(1).ConvertTo<int>() == tile.cordY)
+                    if (_damagebaleTile[i].GetValue(1).ConvertTo<int>() == tile.CordY)
                     {
                         _damagebaleTile.Remove(_damagebaleTile[i]);
                         isDamagebaleTakenErlear = true;
+                        ExplosiveBomb(tile);
+
+                        return;
                     }
                 }
             }
 
             if (isDamagebaleTakenErlear == false)
             {
-                _damagebaleTile.Add(new int[] { tile.cordX, tile.cordY });
+                _damagebaleTile.Add(new int[] { tile.CordX, tile.CordY });
                 _input.Clicked -= OnBombClicked;
                 BombUsed?.Invoke();
                 _obstacleView.GetDamgaeBox(tile.transform);
@@ -160,16 +165,25 @@ public class ObstacleLogic : MonoBehaviour
             }
         }
 
+        ExplosiveBomb(tile);
+    }
+
+    private void ExplosiveBomb(TileHelper tile)
+    {
         BombUsed?.Invoke();
 
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
-            if (_filedTileCoord[i].GetValue(0).ConvertTo<int>() == tile.cordX)
-                if (_filedTileCoord[i].GetValue(1).ConvertTo<int>() == tile.cordY)
+            if (_filedTileCoord[i].GetValue(0).ConvertTo<int>() == tile.CordX)
+            {
+                if (_filedTileCoord[i].GetValue(1).ConvertTo<int>() == tile.CordY)
+                {
                     _filedTileCoord.Remove(_filedTileCoord[i]);
+                }
+            }
         }
 
-        _mapLogic.DeleteObstacle(tile.cordX, tile.cordY);
+        _mapLogic.DeleteObstacle(tile.CordX, tile.CordY);
     }
 
     private void SetCreatedEarlier()

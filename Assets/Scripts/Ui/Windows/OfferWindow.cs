@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
@@ -15,6 +14,7 @@ public abstract class OfferWindow : Window
         _gold.onClick.AddListener(OnButtonGoldClick);
         _revard.onClick.AddListener(OnButtonRevard);
     }
+
     public override void OnDisabled()
     {
         _gold.onClick.RemoveListener(OnButtonGoldClick);
@@ -28,7 +28,7 @@ public abstract class OfferWindow : Window
 
     public abstract void OnButtonGoldClick();
 
-    public bool TryPay(int value)
+    public bool IsEnoughMoney(int value)
     {
         return _game.TryPay(value);
     }

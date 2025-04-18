@@ -1,5 +1,3 @@
 ﻿using UnityEngine;
 
-public class SpawnableObject : MonoBehaviour
-{
-}
+public class SpawnableObject : MonoBehaviour { }

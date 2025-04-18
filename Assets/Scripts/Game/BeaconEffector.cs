@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BeaconEffector : MonoBehaviour
 {
+    private const float MinValueSecond = 1.0f;
+    private const float Speed = 10;
+
     [SerializeField] private Game _game;
     [SerializeField] private List<Transform> _beaconsLeft;
     [SerializeField] private List<Transform> _beaconsRigth;
@@ -50,7 +53,7 @@ public class BeaconEffector : MonoBehaviour
 
     private IEnumerator RandomisingBeacon()
     {
-        float randomWaitValue = UnityEngine.Random.Range(1f, _maxValueSecond);
+        float randomWaitValue = UnityEngine.Random.Range(MinValueSecond, _maxValueSecond);
 
         foreach (Transform beacon in _beaconsRigth)
         {
@@ -87,7 +90,7 @@ public class BeaconEffector : MonoBehaviour
 
         while (beacon.position != target)
         {
-            beacon.position = Vector3.MoveTowards(beacon.position, target, Time.deltaTime * 10);
+            beacon.position = Vector3.MoveTowards(beacon.position, target, Time.deltaTime * Speed);
             yield return null;
         }
 

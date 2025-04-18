@@ -6,15 +6,17 @@ using YG;
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private Canvas _canvasNotMoving;
     [SerializeField] private float _mobileStartOffsetY = 2f;
     [SerializeField] private float _sensetivity;
     [SerializeField] private float _zoomFactor = 1.5f;
-    [SerializeField] private Canvas _canvasNotMoving;
 
     private float _yMinValue = 7.8f;
+    private float _yMinValueMobile = 8.2f;
     private float _yMaxValue = 15f;
     private float _xMinValue = 2f;
     private float _xMaxValue = 3f;
+    private int _mobileSensetivityDivider = 2;
 
     private void Awake()
     {
@@ -25,9 +27,9 @@ public class CameraMover : MonoBehaviour
                 _cameraTransform.position.y + _mobileStartOffsetY,
                 _cameraTransform.position.z);
 
-            _yMinValue = 8.2f;
+            _yMinValue = _yMinValueMobile;
             _cameraTransform.position = mobileCameraPosition;
-            _sensetivity = _sensetivity / 2;
+            _sensetivity = _sensetivity / _mobileSensetivityDivider;
         }
     }
 
@@ -38,7 +40,11 @@ public class CameraMover : MonoBehaviour
 
     public void Zoom()
     {
-        Vector3 target = new Vector3(_cameraTransform.position.x, _cameraTransform.position.y + _zoomFactor, _cameraTransform.position.z);
+        Vector3 target = new Vector3(
+            _cameraTransform.position.x,
+            _cameraTransform.position.y + _zoomFactor,
+            _cameraTransform.position.z);
+
         _cameraTransform.position = target;
     }
 

@@ -4,7 +4,7 @@ using YG.Utils.LB;
 
 
 
-    public class LeaderbordCounter : MonoBehaviour
+public class LeaderbordCounter : MonoBehaviour
 {
     private const string TechnoName = "Money";
 
@@ -16,7 +16,6 @@ using YG.Utils.LB;
     private void OnEnable()
     {
         YG2.onGetLeaderboard += OnGetLeaderboards;
-      //  YG2.GetLeaderboard(TechnoName, 7, 3, 3, "Small");
     }
 
     private void OnDisable()
@@ -37,7 +36,7 @@ using YG.Utils.LB;
     private void OnGetLeaderboards(LBData lb)
     {
         if (lb.technoName == TechnoName)
-            if(lb.currentPlayer != null)
-            _scorePlayer = lb.currentPlayer.score;
+            if (lb.currentPlayer != null)
+                _scorePlayer = lb.currentPlayer.score;
     }
 }

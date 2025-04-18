@@ -1,3 +1,1 @@
-﻿public class CarSpesialPool : ItemPool<SpesialCar> 
-{
-}
+﻿public class CarSpesialPool : ItemPool<SpesialCar> { }

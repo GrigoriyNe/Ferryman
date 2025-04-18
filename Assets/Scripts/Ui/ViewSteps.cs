@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ViewSteps : MonoBehaviour
 {
+    private const int LowestThreshold = -1;
+
     [SerializeField] private TextMeshProUGUI _stepsCount;
     [SerializeField] private ScoreSteps _steps;
     [SerializeField] private AnimationResources _animator;
@@ -19,7 +21,7 @@ public class ViewSteps : MonoBehaviour
 
     private void OnChanged(int value)
     {
-        if (value == -1)
+        if (value == LowestThreshold)
         {
             _stepsCount.text = "";
         }

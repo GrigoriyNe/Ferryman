@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Music : MonoBehaviour
 {
+    private const int OffsetListCount = 1;
+
     [SerializeField] private List<AudioClip> _audioClips;
     [SerializeField] private AudioSource _audioSource;
 
@@ -21,7 +23,7 @@ public class Music : MonoBehaviour
             while (_audioSource.isPlaying)
                 yield return null;
 
-            if (i == _audioClips.Count - 1)
+            if (i == _audioClips.Count - OffsetListCount)
                 i = 0;
         }
     }

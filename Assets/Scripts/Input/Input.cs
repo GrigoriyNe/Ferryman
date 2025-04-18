@@ -15,8 +15,12 @@ public class PlayerInputController : MonoBehaviour
 
     public event Action<int, int> Clicked;
 
+    private float _cooldownClickCarValue = 0.4f;
+    private WaitForSeconds _waitCooldown;
+
     private void OnEnable()
     {
+        _waitCooldown = new WaitForSeconds(_cooldownClickCarValue);
         _input.Enable();
         _input.Player.Click.started += OnClick;
         _input.Player.Click.performed += OnClick;
@@ -92,7 +96,7 @@ public class PlayerInputController : MonoBehaviour
 
                     if (hit.collider.TryGetComponent(out TileHelper tile))
                     {
-                        Clicked?.Invoke(tile.cordX, tile.cordY);
+                        Clicked?.Invoke(tile.CordX, tile.CordY);
                     }
 
                     context = new InputAction.CallbackContext();
@@ -105,7 +109,7 @@ public class PlayerInputController : MonoBehaviour
 
     private IEnumerator Cooldown()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return _waitCooldown;
 
         _input.Player.Click.performed += OnClick;
     }

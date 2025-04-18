@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Ferryboat : MonoBehaviour
 {
+    private const int ActivateDelayValue = 3;
+    private const int DeactivateDelayValue = 1;
+
     [SerializeField] private Game _game;
     [SerializeField] private Map _map;
     [SerializeField] private NumberingPlaceText _numberingText;
@@ -10,7 +13,14 @@ public class Ferryboat : MonoBehaviour
     [SerializeField] private FerryboatAnimator _animator;
     [SerializeField] private Namer _places;
 
-    private bool _isCargoOpen = true;
+    private WaitForSeconds _waitActivating;
+    private WaitForSeconds _waitDeactivating;
+
+    private void OnEnable()
+    {
+        _waitActivating = new WaitForSeconds(ActivateDelayValue);
+        _waitDeactivating = new WaitForSeconds(DeactivateDelayValue);
+    }
 
     public void Activate()
     {
@@ -22,6 +32,11 @@ public class Ferryboat : MonoBehaviour
         StartCoroutine(Deactivating());
     }
 
+    public Map GetMap()
+    {
+        return _map;
+    }
+
     public Namer GetPlaces()
     {
         return _places.Get();
@@ -30,7 +45,7 @@ public class Ferryboat : MonoBehaviour
     private IEnumerator Activating()
     {
         _animator.PlayStart();
-        yield return new WaitForSeconds(3f);
+        yield return _waitActivating;
         _blind.Open();
         _map.Activate();
         _numberingText.Activate();
@@ -41,15 +56,9 @@ public class Ferryboat : MonoBehaviour
         _map.Deactivate();
         _blind.Close();
 
-        yield return new WaitForSeconds(1f);
+        yield return _waitDeactivating;
 
         _animator.PlayFinish();
         _numberingText.Deactivate();
-        _isCargoOpen = true;
-    }
-
-    public Map GetMap()
-    {
-        return _map;
     }
 }

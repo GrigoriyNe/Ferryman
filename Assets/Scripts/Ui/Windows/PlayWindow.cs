@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayWindow : Window
@@ -55,6 +54,24 @@ public class PlayWindow : Window
         _game.FinishSceneStart -= Deactivate;
     }
 
+    public void OnButtonSettingsClick()
+    {
+        _settingCanvas.gameObject.SetActive(true);
+        _settingExit.gameObject.SetActive(true);
+
+        _leaderbodCanvas.gameObject.SetActive(false);
+        _leaderbodExit.gameObject.SetActive(false);
+    }
+
+    public void OnButtonLeaderbodClick()
+    {
+        _leaderbodCanvas.gameObject.SetActive(true);
+        _leaderbodExit.gameObject.SetActive(true);
+
+        _settingCanvas.gameObject.SetActive(false);
+        _settingExit.gameObject.SetActive(false);
+    }
+
     private void OnButtonUseBombClick()
     {
         _game.TryUseBomb();
@@ -99,26 +116,8 @@ public class PlayWindow : Window
         _restartExecleyNone.onClick.RemoveListener(OnRestartExecleyNoneClick);
     }
 
-    public void OnButtonSettingsClick()
-    {
-        _settingCanvas.gameObject.SetActive(true);
-        _settingExit.gameObject.SetActive(true);
-
-        _leaderbodCanvas.gameObject.SetActive(false);
-        _leaderbodExit.gameObject.SetActive(false);
-    }
-
     private void OnExitSettingClick()
     {
-        _settingCanvas.gameObject.SetActive(false);
-        _settingExit.gameObject.SetActive(false);
-    }
-
-    public void OnButtonLeaderbodClick()
-    {
-        _leaderbodCanvas.gameObject.SetActive(true);
-        _leaderbodExit.gameObject.SetActive(true);
-
         _settingCanvas.gameObject.SetActive(false);
         _settingExit.gameObject.SetActive(false);
     }

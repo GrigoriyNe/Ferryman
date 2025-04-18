@@ -4,6 +4,8 @@ using YG;
 
 public class Wallet : MonoBehaviour
 {
+    private const int BombForExplode = 1;
+
     [SerializeField] private VideoRewarder _rewardBomb;
     [SerializeField] int _bombValueForReward = 2;
     [SerializeField] private ObstacleLogic _obstacle;
@@ -11,10 +13,8 @@ public class Wallet : MonoBehaviour
 
     public event Action<int> ChangedMoney;
     public event Action<int> ChangedBomb;
-    public event Action BombUse;
 
     public int Money { get; private set; }
-
     public int Bomb { get; private set; }
     public int StartMoney { get; private set; } = 50;
     public int StartBomb { get; private set; } = 2;
@@ -46,8 +46,8 @@ public class Wallet : MonoBehaviour
 
     public void OnResetGame()
     {
-        Money = 200;
-        Bomb = 2;
+        Money = StartMoney;
+        Bomb = StartBomb;
         ChangedMoney?.Invoke(Money);
     }
 
@@ -77,7 +77,7 @@ public class Wallet : MonoBehaviour
 
     public void RemoveBomb()
     {
-        Bomb -= 1;
+        Bomb -= BombForExplode;
         ChangedBomb?.Invoke(Bomb);
     }
 

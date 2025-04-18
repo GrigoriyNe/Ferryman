@@ -24,24 +24,10 @@ public class RestartStatisticInfoCounter : MonoBehaviour
         _game.LevelChange -= OnLevelChange;
     }
 
-    private void OnChangedMoney(int value)
-    {
-        _maxMoney += value;
-    }
-
-    private void OnChangedBomb()
-    {
-        _usedBomb++;
-    }
-
-    private void OnLevelChange(int value)
-    {
-        _maxLevel = value;
-    }
-
     public string GetLevelInfo()
     {
-        string result = _maxLevel.ToString();
+        int resultSumView = _maxLevel + 1;
+        string result = resultSumView.ToString();
         _maxLevel = 0;
 
         return result;
@@ -57,10 +43,25 @@ public class RestartStatisticInfoCounter : MonoBehaviour
 
     public string GetWorkedMoneyInfo()
     {
-        int resultSum = _maxMoney - _wallet.StartMoney;
-        string result = resultSum.ToString();
+        string result = _maxMoney.ToString();
         _maxMoney = 0;
 
         return result;
+    }
+
+    private void OnChangedMoney(int value)
+    {
+        if (_maxMoney < value)
+            _maxMoney = value;
+    }
+
+    private void OnChangedBomb()
+    {
+        _usedBomb++;
+    }
+
+    private void OnLevelChange(int value)
+    {
+        _maxLevel = value;
     }
 }

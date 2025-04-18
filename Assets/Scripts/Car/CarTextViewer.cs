@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CarTextViewer : MonoBehaviour
 {
-    private const int Delay = 2;
-
     [SerializeField] private TextMeshProUGUI _viewFinishPosition;
     [SerializeField] private Image _backgroundImage;
 
@@ -34,7 +31,7 @@ public class CarTextViewer : MonoBehaviour
 
     private string GetTextPosition()
     {
-        string result = _parkPlace.GetTextPlace(_finishPositionTile.cordX, _finishPositionTile.cordY).ToString();
+        string result = _parkPlace.GetTextPlace(_finishPositionTile.CordX, _finishPositionTile.CordY).ToString();
         return result;
     }
 }

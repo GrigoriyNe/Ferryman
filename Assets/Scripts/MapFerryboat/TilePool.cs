@@ -1,3 +1,1 @@
-﻿public class TilePool : ItemPool<TileHelper>
-{
-}
+﻿public class TilePool : ItemPool<TileHelper> { }

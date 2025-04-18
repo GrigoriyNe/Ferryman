@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class ObstacleExplosiveEffector : MonoBehaviour
 {
@@ -31,6 +29,7 @@ public class ObstacleExplosiveEffector : MonoBehaviour
             _changeViewCarNegativeEffects.Enqueue(_changeViewCarNegativeEffect);
 
         StartCoroutine(RemoveEffect(_changeViewCarEffects.Dequeue()));
+        StartCoroutine(RemoveEffectExplosive(_explosiveEffects.Dequeue()));
         StartCoroutine(RemoveEffectNegative(_changeViewCarNegativeEffects.Dequeue()));
     }
 

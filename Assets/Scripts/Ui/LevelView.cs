@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelView : MonoBehaviour
 {
+    private const int ViewOffset = 1;
+
     [SerializeField] private Game _game;
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private AnimationResources _animator;
@@ -19,7 +21,7 @@ public class LevelView : MonoBehaviour
 
     private void OnLevelChange(int level)
     {
-        string result = (level + 1).ToString();
+        string result = (level + ViewOffset).ToString();
         _text.text =  result;
         _animator.ActivateLevelUi();
     }

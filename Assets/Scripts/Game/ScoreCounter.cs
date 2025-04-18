@@ -15,7 +15,7 @@ public class ScoreCounter : MonoBehaviour
     public void Activate()
     {
         gameObject.SetActive(true);
-        MaxPossibleFinishPlaces = _map.GetMaxPlaceCount() +1 * MultiplicationValue;
+        MaxPossibleFinishPlaces = _map.GetMaxPlaceCount() + 1 * MultiplicationValue;
         _step.SetStartValue(MaxPossibleFinishPlaces);
     }
 

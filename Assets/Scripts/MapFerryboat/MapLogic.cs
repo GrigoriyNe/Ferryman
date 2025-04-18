@@ -5,6 +5,9 @@ using UnityEngine;
 public class MapLogic : MonoBehaviour
 {
     private const int MaxStep = 30;
+    private const int OffsetHorizontal = 1;
+    private const int OffsetVerticat = 7;
+    private const int SafePosition = 2;
 
     [SerializeField] private TilePool _tilePool;
     [SerializeField] private Game _game;
@@ -31,10 +34,10 @@ public class MapLogic : MonoBehaviour
     private int _width;
     private int _height;
 
-    private int _start_X;
-    private int _start_Y;
-    private int _end_X;
-    private int _end_Y;
+    private int _startX;
+    private int _startY;
+    private int _endX;
+    private int _endY;
 
     public int CountFinishPlace => _carFinishPoints.Count;
     public int CountStartPlace => _carStartPoints.Count;
@@ -68,7 +71,7 @@ public class MapLogic : MonoBehaviour
 
         foreach (var tile in _tiles)
         {
-            _map[tile.cordX, tile.cordY].ChangeObstacle(false);
+            _map[tile.CordX, tile.CordY].ChangeObstacle(false);
             _tilePool.ReturnItem(tile);
         }
     }
@@ -115,15 +118,15 @@ public class MapLogic : MonoBehaviour
 
     public void SetStart(TileHelper tile)
     {
-        _start_X = tile.cordX;
-        _start_Y = tile.cordY;
+        _startX = tile.CordX;
+        _startY = tile.CordY;
     }
 
     public void SetEnd(TileHelper tile)
     {
-        _end_X = tile.cordX;
-        _end_Y = tile.cordY;
-        SetStartAndEnd(_start_X, _start_Y, _end_X, _end_Y);
+        _endX = tile.CordX;
+        _endY = tile.CordY;
+        SetStartAndEnd(_startX, _startY, _endX, _endY);
         FindPath();
     }
 
@@ -151,9 +154,9 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        if (CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - 2)))
+        if (CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - SafePosition)))
         {
-            for (int i = 1; i < RoadOffVerticalValue - 1; i++)
+            for (int i = 1; i < RoadOffVerticalValue - OffsetHorizontal; i++)
             {
                 if (CheckObstacle(x, i) == false)
                 {
@@ -162,7 +165,7 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - 2)];
+        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - SafePosition)];
     }
 
     public List<TileHelper> GetPath()
@@ -258,8 +261,7 @@ public class MapLogic : MonoBehaviour
         if (_map[x, y].IsObstacle)
             return;
 
-        _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
-        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpen(_tiles[x, y].transform);
+        _obstacleView.RemoveObstacle(_tiles[x, y].transform);
     }
 
     public void AddSpesialCarStartPoint(int x, int y)
@@ -278,14 +280,12 @@ public class MapLogic : MonoBehaviour
             return;
 
         _tiles[x, y].gameObject.SetActive(true);
-        _tiles[x, y].spriteRenderer.gameObject.SetActive(true);
-        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial(_tiles[x, y].transform);
+        _obstacleView.RemoveObstacle(_tiles[x, y].transform);
     }
 
     public void AddVoid(int x, int y)
     {
         _map[x, y].ChangeObstacle(true);
-        _tiles[x, y].spriteRenderer.sprite = _obstacleView.GetSpriteEmpty();
         _tiles[x, y].gameObject.SetActive(false);
     }
 
@@ -303,9 +303,9 @@ public class MapLogic : MonoBehaviour
             {
                 _tiles[i, j] = _tilePool.GetItem().GetComponent<TileHelper>();
                 _tiles[i, j].transform.SetParent(transform, false);
-                _tiles[i, j].transform.position = new Vector3(i + 1, 0, j - 7);
-                _tiles[i, j].cordX = i;
-                _tiles[i, j].cordY = j;
+                _tiles[i, j].transform.position = new Vector3(i + OffsetHorizontal, 0, j - OffsetVerticat);
+                _tiles[i, j].ChangeX(i);
+                _tiles[i, j].ChangeY(j);
                 _map[i, j] = new Point(i, j);
             }
         }
@@ -434,7 +434,7 @@ public class MapLogic : MonoBehaviour
     public void CreateRandomObstacle()
     {
         TileHelper tile = _emptyCellObstacle[UnityEngine.Random.Range(0, _emptyCellObstacle.Count)];
-        CreatingObstacle(tile.cordX, tile.cordY);
+        CreatingObstacle(tile.CordX, tile.CordY);
     }
 
     public void CreatingObstacle(int x, int y)
@@ -443,41 +443,37 @@ public class MapLogic : MonoBehaviour
             return;
 
         TileHelper creatingTile = GetTile(x, y);
-        creatingTile.gameObject.SetActive(true);
 
         if (_carSpesialFinishPoints.Contains(creatingTile) == false)
         {
             _filledCellObstacle.Add(creatingTile);
-            _obstacleView.GetSpriteClose(creatingTile.transform);
+            _obstacleView.SetObstacle(creatingTile.transform);
         }
         else
         {
             _filledSpesialCellObstacle.Add(creatingTile);
-            _obstacleView.GetSpriteCloseSpesial(creatingTile.transform);
+            _obstacleView.SetObstacleSpesial(creatingTile.transform);
         }
 
-        AddObstacle(creatingTile.cordX, creatingTile.cordY);
+        AddObstacle(creatingTile.CordX, creatingTile.CordY);
         _obstaleLogic.RememberObstacle(creatingTile);
     }
 
     public void DeleteObstacle(int x, int y)
     {
         TileHelper tile = GetTile(x, y);
-        tile.gameObject.SetActive(true);
-        tile.spriteRenderer.gameObject.SetActive(true);
-        RemoveObstacle(tile.cordX, tile.cordY);
+        RemoveObstacle(tile.CordX, tile.CordY);
+        _obstacleView.RemoveObstacle(tile.transform);
 
         if (_filledCellObstacle.Contains(tile))
         {
             _filledCellObstacle.Remove(tile);
-            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpen(tile.transform);
             _rewarder.ChangeRewardCell(tile);
         }
 
         if (_filledSpesialCellObstacle.Contains(tile))
         {
             _filledSpesialCellObstacle.Remove(tile);
-            tile.spriteRenderer.sprite = _obstacleView.GetSpriteOpenSpesial(tile.transform);
             _rewarder.ChangeRewardSpesialCell(tile);
         }
     }

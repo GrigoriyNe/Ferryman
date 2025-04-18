@@ -1,3 +1,1 @@
-﻿public class CarPool : ItemPool<Car> 
-{
-}
+﻿public class CarPool : ItemPool<Car> { }

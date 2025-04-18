@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
@@ -9,9 +8,12 @@ public class Game : MonoBehaviour
     private const int RoundSecondBoat = 5;
     private const int RoundThirdBoat = 10;
     private const int RoundRandomBoat = 15;
-    private const int LowerMoney = -50;
+    private const int LowerMoney = 0;
 
     private const int StartFerryboat = 0;
+    private const int DividerRandomRound = 3;
+    private const int BombForRound = 1;
+    private const int RoundAfteInterstitialAdvShow = 6;
 
     [SerializeField] private FabricCars _fabricCars;
     [SerializeField] private BridgeAnimator _bridge;
@@ -24,9 +26,9 @@ public class Game : MonoBehaviour
     [SerializeField] private RewardCounter _rewardCounter;
     [SerializeField] private Soungs _soungs;
     [SerializeField] private Scenes _scenes;
-    [SerializeField] private Canvas _offerRestart; 
-    [SerializeField] private LeaderbordCounter _leaderbordCounter; 
-    [SerializeField] private AnimationResources _restartInfoView; 
+    [SerializeField] private Canvas _offerRestart;
+    [SerializeField] private LeaderbordCounter _leaderbordCounter;
+    [SerializeField] private AnimationResources _restartInfoView;
 
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
@@ -89,6 +91,7 @@ public class Game : MonoBehaviour
     public void OfferRoundOver()
     {
         _soungs.PlayCreatCar();
+        _soungs.PlayRestartSoung();
         _fabricCars.RecoverPositionNotParkCars();
         _restartInfoView.ActivateRestartButtomAnimatoin();
         _bridge.CloseOnRound();
@@ -113,9 +116,12 @@ public class Game : MonoBehaviour
 
         _soungs.PlayRestartSoung();
 
-        _wallet.AddBomb(1);
+        _wallet.AddBomb(BombForRound);
         _currentRound += 1;
         LevelChange?.Invoke(_currentRound);
+
+        if (_currentRound % RoundAfteInterstitialAdvShow == 0)
+            StartCoroutine(ShowingInterstitial());
 
         if (_currentRound == RoundSecondBoat)
         {
@@ -142,7 +148,7 @@ public class Game : MonoBehaviour
             SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
             return;
         }
-        else if (_currentRound > RoundRandomBoat && _currentRound % 3 == 0)
+        else if (_currentRound > RoundRandomBoat && _currentRound % DividerRandomRound == 0)
         {
             SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
             return;
@@ -169,21 +175,13 @@ public class Game : MonoBehaviour
         StartScene();
     }
 
-    public void SetNextFerryboat(int value)
+    private void SetNextFerryboat(int value)
     {
         _creatigCars = null;
         EndScene();
         _obstacle.Clean();
         _mapLogic.Clean();
         StartCoroutine(ChangingFerryboat(value));
-    }
-
-    private IEnumerator ChangingFerryboat(int value)
-    {
-        yield return _wait3Second;
-        _ferryboat = _shipAdder.GetFerryboat(value);
-        _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
-        StartScene();
     }
 
     private void StartScene()
@@ -206,6 +204,14 @@ public class Game : MonoBehaviour
     private void PlayFerryboatEngineSoung()
     {
         _soungs.PlayFerryboatEngineSoung();
+    }
+
+    private IEnumerator ChangingFerryboat(int value)
+    {
+        yield return _wait3Second;
+        _ferryboat = _shipAdder.GetFerryboat(value);
+        _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
+        StartScene();
     }
 
     private IEnumerator OpenCargo()
@@ -236,23 +242,33 @@ public class Game : MonoBehaviour
         yield return _wait1Second;
 
         int count = _mapLogic.GetMaxFinishPlaceCount();
+        int countSpesial = _mapLogic.GetMaxSpesialFinishPlaceCount();
+
+        int plaseStartSpesialCar = UnityEngine.Random.Range((count / 4), (count / 2));
+
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
 
         for (int i = 0; i < count; i++)
         {
-            yield return _wait5Millisecond;
             _fabricCars.Create();
-        }
 
-        int countSpesial = _mapLogic.GetMaxSpesialFinishPlaceCount();
-
-        for (int i = 0; i < countSpesial; i++)
-        {
             yield return _wait5Millisecond;
-            _fabricCars.CreateSpesial();
 
+            if (i >= plaseStartSpesialCar && i < (countSpesial + plaseStartSpesialCar))
+            {
+                _fabricCars.CreateSpesial();
+
+                yield return _wait5Millisecond;
+            }
         }
 
         _creatigCars = null;
+    }
+
+    private IEnumerator ShowingInterstitial()
+    {
+        yield return _wait2Second;
+
+        YG2.InterstitialAdvShow();
     }
 }

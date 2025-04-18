@@ -1,6 +1,7 @@
 Authorization v1.0
 AutoTranslateLangs v1.001
 EnvirData v1.002
+InterstitialAdv v1.001
 Leaderboards v1.0
 Localization v1.001
 Metrica v1.01

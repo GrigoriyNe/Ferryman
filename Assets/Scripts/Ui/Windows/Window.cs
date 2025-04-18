@@ -1,13 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class Window : MonoBehaviour
 {
     [SerializeField] protected CanvasGroup WindowGroup;
     [SerializeField] protected Button ActionButton;
-
-    public event Action ButtonClicked;
 
     private void OnEnable()
     {

@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class RewardCounter : MonoBehaviour
 {
+    private const int Offset = 1;
+    private const int LowerPositive = 1;
+    private const int MaxPositive = 3 + Offset;
+    private const int LowerNegative = -3;
+    private const int MaxNegative = -1 + Offset;
+
+    private const int LowerPositiveSpesial = 4;
+    private const int MaxPositiveSpesial = 6 + Offset;
+    private const int LowerNegativeSpesial = -6;
+    private const int MaxNegativeSpesial = -4 + Offset;
+
     [SerializeField] private MapLogic _map;
     [SerializeField] private TextMeshProUGUI _textWonCell;
     [SerializeField] private ScoreSteps _stepCounter;
@@ -56,7 +67,7 @@ public class RewardCounter : MonoBehaviour
         foreach (TileHelper tile in startPositions)
         {
             if (tile.gameObject.activeSelf)
-                if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
+                if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
                     _emptyTiles.Add(tile);
                 else
                     _filledFinishTiles.Add(tile);
@@ -68,7 +79,7 @@ public class RewardCounter : MonoBehaviour
         foreach (TileHelper tile in startSpesialPositions)
         {
             if (tile.gameObject.activeSelf)
-                if (_map.CheckObstacle(tile.cordX, tile.cordY) == false)
+                if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
                     _emptySpesialTiles.Add(tile);
                 else
                     _filledFinishSpesialTile.Add(tile);
@@ -151,21 +162,26 @@ public class RewardCounter : MonoBehaviour
 
     private void SetCellListEffects()
     {
-        _cellPositiveEffect.Add(1);
-        _cellPositiveEffect.Add(2);
-        _cellPositiveEffect.Add(3);
 
-        _cellNegativEffect.Add(-1);
-        _cellNegativEffect.Add(-2);
-        _cellNegativEffect.Add(-3);
+        for (int i = LowerPositive; i < MaxPositive; i++)
+        {
+            _cellPositiveEffect.Add(i);
+        }
 
-        _cellSpesialPositiveEffect.Add(4);
-        _cellSpesialPositiveEffect.Add(5);
-        _cellSpesialPositiveEffect.Add(6);
+        for (int i = LowerNegative; i < MaxNegative; i++)
+        {
+            _cellNegativEffect.Add(i);
+        }
 
-        _cellSpesialNegativeEffect.Add(-4);
-        _cellSpesialNegativeEffect.Add(-5);
-        _cellSpesialNegativeEffect.Add(-6);
+        for (int i = LowerPositiveSpesial; i < MaxPositiveSpesial; i++)
+        {
+            _cellSpesialPositiveEffect.Add(i);
+        }
+
+        for (int i = LowerNegativeSpesial; i < MaxNegativeSpesial; i++)
+        {
+            _cellSpesialNegativeEffect.Add(i);
+        }
     }
 
     private void AnimatedChanged()

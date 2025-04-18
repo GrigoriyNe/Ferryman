@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
-public class OfferWindowSpesialRemoveOstacle : OfferWindow
+public class OfferWindowBomb : OfferWindow
 {
+    private const int ValueBombForPay = 1;
+
     [SerializeField] private int _goldPrice;
     [SerializeField] private Wallet _wallet;
 
     public override void OnButtonGoldClick()
     {
-        if (TryPay(_goldPrice))
+        if (IsEnoughMoney(_goldPrice))
         {
-            _wallet.AddBomb(1);
+            _wallet.AddBomb(ValueBombForPay);
         }
     }
 }

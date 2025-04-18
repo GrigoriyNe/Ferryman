@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class ViewResources : MonoBehaviour
 {
+    private const int StartBombsValue = 2;
+
     [SerializeField] private TextMeshProUGUI _moneyCount;
     [SerializeField] private TextMeshProUGUI _bombCount;
     [SerializeField] private Wallet _wallet;
     [SerializeField] private AnimationResources _animator;
     [SerializeField] private ObstacleLogic _obstacleLogic;
 
-    private int _bombValue = 2;
+    private int _bombsValue = StartBombsValue;
 
     private void OnEnable()
     {
@@ -31,8 +33,8 @@ public class ViewResources : MonoBehaviour
 
     private void OnChangedCountBomb(int value)
     {
-        _bombValue = value;
-        _bombCount.text = _bombValue.ToString();
+        _bombsValue = value;
+        _bombCount.text = _bombsValue.ToString();
     }
 
     private void OnActivatedBomb()
@@ -42,7 +44,7 @@ public class ViewResources : MonoBehaviour
 
     private void OnDeactivateBomb()
     {
-        _bombCount.text = _bombValue.ToString();
+        _bombCount.text = _bombsValue.ToString();
         _animator.DeactivateBombUi();
     }
 

@@ -136,6 +136,12 @@ MonoBehaviour:
       it: 
       de: 
       hi: 
+  InterstitialAdv:
+    showFirstAdv: 1
+    interAdvInterval: 180
+    postponeCallByFail: 0
+    postponeCallTimer: 10
+    labelAdvSimLabel: 0
   Leaderboards:
     enable: 1
     saveScoreAnonymousPlayers: 1
@@ -292,6 +298,9 @@ MonoBehaviour:
   platformInfo:
     ownHost: 0
   platformToggles:
+    showFirstAdv: 0
+    interAdvInterval: 0
+    postponeCallByFail: 0
     useYandexMetrica: 0
     metricaCounterID: 0
     skipInterAdvAfterReward: 0
