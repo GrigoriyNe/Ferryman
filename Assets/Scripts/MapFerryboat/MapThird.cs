@@ -22,9 +22,6 @@ public class MapThird : Map
     private const int HorizontalSecondSpesialPlase = Height - 4;
     private const int HorizontalThirdSpesialPlase = Height - 6;
 
-    private const int HorizontalParkLower = RoadOffVerticalValue + 2;
-    private const int HorizontalParkHeigth = Height - 1;
-
     private const int StartVertcalPlase = 1;
     private const int MiddleStartPole = 2;
     private const int RigthStartPole = 3;
@@ -36,7 +33,6 @@ public class MapThird : Map
     private const int WallVerticalThird = 4;
     private const int WallVerticalFive = 5;
     private const int WallVerticalSix = 6;
-
 
     [SerializeField] private MapLogic _logic;
     [SerializeField] private ObstacleLogic _obstaleLogic;

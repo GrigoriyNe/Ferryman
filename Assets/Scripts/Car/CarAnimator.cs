@@ -20,18 +20,24 @@ public class CarAnimator : MonoBehaviour
     public void WrongAnimationStart()
     {
         _animator.SetBool(Wrong, true);
-        StartCoroutine(Deactivated( Wrong));
+        StartCoroutine(Deactivated());
     }
 
     public void TurnAnimationStart()
     {
         _animator.SetBool(Turn, true);
-        StartCoroutine(Deactivated(Turn));
+        StartCoroutine(DeactivatedTurn());
     }
 
-    private IEnumerator Deactivated(string nameAnimationBool)
+    private IEnumerator Deactivated()
     {
         yield return _delay;
-        _animator.SetBool(nameAnimationBool, false);
+        _animator.SetBool(Wrong, false);
+    }
+
+    private IEnumerator DeactivatedTurn()
+    {
+        yield return _delay;
+        _animator.SetBool(Turn, false);
     }
 }

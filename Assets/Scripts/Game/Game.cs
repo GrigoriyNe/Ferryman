@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
     private const int LowerMoney = 0;
 
     private const int StartFerryboat = 0;
+
     private const int DividerRandomRound = 3;
     private const int BombForRound = 1;
     private const int RoundAfteInterstitialAdvShow = 6;
