@@ -41,7 +41,7 @@ public class Game : MonoBehaviour
     private int _currentFerryboat = 0;
 
     private WaitForSeconds _creatingCarDelay;
-    private float _creatingCarDelayValue = 0.2f;
+    private float _creatingCarDelayValue = 0.3f;
     private WaitForSeconds _wait38Millisecond;
     private float _delay38Millisecond = 3.8f;
     private WaitForSeconds _wait1Second;
@@ -71,12 +71,16 @@ public class Game : MonoBehaviour
         _ferryboat = _shipAdder.GetFerryboat(YG2.saves.Ferryboat);
 
         _currentRound = YG2.saves.Level;
-
-        if (_currentRound != 0)
-            LevelChange?.Invoke(_currentRound);
+        LevelChange?.Invoke(_currentRound);
 
         if (_currentRound == 0)
             _wallet.SetDefaultValue();
+
+        if (_currentRound > RoundSecondBoat && YG2.envir.isMobile)
+            _cameraMover.Zoom();
+
+        if (_currentRound > RoundThirdBoat && YG2.envir.isMobile)
+            _cameraMover.Zoom();
 
         StartScene();
     }
