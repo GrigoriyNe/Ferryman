@@ -159,24 +159,17 @@ public class Game : MonoBehaviour
 
         if (_currentRound == RoundSecondBoat)
         {
-            if (YG2.envir.isMobile)
-            {
-                _cameraMover.Zoom();
-            }
-            _currentFerryboat = SecondFerryboat;
+            TryChangeCameraMobile();
+
             SetFerryboat(SecondFerryboat);
 
             return;
         }
         else if (_currentRound == RoundThirdBoat)
         {
-            if (YG2.envir.isMobile)
-            {
-                _cameraMover.Zoom();
-            }
+            TryChangeCameraMobile();
 
             SetFerryboat(ThirdFerryboat);
-            _currentFerryboat = ThirdFerryboat;
 
             return;
         }
@@ -213,15 +206,18 @@ public class Game : MonoBehaviour
         _wait4Second = new WaitForSeconds(_delay4Second);
     }
 
-    private IEnumerator ChangeRound()
+    private void TryChangeCameraMobile()
     {
-        EndScene();
-        yield return _wait38Millisecond;
-        StartScene();
+        if (YG2.envir.isMobile)
+        {
+            _cameraMover.Zoom();
+        }
     }
 
     private void SetFerryboat(int value)
     {
+        _currentFerryboat = value;
+
         _creatigCars = null;
         EndScene();
         _obstacle.Clean();
@@ -235,7 +231,7 @@ public class Game : MonoBehaviour
         _bridge.Open();
         _ferryboat.Activate();
         PlayFerryboatEngineSoung();
-        StartCoroutine(OpenCargo());
+        StartCoroutine(OpeningCargo());
     }
 
     private void EndScene()
@@ -243,12 +239,19 @@ public class Game : MonoBehaviour
         FinishSceneStart?.Invoke();
         PlayFerryboatEngineSoung();
         _bridge.Close();
-        StartCoroutine(CloseCargo());
+        StartCoroutine(ClosingCargo());
     }
 
     private void PlayFerryboatEngineSoung()
     {
         _soungs.PlayFerryboatEngineSoung();
+    }
+
+    private IEnumerator ChangeRound()
+    {
+        EndScene();
+        yield return _wait38Millisecond;
+        StartScene();
     }
 
     private IEnumerator ChangingFerryboat(int value)
@@ -259,7 +262,7 @@ public class Game : MonoBehaviour
         StartScene();
     }
 
-    private IEnumerator OpenCargo()
+    private IEnumerator OpeningCargo()
     {
         yield return _wait3Second;
         _obstacle.CreateObstacle();
@@ -272,7 +275,7 @@ public class Game : MonoBehaviour
         StartSceneDone?.Invoke();
     }
 
-    private IEnumerator CloseCargo()
+    private IEnumerator ClosingCargo()
     {
         _ferryboat.Finish();
         _counter.Deactivate();
