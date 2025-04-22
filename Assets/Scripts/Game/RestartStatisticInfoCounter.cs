@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using YG;
 
 public class RestartStatisticInfoCounter : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class RestartStatisticInfoCounter : MonoBehaviour
         _wallet.ChangedMoney += OnChangedMoney;
         _obstacleLogic.BombUsed += OnChangedBomb;
         _game.LevelChange += OnLevelChange;
+
+        _maxLevel = YG2.saves.Level;
+        _usedBomb = YG2.saves.Bomb;
+        _maxMoney = YG2.saves.Money;
     }
 
     private void OnDisable()
