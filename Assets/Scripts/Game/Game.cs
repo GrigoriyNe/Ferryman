@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
     private const int RoundRandomBoat = 15;
     private const int LowerMoney = 0;
 
-    private const int StartFerryboat =2;
+    private const int StartFerryboat = 0;
     private const int SecondFerryboat = 1;
     private const int ThirdFerryboat = 2;
 
