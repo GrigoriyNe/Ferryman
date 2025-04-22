@@ -22,9 +22,7 @@ public class MapSecond : Map
     private const int HorizontalParkLower = RoadOffVerticalValue + 2;
     private const int HorizontalParkHeigth = Height -1;
 
-    private const int StartVertcalPlase = 1;
-    private const int RigthStartPole = 3;
-    private const int MiddleStartPole = 2;
+    private const int StartVertcalPlase = 3;
 
     private const int WallHorizontalPlace = RoadOffVerticalValue + 1;
     private const int WallState = 2;
@@ -85,17 +83,15 @@ public class MapSecond : Map
             for (int j = HorizontalParkLower; j < HorizontalParkHeigth; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int j = StartVertcalPlase; j < MiddleStartPole; j++)
-            for (int i = StartVertcalPlase; i < VerticalRigthBorder; i++)
-                _logic.AddCarStartPoint(i, j);
+        for (int i = VerticalOffset; i < VerticalRigthBorder; i++)
+        {
+            _logic.AddCarStartPoint(i, StartVertcalPlase);
+            _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
+        };
 
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalThirdSpesialPlase);
-
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase, StartVertcalPlase);
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase, MiddleStartPole);
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase, RigthStartPole);
 
         _logic.AddWall(WallVerticalFirst, WallHorizontalPlace, WallState);
         _logic.AddWall(WallVerticalSecond, WallHorizontalPlace, WallState);

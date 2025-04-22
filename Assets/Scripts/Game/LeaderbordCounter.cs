@@ -2,8 +2,6 @@
 using YG;
 using YG.Utils.LB;
 
-
-
 public class LeaderbordCounter : MonoBehaviour
 {
     private const string TechnoName = "Money";

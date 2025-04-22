@@ -22,8 +22,7 @@ public class MapThird : Map
     private const int HorizontalSecondSpesialPlase = Height - 4;
     private const int HorizontalThirdSpesialPlase = Height - 6;
 
-    private const int StartVertcalPlase = 1;
-    private const int MiddleStartPole = 2;
+    private const int StartVertcalPlase = 3;
     private const int RigthStartPole = 3;
 
     private const int WallHorizontalPlace = Height - 7;
@@ -69,18 +68,20 @@ public class MapThird : Map
             _logic.AddVoid(RigthStartPole + VerticalOffset, i);
             _logic.AddVoid(RigthStartPole + VerticalOffset + VerticalOffset, i);
         }
-            
+
         for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
-        for (int i = StartVertcalPlase; i < VerticalRigthBorder; i++)
+        for (int i = VerticalOffset; i < VerticalRigthBorder; i++)
             for (int j = RoadOffVerticalLowerValue + VerticalOffset; j < Width; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int j = StartVertcalPlase; j < MiddleStartPole; j++)
-            for (int i = StartVertcalPlase; i < RigthStartPole + VerticalOffset; i++)
-                _logic.AddCarStartPoint(i, j);
+        for (int i = VerticalOffset; i < VerticalRigthBorder - VerticalOffset; i++)
+        {
+            _logic.AddCarStartPoint(i, StartVertcalPlase);
+            _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
+        };
 
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);
@@ -89,12 +90,7 @@ public class MapThird : Map
         _logic.AddSpesialCarFinishPoint(VerticalLeftBorder, HorizontalSecondSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalLeftBorder, HorizontalThirdSpesialPlase);
 
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase, StartVertcalPlase);
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase, MiddleStartPole);
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase, RigthStartPole);
-        _logic.AddSpesialCarStartPoint(StartVertcalPlase + VerticalOffset, RigthStartPole);
-
-        for (int i = StartVertcalPlase; i < VerticalRigthBorder; i++)
+        for (int i = VerticalOffset; i < VerticalRigthBorder; i++)
             _obstaleLogic.SetBlockedFinishPlace(_logic.GetTile(i, Height - HeightOffset));
 
         _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(VerticalLeftBorder, HorizontalFirstSpesialPlase));

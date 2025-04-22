@@ -1,0 +1,15 @@
+{
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 18,
+    "Money": 50,
+    "Bomb": 2,
+    "Level": 0,
+    "Ferryboat": 0
+}

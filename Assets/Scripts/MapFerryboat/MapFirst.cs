@@ -21,7 +21,7 @@ public class MapFirst : Map
     private const int HorizontalParkLower = Height - 6;
     private const int HorizontalParkHeigth = Height - 2;
 
-    private const int StartVertcalPlase = 1;
+    private const int StartVertcalPlase = 3;
     private const int RigthStartPole = 3;
     private const int MiddleStartPole = 2;
 
@@ -61,7 +61,7 @@ public class MapFirst : Map
 
     private void CreateItemOnMap()
     {
-        
+
 
         for (int i = 0; i < Height; i++)
             for (int j = Height - HeightOffset; j < Height; j++)
@@ -81,9 +81,11 @@ public class MapFirst : Map
             for (int j = HorizontalParkLower; j < HorizontalParkHeigth; j++)
                 _logic.AddCarFinishPoint(i, j);
 
-        for (int j = StartVertcalPlase; j < MiddleStartPole; j++)
-            for (int i = StartVertcalPlase; i < VerticalRigthBorder; i++)
-                _logic.AddCarStartPoint(i, j);
+        for (int i = VerticalOffset; i < VerticalRigthBorder; i++)
+        {
+            _logic.AddCarStartPoint(i, StartVertcalPlase);
+            _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
+        };
 
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);

@@ -9,7 +9,7 @@ public class CarMover : MonoBehaviour
     private const int LowerSteps = 1;
     private const int Offset = 1;
     private const float MinValueForChechObstacleOnQuenue = 0.2f;
-    private const float MaxValueForChechObstacleOnQuenue = 2f;
+    private const float MaxValueForChechObstacleOnQuenue = 1f;
     private const float MiddleTransform = 10;
 
     [SerializeField] private float _speed;
@@ -37,8 +37,8 @@ public class CarMover : MonoBehaviour
 
     private WaitForSeconds _wait1Millisecond;
     private float _delay1Millisecond = 0.1f;
-    private WaitForSeconds _wait15Millisecond;
-    private float _delay15Millisecond = 1.5f;
+    private WaitForSeconds _waitStart;
+    private float _waitStartValue = 0.5f;
     private float _movingQuenueMultiplicateValue = 2f;
 
     private void OnEnable()
@@ -68,12 +68,6 @@ public class CarMover : MonoBehaviour
         _parkPlace = parkPlace;
         _startPositionTile = startPositionTile;
         _finishPositionTile = finishPositionTile;
-    }
-
-    private void SetWaitings()
-    {
-        _wait1Millisecond = new WaitForSeconds(_delay1Millisecond);
-        _wait15Millisecond = new WaitForSeconds(_delay15Millisecond);
     }
 
     public void MoveInQuenue()
@@ -118,44 +112,50 @@ public class CarMover : MonoBehaviour
         }
     }
 
-    public void MoveToZeroPosition()
+    public void MoveAway()
+    {
+        if (_inParking == false)
+            StartCoroutine(MovingAway());
+    }
+
+    private void SetWaitings()
+    {
+        _wait1Millisecond = new WaitForSeconds(_delay1Millisecond);
+        _waitStart = new WaitForSeconds(_waitStartValue);
+    }
+
+    private void MoveToZeroPosition()
     {
         _animator.TurnAnimationStart();
+        OnMoving();
+        _map.RemoveObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
 
-        TileHelper target = _map.GetTile(_startPositionTile.CordX, 0);
+        List<TileHelper> targetsPath = new List<TileHelper>();
+        targetsPath = _map.GetPathToStart(_startPositionTile.CordX);
+        TileHelper finish = targetsPath[targetsPath.Count - Offset];
 
-        if (IsPositionEmpty(_startPositionTile.CordX, _startPositionTile.CordY - Offset)
-            && IsPositionEmpty(_startPositionTile.CordX, _startPositionTile.CordY - Offset - Offset)
-            && _inParking == false)
-        {
-            _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY - Offset);
+        _map.AddObstacle(finish.CordX, finish.CordY);
 
-            TryMoving(_startPositionTile, target);
+        _moving = StartCoroutine(MoveToPath(targetsPath));
+        _startPositionTile = finish;
+    }
 
-            if (_map.gameObject.activeSelf)
-                _map.RemoveObstacle(_startPositionTile.CordX, _startPositionTile.CordY - Offset);
+    private List<TileHelper> CreatePath(TileHelper start, TileHelper end)
+    {
+        _map.RemoveObstacle(start.CordX, start.CordY);
+        _map.SetStart(end);
+        _map.SetEnd(start);
 
-            _startPositionTile = target;
-
-            return;
-        }
-
-        TryMoving(_startPositionTile, target);
-
-        _startPositionTile = target;
+        return _map.GetPath();
     }
 
     private void TryMoving(TileHelper start, TileHelper end)
     {
         _isMoving = true;
 
-        _map.RemoveObstacle(start.CordX, start.CordY);
-        _map.SetStart(end);
-        _map.SetEnd(start);
+        List<TileHelper> hashPath = CreatePath(start, end);
 
-        List<TileHelper> hashPath = _map.GetPath();
-
-        if (hashPath == null || IsPathCorrect(hashPath) == false)
+        if (hashPath == null || IsAllTilePathCorrect(hashPath) == false)
         {
             if (_inParking == false)
             {
@@ -173,8 +173,6 @@ public class CarMover : MonoBehaviour
             return;
         }
 
-        _outliner.enabled = false;
-
         if (_inParking)
         {
             _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
@@ -189,20 +187,21 @@ public class CarMover : MonoBehaviour
             {
                 _map.AddObstacle(_finishPositionTile.CordX, _finishPositionTile.CordY);
             }
+
+            _map.RemoveObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
         }
 
-        _effector.PlayMoveEffects(transformPipe);
-        _viewer.DeactivateBackground();
-
-        _counter.RemoveStep();
+        OnMoving();
         _moving = StartCoroutine(MoveToPath(hashPath));
         hashPath = new List<TileHelper>();
     }
 
-    public void MoveAway()
+    private void OnMoving()
     {
-        if (_inParking == false)
-            StartCoroutine(MovingAway());
+        _effector.PlayMoveEffects(transformPipe);
+        _viewer.DeactivateBackground();
+        _outliner.enabled = false;
+        _counter.RemoveStep();
     }
 
     private bool IsPositionEmpty(int x, int y)
@@ -222,8 +221,6 @@ public class CarMover : MonoBehaviour
                 if (isStartMove == false)
                     _effector.PlayMoveQuenue();
 
-                _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
-
                 yield return StartCoroutine(Moving(_startPositionTile.CordY + Offset));
             }
             else
@@ -231,7 +228,7 @@ public class CarMover : MonoBehaviour
                 _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
                 isStartMove = false;
 
-                yield return new WaitForSeconds(UnityEngine.Random.Range(MinValueForChechObstacleOnQuenue, MaxValueForChechObstacleOnQuenue));
+                yield return new WaitForSeconds(UnityEngine.Random.Range(MinValueForChechObstacleOnQuenue, MaxValueForChechObstacleOnQuenue + Offset));
             }
         }
 
@@ -244,8 +241,8 @@ public class CarMover : MonoBehaviour
 
         if (transform.position == _map.GetTile(_startPositionTile.CordX, _map.RoadOffVerticalValue).transform.position)
         {
+            _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
             _outliner.enabled = true;
-
             _isMoving = false;
         }
     }
@@ -264,9 +261,8 @@ public class CarMover : MonoBehaviour
             yield return null;
         }
 
+        _map.RemoveObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
         _startPositionTile = tile;
-        _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
-        _map.RemoveObstacle(_startPositionTile.CordX, _startPositionTile.CordY - Offset);
     }
 
     private IEnumerator MovingAway()
@@ -287,7 +283,7 @@ public class CarMover : MonoBehaviour
         }
     }
 
-    private bool IsPathCorrect(List<TileHelper> hashPath)
+    private bool IsAllTilePathCorrect(List<TileHelper> hashPath)
     {
         foreach (TileHelper item in hashPath)
             if (_map.CheckObstacle(item.CordX, item.CordY))
@@ -349,7 +345,7 @@ public class CarMover : MonoBehaviour
             }
 
             _viewer.ActivateBackground();
-            transform.LookAt(_map.GetTile(_startPositionTile.CordX, _startPositionTile.CordY + (Offset+Offset)).transform);
+            transform.LookAt(_map.GetTile(_startPositionTile.CordX, _startPositionTile.CordY + (Offset + Offset)).transform);
             StartCoroutine(ChangingPositionOnQuenue());
         }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,6 @@ public class MapLogic : MonoBehaviour
     private const int MaxStep = 30;
     private const int OffsetHorizontal = 1;
     private const int OffsetVerticat = 7;
-    private const int SafePosition = 2;
 
     [SerializeField] private TilePool _tilePool;
     [SerializeField] private Game _game;
@@ -144,28 +142,26 @@ public class MapLogic : MonoBehaviour
 
     public TileHelper GetFreePlaceOnQenue(int x)
     {
-        int countClosed = 0;
-
-        for (int i = 0; i <= RoadOffVerticalValue; i++)
+        for (int i = 1; i < RoadOffVerticalValue; i++)
         {
-            if (_map[x, i].IsObstacle)
+            if (CheckObstacle(x,  i) == false)
             {
-                countClosed += 1;
+                return _tiles[x, i];
             }
         }
 
-        if (CheckObstacle(x, Math.Abs(RoadOffVerticalValue - countClosed - SafePosition)))
-        {
-            for (int i = 1; i < RoadOffVerticalValue - OffsetHorizontal; i++)
-            {
-                if (CheckObstacle(x, i) == false)
-                {
-                    return _tiles[x, i];
-                }
-            }
-        }
+        return _tiles[x, 0];
+    }
 
-        return _tiles[x, Math.Abs(RoadOffVerticalValue - countClosed - SafePosition)];
+    public List<TileHelper> GetPathToStart(int x)
+    {
+        List<TileHelper> path = new List<TileHelper>();
+        path.Add(GetTile(x, RoadOffVerticalValue + 1));
+        path.Add(GetTile ( 0, RoadOffVerticalValue + 1));
+        path.Add(_tiles[0, 0]);
+        path.Add(GetTile(x, GetFreePlaceOnQenue(x).CordY));
+
+        return path;
     }
 
     public List<TileHelper> GetPath()

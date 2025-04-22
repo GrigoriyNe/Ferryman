@@ -15,7 +15,7 @@ public class PlayerInputController : MonoBehaviour
 
     public event Action<int, int> Clicked;
 
-    private float _cooldownClickCarValue = 0.4f;
+    private float _cooldownClickCarValue = 0.3f;
     private WaitForSeconds _waitCooldown;
 
     private void OnEnable()

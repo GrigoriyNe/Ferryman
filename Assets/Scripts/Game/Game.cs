@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 using YG;
+using YG.Insides;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Game : MonoBehaviour
 {
@@ -10,7 +12,9 @@ public class Game : MonoBehaviour
     private const int RoundRandomBoat = 15;
     private const int LowerMoney = 0;
 
-    private const int StartFerryboat = 0;
+    private const int StartFerryboat =2;
+    private const int SecondFerryboat = 1;
+    private const int ThirdFerryboat = 2;
 
     private const int DividerRandomRound = 3;
     private const int BombForRound = 1;
@@ -34,9 +38,10 @@ public class Game : MonoBehaviour
     private Ferryboat _ferryboat;
     private Coroutine _creatigCars = null;
     private int _currentRound = 0;
+    private int _currentFerryboat = 0;
 
-    private WaitForSeconds _wait5Millisecond;
-    private float _delay5Millisecond = 0.5f;
+    private WaitForSeconds _creatingCarDelay;
+    private float _creatingCarDelayValue = 0.2f;
     private WaitForSeconds _wait38Millisecond;
     private float _delay38Millisecond = 3.8f;
     private WaitForSeconds _wait1Second;
@@ -54,15 +59,38 @@ public class Game : MonoBehaviour
     public event Action FinishSceneDone;
     public event Action<int> LevelChange;
 
-    private void Start()
+    private void OnEnable()
     {
         SetWaitings();
-        _ferryboat = _shipAdder.GetFerryboat(StartFerryboat);
+        LoadSaves();
+    }
+
+    private void LoadSaves()
+    {
+        _wallet.SetLoadValues(YG2.saves.Money, YG2.saves.Bomb);
+        _ferryboat = _shipAdder.GetFerryboat(YG2.saves.Ferryboat);
+
+        _currentRound = YG2.saves.Level;
+
+        if (_currentRound != 0)
+            LevelChange?.Invoke(_currentRound);
+
+        if (_currentRound == 0)
+            _wallet.SetDefaultValue();
+
         StartScene();
     }
 
     public void Fail()
     {
+        _wallet.SetDefaultValue();
+        _currentRound = 0;
+
+        YG2.saves.Money = _wallet.Money;
+        YG2.saves.Bomb = _wallet.Bomb;
+        YG2.saves.Level = _currentRound;
+        YG2.saves.Ferryboat = 0;
+
         _scenes.ReastartLevel();
         Time.timeScale = 1;
         _offerRestart.gameObject.SetActive(false);
@@ -101,6 +129,7 @@ public class Game : MonoBehaviour
     public void RoundOver()
     {
         _wallet.AddMoney(_rewardCounter.GetRewardValue());
+
         _leaderbordCounter.ChangeCounter();
         _restartInfoView.DeactivateRestartButtomAnimatoin();
 
@@ -130,8 +159,9 @@ public class Game : MonoBehaviour
             {
                 _cameraMover.Zoom();
             }
+            _currentFerryboat = SecondFerryboat;
+            SetFerryboat(SecondFerryboat);
 
-            SetNextFerryboat(1);
             return;
         }
         else if (_currentRound == RoundThirdBoat)
@@ -141,28 +171,38 @@ public class Game : MonoBehaviour
                 _cameraMover.Zoom();
             }
 
-            SetNextFerryboat(2);
+            SetFerryboat(ThirdFerryboat);
+            _currentFerryboat = ThirdFerryboat;
+
             return;
         }
         else if (_currentRound == RoundRandomBoat)
         {
-            SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+            SetFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+
             return;
         }
         else if (_currentRound > RoundRandomBoat && _currentRound % DividerRandomRound == 0)
         {
-            SetNextFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+            SetFerryboat(UnityEngine.Random.Range(0, _shipAdder.FerryboatsCount));
+
             return;
         }
 
         YG2.MetricaSend(_currentRound.ToString());
+        YG2.saves.Ferryboat = _currentFerryboat;
+        YG2.saves.Money = _wallet.Money;
+        YG2.saves.Bomb = _wallet.Bomb;
+        YG2.saves.Level = _currentRound;
+        YG2.SaveProgress();
+
         StartCoroutine(ChangeRound());
     }
 
     private void SetWaitings()
     {
         _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
-        _wait5Millisecond = new WaitForSeconds(_delay5Millisecond);
+        _creatingCarDelay = new WaitForSeconds(_creatingCarDelayValue);
         _wait1Second = new WaitForSeconds(_delay1Second);
         _wait2Second = new WaitForSeconds(_delay2Second);
         _wait3Second = new WaitForSeconds(_delay3Second);
@@ -176,7 +216,7 @@ public class Game : MonoBehaviour
         StartScene();
     }
 
-    private void SetNextFerryboat(int value)
+    private void SetFerryboat(int value)
     {
         _creatigCars = null;
         EndScene();
@@ -253,13 +293,13 @@ public class Game : MonoBehaviour
         {
             _fabricCars.Create();
 
-            yield return _wait5Millisecond;
+            yield return _creatingCarDelay;
 
             if (i >= plaseStartSpesialCar && i < (countSpesial + plaseStartSpesialCar))
             {
                 _fabricCars.CreateSpesial();
 
-                yield return _wait5Millisecond;
+                yield return _creatingCarDelay;
             }
         }
 

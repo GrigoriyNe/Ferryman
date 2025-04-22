@@ -32,23 +32,12 @@ public class Wallet : MonoBehaviour
         _obstacle.BombUsed -= RemoveBomb;
     }
 
-    private void OnRewardBomb(string _)
-    {
-        AddBomb(_bombValueForReward);
-    }
-
-    private void Start()
+    public void SetDefaultValue()
     {
         Money = StartMoney;
         Bomb = StartBomb;
         ChangedMoney?.Invoke(Money);
-    }
-
-    public void OnResetGame()
-    {
-        Money = StartMoney;
-        Bomb = StartBomb;
-        ChangedMoney?.Invoke(Money);
+        ChangedBomb?.Invoke(Bomb);
     }
 
     public void AddMoney(int value)
@@ -84,5 +73,19 @@ public class Wallet : MonoBehaviour
     public bool IsEnoughBomb()
     {
         return Bomb > 0;
+    }
+
+    public void SetLoadValues(int money, int bombs)
+    {
+        Money = money;
+        Bomb = bombs;
+
+        ChangedMoney?.Invoke(Money);
+        ChangedBomb?.Invoke(Bomb);
+    }
+
+    private void OnRewardBomb(string _)
+    {
+        AddBomb(_bombValueForReward);
     }
 }
