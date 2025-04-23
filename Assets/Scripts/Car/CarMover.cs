@@ -8,8 +8,8 @@ public class CarMover : MonoBehaviour
 {
     private const int LowerSteps = 1;
     private const int Offset = 1;
-    private const float MinValueForChechObstacleOnQuenue = 0.2f;
-    private const float MaxValueForChechObstacleOnQuenue = 1f;
+    private const float MinValueForChechObstacleOnQuenue = 0.5f;
+    private const float MaxValueForChechObstacleOnQuenue = 1.8f;
     private const float MiddleTransform = 10;
 
     [SerializeField] private float _speed;
@@ -35,10 +35,9 @@ public class CarMover : MonoBehaviour
     private Coroutine _moving;
     private bool _isSelected;
 
-    private WaitForSeconds _wait1Millisecond;
-    private float _delay1Millisecond = 0.1f;
-    private WaitForSeconds _waitStart;
-    private float _waitStartValue = 0.5f;
+    private WaitForSeconds _waitMoving;
+    private float _waitMovingValue;
+
     private float _movingQuenueMultiplicateValue = 2f;
 
     private void OnEnable()
@@ -120,8 +119,8 @@ public class CarMover : MonoBehaviour
 
     private void SetWaitings()
     {
-        _wait1Millisecond = new WaitForSeconds(_delay1Millisecond);
-        _waitStart = new WaitForSeconds(_waitStartValue);
+        _waitMovingValue = UnityEngine.Random.Range(MinValueForChechObstacleOnQuenue, MaxValueForChechObstacleOnQuenue + Offset);
+        _waitMoving = new WaitForSeconds(_waitMovingValue);
     }
 
     private void MoveToZeroPosition()
@@ -228,7 +227,7 @@ public class CarMover : MonoBehaviour
                 _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
                 isStartMove = false;
 
-                yield return new WaitForSeconds(UnityEngine.Random.Range(MinValueForChechObstacleOnQuenue, MaxValueForChechObstacleOnQuenue + Offset));
+                yield return _waitMoving; 
             }
         }
 
