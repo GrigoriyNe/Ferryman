@@ -15,11 +15,10 @@ namespace FerryboatGroup
         {
             for (int i = 0; i < _ferryboats.Count; ++i)
             {
-                if (i != value)
-                    _ferryboatGroups[i].SetActive(false);
-                else
-                    _ferryboatGroups[i].SetActive(true);
+                _ferryboatGroups[i].SetActive(false);
             }
+
+            _ferryboatGroups[value].SetActive(true);
 
             return _ferryboats[value];
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using YG;
 
-namespace CameraMove
+namespace CameraMover
 {
     public class CameraMover : MonoBehaviour
     {

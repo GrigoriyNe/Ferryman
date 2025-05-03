@@ -10,7 +10,7 @@ namespace Obstacle
         [SerializeField] private GameObject _obstacleSpesialPrefab;
         [SerializeField] private GameObject _obstacleSpesialDamagemaledPrefab;
 
-        private List<GameObject> _filedObstacles = new();
+        private List<GameObject> _filedObstacles = new ();
 
         private void OnDisable()
         {
@@ -20,7 +20,7 @@ namespace Obstacle
                     _filedObstacles[i].gameObject.SetActive(false);
             }
 
-            _filedObstacles = new();
+            _filedObstacles = new ();
         }
 
         public void SetObstacle(Transform target)

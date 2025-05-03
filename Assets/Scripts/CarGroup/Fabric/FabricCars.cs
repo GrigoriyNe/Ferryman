@@ -7,14 +7,14 @@ namespace CarGroup
     public class FabricCars : MonoBehaviour
     {
         [SerializeField] private Cars _cars;
-        [SerializeField] private SpesialCars _carsSpesials;
+        [SerializeField] private Cars _carsSpesials;
         [SerializeField] private MapFerryboat.MapLogic _map;
 
-        [SerializeField] private CarPool _carPool;
-        [SerializeField] private CarSpesialPool _carSpesialPool;
+        [SerializeField] private Pool<SpawnableObject> _carPool;
+        [SerializeField] private Pool<SpawnableObject> _carSpesialPool;
 
-        private List<Car> _createdCars = new List<Car>();
-        private List<SpesialCar> _createdSpesialCars = new List<SpesialCar>();
+        private List<SpawnableObject> _createdCars = new List<SpawnableObject>();
+        private List<SpawnableObject> _createdSpesialCars = new List<SpawnableObject>();
 
         private Namer _places;
 
@@ -25,62 +25,78 @@ namespace CarGroup
 
         public void Create()
         {
-            Car car = null;
-            car = _carPool.GetItem().GetComponent<Car>();
-            _carPool.ChangePrefab(_cars.GetRandomCar());
+            SpawnableObject car = CreatingCar(false);
 
-            car.transform.rotation = Quaternion.identity;
-            car.gameObject.SetActive(true);
-            _createdCars.Add(car);
-
-            car.Init(_map.GetStartCarPosition(), _map.GetFinihCarPosition(), _places);
+            car.GetComponent<Car>().Init(
+                _map.GetStartCarPosition(), _map.GetFinihCarPosition(), _places);
         }
 
         public void CreateSpesial()
         {
-            SpesialCar car = null;
-            car = _carSpesialPool.GetItem().GetComponent<SpesialCar>();
-            _carSpesialPool.ChangePrefab(_carsSpesials.GetRandomCar());
+            SpawnableObject car = CreatingCar(true);
+
+            car.GetComponent<Car>().Init(
+                _map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
+        }
+
+        private SpawnableObject CreatingCar(bool isSpesial)
+        {
+            SpawnableObject car;
+
+            if (isSpesial)
+            {
+                _carSpesialPool.ChangePrefab(_carsSpesials.GetRandomCar());
+                car = _carSpesialPool.GetItem().GetComponent<SpawnableObject>();
+                _createdSpesialCars.Add(car);
+            }
+            else
+            {
+                _carPool.ChangePrefab(_cars.GetRandomCar());
+                car = _carPool.GetItem().GetComponent<SpawnableObject>();
+                _createdCars.Add(car);
+            }
 
             car.transform.rotation = Quaternion.identity;
             car.gameObject.SetActive(true);
 
-            _createdSpesialCars.Add(car);
-
-            car.Init(_map.GetStartSpesialCarPosition(), _map.GetSpesialFinihCarPosition(), _places);
+            return car;
         }
 
         public void RecoverPositionNotParkCars()
         {
-            foreach (Car car in _createdCars)
+            foreach (SpawnableObject car in _createdCars)
             {
-                car.MoveAway();
+                car.GetComponent<Car>().MoveAway();
             }
 
-            foreach (SpesialCar car in _createdSpesialCars)
+            foreach (SpawnableObject car in _createdSpesialCars)
             {
-                car.MoveAway();
+                car.GetComponent<SpesialCar>().MoveAway();
             }
         }
 
         public void DeactivateCars()
         {
-            foreach (Car car in _createdCars)
+            foreach (SpawnableObject car in _createdCars)
             {
-                car.transform.position = Vector3.zero;
-                car.gameObject.SetActive(false);
+                Deactivating(car);
                 _carPool.ReturnItem(car);
             }
 
-            foreach (SpesialCar car in _createdSpesialCars)
+            foreach (SpawnableObject car in _createdSpesialCars)
             {
-                car.transform.position = Vector3.zero;
-                car.gameObject.SetActive(false);
+                Deactivating(car);
                 _carSpesialPool.ReturnItem(car);
             }
 
-            _createdCars = new List<Car>();
-            _createdSpesialCars = new List<SpesialCar>();
+            _createdCars = new List<SpawnableObject>();
+            _createdSpesialCars = new List<SpawnableObject>();
+        }
+
+        private void Deactivating(SpawnableObject car)
+        {
+            car.transform.position = Vector3.zero;
+            car.gameObject.SetActive(false);
         }
     }
 }

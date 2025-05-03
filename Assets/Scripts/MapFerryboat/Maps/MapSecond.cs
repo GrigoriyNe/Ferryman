@@ -4,11 +4,6 @@ namespace MapFerryboat
 {
     public class MapSecond : Map
     {
-        private const int Width = 24;
-        private const int Height = 24;
-
-        private const int RoadOffVerticalValue = Width - MiddleOffset;
-        private const int MiddleOffset = 8;
         private const int LowestThresholdX = 1;
         private const int BigestThresholdX = 4;
         private const int RoadOffVerticalLowerValue = 3;
@@ -32,73 +27,53 @@ namespace MapFerryboat
         private const int WallVerticalSecond = 3;
         private const int WallVerticalThird = 4;
 
-        [SerializeField] private MapLogic _logic;
         [SerializeField] private Obstacle.ObstacleLogic _obstaleLogic;
-
-        public override void Activate()
-        {
-            _logic.Init(Width, Height, RoadOffVerticalValue);
-            gameObject.SetActive(true);
-            CreateItemOnMap();
-            SetVaribleObstaclePlaces();
-        }
-
-        public override void Deactivate()
-        {
-            gameObject.SetActive(false);
-            _logic.Deactivate();
-        }
-
-        public override int GetHeight()
-        {
-            return Height;
-        }
 
         public override void SetVaribleObstaclePlaces()
         {
-            _logic.SetVaribleObstaclePlaces(LowestThresholdX, BigestThresholdX,
+            Logic.SetVaribleObstaclePlaces(LowestThresholdX, BigestThresholdX,
                 RoadOffVerticalValue + RoadOffVerticalLowerValue, Height - RoadOffVerticalLowerValue);
         }
 
-        private void CreateItemOnMap()
+        public override void CreateItemOnMap()
         {
             for (int i = 0; i < RoadOffVerticalValue + VerticalOffset; i++)
-                _logic.AddVoid(VerticalRigthBorder, i);
+                Logic.AddVoid(VerticalRigthBorder, i);
 
             for (int i = 0; i < RoadOffVerticalValue; i++)
-                _logic.AddVoid(VerticalRigthBorder + VerticalOffset, i);
+                Logic.AddVoid(VerticalRigthBorder + VerticalOffset, i);
 
             for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
                 for (int j = 0; j < Width; j++)
-                    _logic.AddVoid(i, j);
+                    Logic.AddVoid(i, j);
 
             for (int i = 0; i < Height; i++)
                 for (int j = Height - VerticalOffset; j < Height; j++)
-                    _logic.AddVoid(i, j);
+                    Logic.AddVoid(i, j);
 
             for (int i = 0; i < VerticalRigthBorder; i++)
-                _obstaleLogic.SetBlockedFinishPlace(_logic.GetTile(i, Height - HeightOffset));
+                _obstaleLogic.SetBlockedFinishPlace(Logic.GetTile(i, Height - HeightOffset));
 
-            _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(VerticalRigthBorder, HorizontalFirstSpesialPlase));
-            _obstaleLogic.SetSpesialFinishPlace(_logic.GetTile(VerticalRigthBorder, HorizontalSecondSpesialPlase));
+            _obstaleLogic.SetSpesialFinishPlace(Logic.GetTile(VerticalRigthBorder, HorizontalFirstSpesialPlase));
+            _obstaleLogic.SetSpesialFinishPlace(Logic.GetTile(VerticalRigthBorder, HorizontalSecondSpesialPlase));
 
             for (int i = 0; i < VerticalRigthBorder; i++)
                 for (int j = HorizontalParkLower; j < HorizontalParkHeigth; j++)
-                    _logic.AddCarFinishPoint(i, j);
+                    Logic.AddCarFinishPoint(i, j);
 
             for (int i = VerticalOffset; i < VerticalRigthBorder; i++)
             {
-                _logic.AddCarStartPoint(i, StartVertcalPlase);
-                _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
+                Logic.AddCarStartPoint(i, StartVertcalPlase);
+                Logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
             }
 
-            _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
-            _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);
-            _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalThirdSpesialPlase);
+            Logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
+            Logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);
+            Logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalThirdSpesialPlase);
 
-            _logic.AddWall(WallVerticalFirst, WallHorizontalPlace, WallState);
-            _logic.AddWall(WallVerticalSecond, WallHorizontalPlace, WallState);
-            _logic.AddWall(WallVerticalThird, WallHorizontalPlace, WallState);
+            Logic.AddWall(WallVerticalFirst, WallHorizontalPlace, WallState);
+            Logic.AddWall(WallVerticalSecond, WallHorizontalPlace, WallState);
+            Logic.AddWall(WallVerticalThird, WallHorizontalPlace, WallState);
         }
     }
 }

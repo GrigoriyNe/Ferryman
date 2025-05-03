@@ -15,14 +15,14 @@ namespace Obstacle
         [SerializeField] private SoungsGroup.Soungs _soungs;
         [SerializeField] private ObstacleExplosiveEffector _effector;
 
-        [SerializeField] private PlayerInputController _input;
+        [SerializeField] private Input.PlayerInputController _input;
         [SerializeField] private ObstacleView _obstacleView;
 
-        private List<int[]> _filedTileCoord = new();
+        private List<int[]> _filedTileCoord = new ();
 
-        private List<Tile> _finishBlockTile = new();
-        private List<Tile> _finishSpesialBlockTile = new();
-        private List<int[]> _damagebaleTile = new();
+        private List<Tile> _finishBlockTile = new ();
+        private List<Tile> _finishSpesialBlockTile = new ();
+        private List<int[]> _damagebaleTile = new ();
 
         private int _maxValueSpawnOpstacles = 3;
         private bool _isBombUsing = false;
@@ -55,7 +55,7 @@ namespace Obstacle
                     _mapLogic.GetTile(
                         _filedTileCoord[i].GetValue(0).ConvertTo<int>(),
                         _filedTileCoord[i].GetValue(1)
-                        .ConvertTo<int>()).DectivateLigther();
+                        .ConvertTo<int>()).ChangeLigther(false);
                 }
 
                 _isBombUsing = false;
@@ -72,7 +72,7 @@ namespace Obstacle
                 _mapLogic.GetTile(
                     _filedTileCoord[i].GetValue(0).ConvertTo<int>(),
                     _filedTileCoord[i].GetValue(1)
-                    .ConvertTo<int>()).ActivateLigther();
+                    .ConvertTo<int>()).ChangeLigther(true);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Obstacle
             {
                 _mapLogic.GetTile(
                     _filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i]
-                    .GetValue(1).ConvertTo<int>()).DectivateLigther();
+                    .GetValue(1).ConvertTo<int>()).ChangeLigther(false);
             }
 
             if (_finishSpesialBlockTile.Contains(tile))

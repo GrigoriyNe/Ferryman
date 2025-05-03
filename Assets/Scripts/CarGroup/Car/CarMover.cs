@@ -36,6 +36,8 @@ namespace CarGroup
 
         private Namer _parkPlace;
         private Coroutine _moving;
+        private Coroutine _movingAway;
+        private Coroutine _changingPosition;
         private bool _isSelected;
 
         private WaitForSeconds _waitMoving;
@@ -53,14 +55,16 @@ namespace CarGroup
             _inParking = false;
             _isSelected = false;
             _moving = null;
+            _movingAway = null;
+            _changingPosition = null;
         }
 
         private void OnDisable()
         {
             _isEmptyFinisPlace = true;
-            StopCoroutine(ChangingPositionOnQuenue());
-            StopCoroutine(MovingAway());
             _moving = null;
+            _movingAway = null;
+            _changingPosition = null;
             _startPositionTile = null;
             _finishPositionTile = null;
         }
@@ -74,7 +78,7 @@ namespace CarGroup
 
         public void MoveInQuenue()
         {
-            StartCoroutine(ChangingPositionOnQuenue());
+            _changingPosition = StartCoroutine(ChangingPositionOnQuenue());
         }
 
         public void Move()
@@ -117,7 +121,7 @@ namespace CarGroup
         public void MoveAway()
         {
             if (_inParking == false)
-                StartCoroutine(MovingAway());
+                _movingAway = StartCoroutine(MovingAway());
         }
 
         private void SetWaitings()
@@ -270,7 +274,7 @@ namespace CarGroup
         private IEnumerator MovingAway()
         {
             _moving = null;
-            StopCoroutine(ChangingPositionOnQuenue());
+            _changingPosition = null;
 
             Tile tile = _map.GetTile(_startPositionTile.CordX, 0);
 
@@ -348,7 +352,7 @@ namespace CarGroup
 
                 _viewer.ActivateBackground();
                 transform.LookAt(_map.GetTile(_startPositionTile.CordX, _startPositionTile.CordY + (Offset + Offset)).transform);
-                StartCoroutine(ChangingPositionOnQuenue());
+                _changingPosition = StartCoroutine(ChangingPositionOnQuenue());
             }
 
             _isSelected = false;

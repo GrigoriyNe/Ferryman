@@ -22,11 +22,11 @@ namespace UiOnScreen
         private float _stepDeativatingValue = 0.5f;
         private WaitForSeconds _stepDeativatingWaing;
         private float _uiDeativatingValue = 1f;
-        private WaitForSeconds _UiDeativatingWaing;
+        private WaitForSeconds _uiDeativatingWaing;
 
         private void Awake()
         {
-            _UiDeativatingWaing = new WaitForSeconds(_uiDeativatingValue);
+            _uiDeativatingWaing = new WaitForSeconds(_uiDeativatingValue);
             _stepDeativatingWaing = new WaitForSeconds(_stepDeativatingValue);
         }
 
@@ -38,7 +38,7 @@ namespace UiOnScreen
 
         public void DeactivateRestartButtomAnimatoin()
         {
-            StartCoroutine(DeactivateAnimation(_animatorRestart, _UiDeativatingWaing));
+            StartCoroutine(DeactivateAnimation(_animatorRestart, _uiDeativatingWaing));
             _deativating = StartCoroutine(DeactivateAnimation(_animatorStepUi, _stepDeativatingWaing));
         }
 
@@ -77,21 +77,21 @@ namespace UiOnScreen
         {
             _animatorLeveUi.SetBool(Start, true);
 
-            StartCoroutine(DeactivateAnimation(_animatorLeveUi, _UiDeativatingWaing));
+            StartCoroutine(DeactivateAnimation(_animatorLeveUi, _uiDeativatingWaing));
         }
 
         public void ActivateAnimatorRestart()
         {
             _animatorRestart.SetBool(Start, true);
 
-            StartCoroutine(DeactivateAnimation(_animatorRestart, _UiDeativatingWaing));
+            StartCoroutine(DeactivateAnimation(_animatorRestart, _uiDeativatingWaing));
         }
 
         public void ActivateAnimatorNegativeRestart()
         {
             _animatorRestart.SetBool(StartNegative, true);
 
-            StartCoroutine(DeactivateAnimationNegative(_animatorRestart, _UiDeativatingWaing));
+            StartCoroutine(DeactivateAnimationNegative(_animatorRestart, _uiDeativatingWaing));
         }
 
         private IEnumerator DeactivateAnimation(Animator animatorUi, WaitForSeconds waiting)

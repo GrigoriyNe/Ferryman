@@ -8,7 +8,6 @@ namespace Statisticers
         [SerializeField] private TextMeshProUGUI _levelCount;
         [SerializeField] private TextMeshProUGUI _maxMoneyCount;
         [SerializeField] private TextMeshProUGUI _usedBomb;
-
         [SerializeField] private RestartStatisticInfoCounter _counter;
 
         private void OnEnable()

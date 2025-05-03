@@ -26,13 +26,14 @@ namespace Game
         [SerializeField] private Counters.RewardCounter _rewardCounter;
         [SerializeField] private MapFerryboat.MapLogic _mapLogic;
         [SerializeField] private Obstacle.ObstacleLogic _obstacle;
-        [SerializeField] private PlayerResouce.Wallet _wallet;
+        [SerializeField] private PlayerResouce.MoneyCount _money;
+        [SerializeField] private PlayerResouce.BombCount _bombs;
         [SerializeField] private SoungsGroup.Soungs _soungs;
         [SerializeField] private UiOnScreen.AnimationResources _restartInfoView;
         [SerializeField] private Envoriments.BridgeAnimator _bridge;
         [SerializeField] private FerryboatGroup.FerryboatFabric _shipAdder;
         [SerializeField] private CarGroup.FabricCars _fabricCars;
-        [SerializeField] private CameraMove.CameraMover _cameraMover;
+        [SerializeField] private CameraMover.CameraMover _cameraMover;
         [SerializeField] private ScenesChanger _scenes;
         [SerializeField] private Canvas _offerRestart;
         [SerializeField] private LeaderbordCounter _leaderbordCounter;
@@ -78,11 +79,12 @@ namespace Game
 
         public void Fail()
         {
-            _wallet.SetDefaultValue();
+            _bombs.SetDefaultValue();
+            _money.SetDefaultValue();
             _currentRound = 0;
 
-            YG2.saves.Money = _wallet.Money;
-            YG2.saves.Bomb = _wallet.Bomb;
+            YG2.saves.Money = _money.Money;
+            YG2.saves.Bomb = _bombs.Bomb;
             YG2.saves.Level = _currentRound;
             YG2.saves.Ferryboat = 0;
 
@@ -93,9 +95,9 @@ namespace Game
 
         public bool TryPay(int coust)
         {
-            if (_wallet.IsEnoughMoney(coust))
+            if (_money.IsEnoughMoney(coust))
             {
-                _wallet.RemoveMoney(coust);
+                _money.RemoveMoney(coust);
                 return true;
             }
             else
@@ -106,7 +108,7 @@ namespace Game
 
         public void TryUseBomb()
         {
-            if (_wallet.IsEnoughBomb())
+            if (_bombs.IsEnoughBomb())
             {
                 _obstacle.TryActivateSpesialClicked();
             }
@@ -123,12 +125,12 @@ namespace Game
 
         public void RoundOver()
         {
-            _wallet.AddMoney(_rewardCounter.GetRewardValue());
+            _money.AddMoney(_rewardCounter.GetRewardValue());
 
             _leaderbordCounter.ChangeCounter();
             _restartInfoView.DeactivateRestartButtomAnimatoin();
 
-            if (_wallet.Money < LowerMoney)
+            if (_money.Money < LowerMoney)
             {
                 _offerRestart.gameObject.SetActive(true);
                 Time.timeScale = 0;
@@ -141,7 +143,7 @@ namespace Game
 
             _soungs.PlayRestartSoung();
 
-            _wallet.AddBomb(BombForRound);
+            _bombs.AddBomb(BombForRound);
             _currentRound += 1;
             LevelChange?.Invoke(_currentRound);
 
@@ -179,8 +181,8 @@ namespace Game
 
             YG2.MetricaSend(_currentRound.ToString());
             YG2.saves.Ferryboat = _currentFerryboat;
-            YG2.saves.Money = _wallet.Money;
-            YG2.saves.Bomb = _wallet.Bomb;
+            YG2.saves.Money = _money.Money;
+            YG2.saves.Bomb = _bombs.Bomb;
             YG2.saves.Level = _currentRound;
             YG2.SaveProgress();
 
@@ -189,14 +191,18 @@ namespace Game
 
         private void LoadSaves()
         {
-            _wallet.SetLoadValues(YG2.saves.Money, YG2.saves.Bomb);
+            _money.SetLoadValues(YG2.saves.Money);
+            _bombs.SetLoadValues(YG2.saves.Bomb);
             _ferryboat = _shipAdder.GetFerryboat(YG2.saves.Ferryboat);
 
             _currentRound = YG2.saves.Level;
             LevelChange?.Invoke(_currentRound);
 
             if (_currentRound == 0)
-                _wallet.SetDefaultValue();
+            {
+                _money.SetDefaultValue();
+                _bombs.SetDefaultValue();
+            }
 
             if (_currentRound > RoundSecondBoat && YG2.envir.isMobile)
                 _cameraMover.Zoom();

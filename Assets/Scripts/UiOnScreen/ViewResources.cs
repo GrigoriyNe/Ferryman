@@ -9,7 +9,8 @@ namespace UiOnScreen
 
         [SerializeField] private TextMeshProUGUI _moneyCount;
         [SerializeField] private TextMeshProUGUI _bombCount;
-        [SerializeField] private PlayerResouce.Wallet _wallet;
+        [SerializeField] private PlayerResouce.MoneyCount _money;
+        [SerializeField] private PlayerResouce.BombCount _bomb;
         [SerializeField] private AnimationResources _animator;
         [SerializeField] private Obstacle.ObstacleLogic _obstacleLogic;
 
@@ -17,8 +18,8 @@ namespace UiOnScreen
 
         private void OnEnable()
         {
-            _wallet.ChangedMoney += OnChangedMoney;
-            _wallet.ChangedBomb += OnChangedCountBomb;
+            _money.ChangedMoney += OnChangedMoney;
+            _bomb.ChangedBomb += OnChangedCountBomb;
             _obstacleLogic.BombUsed += OnDeactivateBomb;
             _obstacleLogic.BombCanceled += OnDeactivateBomb;
             _obstacleLogic.BombUse += OnActivatedBomb;
@@ -26,8 +27,8 @@ namespace UiOnScreen
 
         private void OnDisable()
         {
-            _wallet.ChangedMoney -= OnChangedMoney;
-            _wallet.ChangedBomb -= OnChangedCountBomb;
+            _money.ChangedMoney -= OnChangedMoney;
+            _bomb.ChangedBomb -= OnChangedCountBomb;
             _obstacleLogic.BombUsed -= OnDeactivateBomb;
             _obstacleLogic.BombCanceled -= OnDeactivateBomb;
             _obstacleLogic.BombUse -= OnActivatedBomb;

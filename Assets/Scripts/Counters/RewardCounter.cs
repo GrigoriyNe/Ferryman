@@ -66,37 +66,33 @@ namespace Counters
             return result;
         }
 
-        public void SetStartPositions(List<Tile> startPositions)
+        public void SetFinishPositions(List<Tile> positions, bool isSpesial)
         {
-            foreach (Tile tile in startPositions)
+            foreach (Tile tile in positions)
             {
                 if (tile.gameObject.activeSelf)
                 {
                     if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
                     {
-                        _emptyTiles.Add(tile);
+                        if (isSpesial)
+                        {
+                            _emptySpesialTiles.Add(tile);
+                        }
+                        else
+                        {
+                            _emptyTiles.Add(tile);
+                        }
                     }
                     else
                     {
-                        _filledFinishTiles.Add(tile);
-                    }
-                }
-            }
-        }
-
-        public void SetStartSpesialPositions(List<Tile> startSpesialPositions)
-        {
-            foreach (Tile tile in startSpesialPositions)
-            {
-                if (tile.gameObject.activeSelf)
-                {
-                    if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
-                    {
-                        _emptySpesialTiles.Add(tile);
-                    }
-                    else
-                    {
-                        _filledFinishSpesialTile.Add(tile);
+                        if (isSpesial)
+                        {
+                            _filledFinishSpesialTile.Add(tile);
+                        }
+                        else
+                        {
+                            _filledFinishTiles.Add(tile);
+                        }
                     }
                 }
             }

@@ -10,7 +10,7 @@ namespace MapFerryboat
         private const int OffsetHorizontal = 1;
         private const int OffsetVerticat = 7;
 
-        [SerializeField] private Pool.TilePool _tilePool;
+        [SerializeField] private Pool.ItemPool _tilePool;
         [SerializeField] private Game.GameProcess _game;
         [SerializeField] private Obstacle.ObstacleView _obstacleView;
         [SerializeField] private Obstacle.ObstacleLogic _obstaleLogic;
@@ -148,8 +148,8 @@ namespace MapFerryboat
 
         public void PrepareReward()
         {
-            _rewarder.SetStartPositions(_carFinishPoints);
-            _rewarder.SetStartSpesialPositions(_carSpesialFinishPoints);
+            _rewarder.SetFinishPositions(_carFinishPoints, false);
+            _rewarder.SetFinishPositions(_carSpesialFinishPoints, true);
             _rewarder.WriteReward();
         }
 

@@ -7,7 +7,7 @@ namespace Statisticers
     {
         [SerializeField] private Game.GameProcess _game;
         [SerializeField] private Obstacle.ObstacleLogic _obstacleLogic;
-        [SerializeField] private PlayerResouce.Wallet _wallet;
+        [SerializeField] private PlayerResouce.MoneyCount _wallet;
 
         private int _maxLevel = 0;
         private int _usedBomb = 0;

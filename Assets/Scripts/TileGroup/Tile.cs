@@ -20,6 +20,7 @@ namespace TileGroup
         private Vector3 _winScale = new Vector3(0.3f, 0.3f, 0.3f);
 
         public int CordX { get; private set; }
+
         public int CordY { get; private set; }
 
         public int Reward => _rewardValue;
@@ -33,7 +34,8 @@ namespace TileGroup
         {
             _rewardSpriteRenderer.sprite = _defaultSprite;
             _rewardSpriteRenderer.transform.localScale = _defaultScale;
-            _rewardSpriteRenderer.transform.position = new Vector3(_rewardSpriteRenderer.transform.position.x, _offsetDefaultY, _rewardSpriteRenderer.transform.position.z);
+
+            TranlateTo(_offsetDefaultY);
             _rewardValue = 0;
             _rewardSpriteRenderer.gameObject.SetActive(false);
         }
@@ -56,39 +58,26 @@ namespace TileGroup
             if (value > 0)
             {
                 _rewardSpriteRenderer.sprite = _rewardView.GetNeturalView(value);
-                _rewardSpriteRenderer.transform.position = new Vector3(
-                    _rewardSpriteRenderer.transform.position.x,
-                    _offsetDefaultY,
-                    _rewardSpriteRenderer.transform.position.z);
+                TranlateTo(_offsetDefaultY);
             }
             else
             {
                 _rewardSpriteRenderer.sprite = _rewardView.GetNegativeiveView(value);
-                _rewardSpriteRenderer.transform.position = new Vector3(
-                    _rewardSpriteRenderer.transform.position.x,
-                    _offsetObstacleY,
-                    _rewardSpriteRenderer.transform.position.z);
+                TranlateTo(_offsetObstacleY);
             }
         }
 
         public void SetWinnerState()
         {
             _rewardSpriteRenderer.sprite = _rewardView.GetPositiveView(_rewardValue);
+            TranlateTo(_offsetWinStateY);
             _rewardSpriteRenderer.transform.localScale = _winScale;
-            _rewardSpriteRenderer.transform.position = new Vector3(
-                _rewardSpriteRenderer.transform.position.x,
-                _offsetWinStateY,
-                _rewardSpriteRenderer.transform.position.z);
         }
 
         public void SetDefaultState()
         {
             _rewardSpriteRenderer.sprite = _rewardView.GetNeturalView(_rewardValue);
-            _rewardSpriteRenderer.transform.localScale = _defaultScale;
-            _rewardSpriteRenderer.transform.position = new Vector3(
-                _rewardSpriteRenderer.transform.position.x,
-                _offsetDefaultY,
-                _rewardSpriteRenderer.transform.position.z);
+            TranlateTo(_offsetDefaultY);
         }
 
         public void SetWalls(int walls)
@@ -106,14 +95,18 @@ namespace TileGroup
             }
         }
 
-        public void DectivateLigther()
+        public void ChangeLigther(bool isActive)
         {
-            _ligter.gameObject.gameObject.SetActive(false);
+            _ligter.gameObject.gameObject.SetActive(isActive);
         }
 
-        public void ActivateLigther()
+        private void TranlateTo(float heigth)
         {
-            _ligter.gameObject.SetActive(true);
+            _rewardSpriteRenderer.transform.localScale = _defaultScale;
+            _rewardSpriteRenderer.transform.position = new Vector3(
+                _rewardSpriteRenderer.transform.position.x,
+                heigth,
+                _rewardSpriteRenderer.transform.position.z);
         }
     }
 }

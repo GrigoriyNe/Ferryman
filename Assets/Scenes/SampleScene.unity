@@ -2123,7 +2123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 171053744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb5329c3c1b054c46819e730c379c1c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b09b024e0edc5f4a94374336b3a0a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 1145552009}
@@ -7062,7 +7062,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 385034672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15542f8cefaf11f448a1285d57858e43, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b09b024e0edc5f4a94374336b3a0a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 1059201508}
@@ -22833,7 +22833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ea5949c0e137748aa5ffe447ef118e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _logic: {fileID: 385034675}
+  Logic: {fileID: 385034675}
   _obstaleLogic: {fileID: 341337246}
 --- !u!1 &1251287580
 GameObject:
@@ -24454,7 +24454,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moneyCount: {fileID: 1795916730}
   _bombCount: {fileID: 924286793}
-  _wallet: {fileID: 1639682904}
+  _money: {fileID: 1639682904}
+  _bomb: {fileID: 1639682907}
   _animator: {fileID: 1347565333}
   _obstacleLogic: {fileID: 341337246}
 --- !u!23 &1348217578 stripped
@@ -26493,7 +26494,7 @@ MonoBehaviour:
   _game: {fileID: 1639682902}
   _videoRewarder: {fileID: 1439195657}
   _goldPrice: 10
-  _wallet: {fileID: 1639682904}
+  _bomb: {fileID: 0}
 --- !u!225 &1506364932
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -29018,6 +29019,7 @@ GameObject:
   - component: {fileID: 1639682903}
   - component: {fileID: 1639682902}
   - component: {fileID: 1639682904}
+  - component: {fileID: 1639682907}
   - component: {fileID: 1639682905}
   - component: {fileID: 1639682906}
   m_Layer: 0
@@ -29039,20 +29041,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c95f1ef78955644194fdec3760b59ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fabricCars: {fileID: 1784118233}
-  _bridge: {fileID: 1339759165}
   _counter: {fileID: 396276325}
-  _wallet: {fileID: 1639682904}
-  _obstacle: {fileID: 341337246}
-  _shipAdder: {fileID: 827646184}
-  _mapLogic: {fileID: 385034675}
-  _cameraMover: {fileID: 330585548}
   _rewardCounter: {fileID: 2083692888}
+  _mapLogic: {fileID: 385034675}
+  _obstacle: {fileID: 341337246}
+  _money: {fileID: 1639682904}
+  _bombs: {fileID: 1639682907}
   _soungs: {fileID: 1284966219}
+  _restartInfoView: {fileID: 1347565333}
+  _bridge: {fileID: 1339759165}
+  _shipAdder: {fileID: 827646184}
+  _fabricCars: {fileID: 1784118233}
+  _cameraMover: {fileID: 330585548}
   _scenes: {fileID: 1639682905}
   _offerRestart: {fileID: 351317603}
   _leaderbordCounter: {fileID: 1022071592}
-  _restartInfoView: {fileID: 1347565333}
 --- !u!4 &1639682903
 Transform:
   m_ObjectHideFlags: 0
@@ -29079,12 +29082,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1639682901}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f326ef80651afe94cb9d22277fee10ea, type: 3}
+  m_Script: {fileID: 11500000, guid: e8ecb262ca710084290eb50586fc5ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rewardBomb: {fileID: 1439195658}
-  _bombValueForReward: 2
-  _obstacle: {fileID: 341337246}
   _soungs: {fileID: 1284966219}
 --- !u!114 &1639682905
 MonoBehaviour:
@@ -29113,6 +29113,21 @@ MonoBehaviour:
   _game: {fileID: 1639682902}
   _obstacleLogic: {fileID: 341337246}
   _wallet: {fileID: 1639682904}
+--- !u!114 &1639682907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639682901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c05aade3485e3498543580bc925d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardBomb: {fileID: 1439195658}
+  _obstacle: {fileID: 341337246}
+  _soungs: {fileID: 1284966219}
 --- !u!23 &1641131711 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 598680993336679326, guid: b756a22c3e732fe4083d62a780341485,
@@ -30436,7 +30451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b484b7e43be11784bace431ac603adec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _logic: {fileID: 385034675}
+  Logic: {fileID: 385034675}
   _obstaleLogic: {fileID: 341337246}
 --- !u!1001 &1695503583
 PrefabInstance:
@@ -34752,7 +34767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cars: {fileID: 171053745}
-  _carsSpesials: {fileID: 2091728612}
+  _carsSpesials: {fileID: 2091728614}
   _map: {fileID: 385034675}
   _carPool: {fileID: 171053747}
   _carSpesialPool: {fileID: 2091728613}
@@ -39534,7 +39549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f0c02f3ddb3774eb9a5392a6cc633f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _logic: {fileID: 385034675}
+  Logic: {fileID: 385034675}
   _obstaleLogic: {fileID: 341337246}
 --- !u!4 &2006535015
 Transform:
@@ -40885,8 +40900,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2091728611}
-  - component: {fileID: 2091728612}
   - component: {fileID: 2091728613}
+  - component: {fileID: 2091728614}
   m_Layer: 0
   m_Name: SpesialCars
   m_TagString: Untagged
@@ -40913,23 +40928,6 @@ Transform:
   - {fileID: 2122947778}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2091728612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091728610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e882d4e70e357343b45d54233f974d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cars:
-  - {fileID: 1547617007}
-  - {fileID: 1710127537}
-  - {fileID: 681390256}
-  - {fileID: 2122947791}
 --- !u!114 &2091728613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40939,10 +40937,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 2091728610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22e8b452e36a4b748b80c4df344a7f2c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b09b024e0edc5f4a94374336b3a0a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 681390256}
+--- !u!114 &2091728614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091728610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1395b379c0c1ad43aad17beaab335cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cars:
+  - {fileID: 1547617007}
+  - {fileID: 1710127537}
+  - {fileID: 681390256}
+  - {fileID: 2122947791}
 --- !u!1 &2093967055
 GameObject:
   m_ObjectHideFlags: 0

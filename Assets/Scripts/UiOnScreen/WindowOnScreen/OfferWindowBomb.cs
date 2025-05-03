@@ -7,13 +7,13 @@ namespace WindowOnScreen
         private const int ValueBombForPay = 1;
 
         [SerializeField] private int _goldPrice;
-        [SerializeField] private PlayerResouce.Wallet _wallet;
+        [SerializeField] private PlayerResouce.BombCount _bomb;
 
         public override void OnButtonGoldClick()
         {
             if (IsEnoughMoney(_goldPrice))
             {
-                _wallet.AddBomb(ValueBombForPay);
+                _bomb.AddBomb(ValueBombForPay);
             }
         }
     }

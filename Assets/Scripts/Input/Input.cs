@@ -5,114 +5,121 @@ using UnityEngine.InputSystem;
 using TileGroup;
 using CarGroup;
 
-public class PlayerInputController : MonoBehaviour
+namespace Input
 {
-    [SerializeField] private CameraMove.CameraMover _cameraMover;
-    [SerializeField] private SoungsGroup.Soungs _soung;
-
-    private PlayerInput _input;
-
-    private Vector2 _tapPoint;
-    private Vector2 _cameraDelta;
-
-    private float _cooldownClickCarValue = 0.3f;
-    private WaitForSeconds _waitCooldown;
-
-    public event Action<int, int> Clicked;
-
-    private void OnEnable()
+    public class PlayerInputController : MonoBehaviour
     {
-        _waitCooldown = new WaitForSeconds(_cooldownClickCarValue);
-        _input.Enable();
-        _input.Player.Click.started += OnClick;
-        _input.Player.Click.performed += OnClick;
-        _input.Player.Click.canceled += OnClick;
+        [SerializeField] private CameraMover.CameraMover _cameraMover;
+        [SerializeField] private SoungsGroup.Soungs _soung;
 
-        _input.Player.CameraMover.started += OnClickMover;
-        _input.Player.CameraMover.performed += OnClickMover;
-        _input.Player.CameraMover.canceled += OnClickMover;
-    }
+        private PlayerInput _input;
 
-    private void OnDisable()
-    {
-        _input.Disable();
-        _input.Player.Click.started -= OnClickMover;
-        _input.Player.Click.performed -= OnClickMover;
-        _input.Player.Click.canceled -= OnClickMover;
+        private Vector2 _tapPoint;
+        private Vector2 _cameraDelta;
 
-        _input.Player.CameraMover.started -= OnClickMover;
-        _input.Player.CameraMover.performed -= OnClickMover;
-        _input.Player.CameraMover.canceled -= OnClickMover;
-    }
+        private float _cooldownClickCarValue = 0.3f;
+        private WaitForSeconds _waitCooldown;
 
-    private void Awake()
-    {
-        _input = new PlayerInput();
-    }
+        public event Action<int, int> Clicked;
 
-    private void OnClickMover(InputAction.CallbackContext context)
-    {
-        if (context.canceled)
+        private void OnEnable()
         {
-            _cameraDelta = Vector2.zero;
+            _waitCooldown = new WaitForSeconds(_cooldownClickCarValue);
+            _input.Enable();
+            _input.Player.Click.started += OnClick;
+            _input.Player.Click.performed += OnClick;
+            _input.Player.Click.canceled += OnClick;
+
+            _input.Player.CameraMover.started += OnClickMover;
+            _input.Player.CameraMover.performed += OnClickMover;
+            _input.Player.CameraMover.canceled += OnClickMover;
         }
-        else if (context.performed)
-        {
-            _cameraDelta = context.ReadValue<Vector2>();
-            _cameraMover.DragMove(_cameraDelta);
-        }
-    }
 
-    private void OnClick(InputAction.CallbackContext context)
-    {
-        if (context.canceled)
+        private void OnDisable()
         {
-            _tapPoint = Vector2.zero;
-        }
-        else if (context.performed)
-        {
-            context.ReadValue<Vector2>();
-            _tapPoint = context.ReadValue<Vector2>();
-            _soung.PlayClickSoung();
+            _input.Disable();
+            _input.Player.Click.started -= OnClickMover;
+            _input.Player.Click.performed -= OnClickMover;
+            _input.Player.Click.canceled -= OnClickMover;
 
-            if (_tapPoint != Vector2.zero)
+            _input.Player.CameraMover.started -= OnClickMover;
+            _input.Player.CameraMover.performed -= OnClickMover;
+            _input.Player.CameraMover.canceled -= OnClickMover;
+        }
+
+        private void Awake()
+        {
+            _input = new PlayerInput();
+        }
+
+        private void OnClickMover(InputAction.CallbackContext context)
+        {
+            if (context.canceled)
             {
-                Ray castPoint = Camera.main.ScreenPointToRay(_tapPoint);
-                RaycastHit hit;
+                _cameraDelta = Vector2.zero;
 
-                if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
+                return;
+            }
+            else if (context.performed)
+            {
+                _cameraDelta = context.ReadValue<Vector2>();
+                _cameraMover.DragMove(_cameraDelta);
+
+                return;
+            }
+        }
+
+        private void OnClick(InputAction.CallbackContext context)
+        {
+            if (context.canceled)
+            {
+                _tapPoint = Vector2.zero;
+            }
+            else if (context.performed)
+            {
+                context.ReadValue<Vector2>();
+                _tapPoint = context.ReadValue<Vector2>();
+                _soung.PlayClickSoung();
+
+                if (_tapPoint != Vector2.zero)
                 {
-                    if (hit.collider.TryGetComponent(out SoungsGroup.WaterZone _))
-                    {
-                        _soung.PlayWaterSplash();
-                    }
-                    else
-                    {
-                        _soung.PlayClickSoung();
-                    }
+                    Ray castPoint = Camera.main.ScreenPointToRay(_tapPoint);
+                    RaycastHit hit;
 
-                    if (hit.collider.TryGetComponent(out Car car))
+                    if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
                     {
-                        car.Move();
-                    }
+                        if (hit.collider.TryGetComponent(out SoungsGroup.WaterZone _))
+                        {
+                            _soung.PlayWaterSplash();
+                        }
+                        else
+                        {
+                            _soung.PlayClickSoung();
+                        }
 
-                    if (hit.collider.TryGetComponent(out Tile tile))
-                    {
-                        Clicked?.Invoke(tile.CordX, tile.CordY);
-                    }
+                        if (hit.collider.TryGetComponent(out Car car))
+                        {
+                            car.Move();
+                        }
 
-                    context = new InputAction.CallbackContext();
-                    _input.Player.Click.performed -= OnClick;
-                    StartCoroutine(Cooldown());
+                        if (hit.collider.TryGetComponent(out Tile tile))
+                        {
+                            Clicked?.Invoke(tile.CordX, tile.CordY);
+                        }
+
+                        context = new InputAction.CallbackContext();
+                        _input.Player.Click.performed -= OnClick;
+                        StartCoroutine(Cooldown());
+                    }
                 }
             }
         }
-    }
 
-    private IEnumerator Cooldown()
-    {
-        yield return _waitCooldown;
+        private IEnumerator Cooldown()
+        {
+            yield return _waitCooldown;
 
-        _input.Player.Click.performed += OnClick;
+            _input.Player.Click.performed += OnClick;
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace WindowOnScreen
         }
 
         public abstract void OnEnabled();
+
         public abstract void OnDisabled();
 
         public void Open()

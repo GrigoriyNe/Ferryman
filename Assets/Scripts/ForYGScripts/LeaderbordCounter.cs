@@ -7,7 +7,7 @@ namespace YG
     {
         private const string TechnoName = "Money";
 
-        [SerializeField] private PlayerResouce.Wallet _wallet;
+        [SerializeField] private PlayerResouce.MoneyCount _wallet;
         [SerializeField] private LeaderboardYG _board;
 
         private int _scorePlayer;

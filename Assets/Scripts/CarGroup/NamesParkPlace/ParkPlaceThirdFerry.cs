@@ -3,21 +3,11 @@ using UnityEngine;
 
 namespace CarGroup
 {
-    public class NamesOfParkingPlacesThird : Namer
+    public class ParkPlaceThirdFerry : Namer
     {
         [SerializeField] private MapFerryboat.Map _map;
 
-        private Dictionary<int, string> _placesVertical;
-        private Dictionary<int, int> _placesHorizontal;
-
-        public void OnEnable()
-        {
-            _placesVertical = new Dictionary<int, string>();
-            _placesHorizontal = new Dictionary<int, int>();
-            FillDictionary();
-        }
-
-        public void FillDictionary()
+        public override void FillDictionary()
         {
             _placesVertical.Add(0, "g");
             _placesVertical.Add(1, "A");

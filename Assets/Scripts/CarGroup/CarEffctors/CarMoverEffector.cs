@@ -20,15 +20,6 @@ namespace CarGroup
             _waitRemove = new WaitForSeconds(_waitTime);
         }
 
-        private void OnEnable()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                if (_smokeEffects.Count < 3)
-                    _smokeEffects.Enqueue(_smokeEffect);
-            }
-        }
-
         public void PlayMoveQuenue()
         {
             _soungs.PlayQuenueMovingCars();
