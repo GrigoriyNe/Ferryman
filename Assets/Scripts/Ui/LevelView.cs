@@ -22,7 +22,7 @@ public class LevelView : MonoBehaviour
     private void OnLevelChange(int level)
     {
         string result = (level + ViewOffset).ToString();
-        _text.text =  result;
+        _text.text = result;
         _animator.ActivateLevelUi();
     }
 }

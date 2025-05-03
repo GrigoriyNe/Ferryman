@@ -41,7 +41,7 @@ public class RewardCounter : MonoBehaviour
         _filledFinishTiles = new List<TileHelper>();
         _filledFinishSpesialTile = new List<TileHelper>();
         _wonValue = 0;
-        _textWonCell.text = "";
+        _textWonCell.text = string.Empty;
     }
 
     public int GetRewardValue()
@@ -67,10 +67,16 @@ public class RewardCounter : MonoBehaviour
         foreach (TileHelper tile in startPositions)
         {
             if (tile.gameObject.activeSelf)
+            {
                 if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
+                {
                     _emptyTiles.Add(tile);
+                }
                 else
+                {
                     _filledFinishTiles.Add(tile);
+                }
+            }
         }
     }
 
@@ -79,10 +85,16 @@ public class RewardCounter : MonoBehaviour
         foreach (TileHelper tile in startSpesialPositions)
         {
             if (tile.gameObject.activeSelf)
+            {
                 if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
+                {
                     _emptySpesialTiles.Add(tile);
+                }
                 else
+                {
                     _filledFinishSpesialTile.Add(tile);
+                }
+            }
         }
     }
 
@@ -162,7 +174,6 @@ public class RewardCounter : MonoBehaviour
 
     private void SetCellListEffects()
     {
-
         for (int i = LowerPositive; i < MaxPositive; i++)
         {
             _cellPositiveEffect.Add(i);

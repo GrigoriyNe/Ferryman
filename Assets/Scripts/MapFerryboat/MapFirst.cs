@@ -56,13 +56,12 @@ public class MapFirst : Map
     public override void SetVaribleObstaclePlaces()
     {
         _logic.SetVaribleObstaclePlaces(LowestThresholdX, BigestThresholdX,
-            (RoadOffVerticalValue + RoadOffVerticalLowerValue), (RoadOffVerticalValue + RoadOffVerticalHeigterValue));
+            RoadOffVerticalValue + RoadOffVerticalLowerValue,
+            RoadOffVerticalValue + RoadOffVerticalHeigterValue);
     }
 
     private void CreateItemOnMap()
     {
-
-
         for (int i = 0; i < Height; i++)
             for (int j = Height - HeightOffset; j < Height; j++)
                 _logic.AddVoid(i, j);
@@ -70,7 +69,7 @@ public class MapFirst : Map
         for (int i = 0; i < RoadOffVerticalValue + VerticalOffset; i++)
             _logic.AddVoid(VerticalRigthBorder, i);
 
-        for (int i = (VerticalRigthBorder + VerticalOffset); i < Height; i++)
+        for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
             for (int j = 0; j < Width; j++)
                 _logic.AddVoid(i, j);
 
@@ -85,7 +84,7 @@ public class MapFirst : Map
         {
             _logic.AddCarStartPoint(i, StartVertcalPlase);
             _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
-        };
+        }
 
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);

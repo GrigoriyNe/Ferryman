@@ -81,7 +81,7 @@ public class MapThird : Map
         {
             _logic.AddCarStartPoint(i, StartVertcalPlase);
             _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
-        };
+        }
 
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);

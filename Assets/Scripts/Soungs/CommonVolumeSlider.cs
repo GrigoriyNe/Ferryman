@@ -11,4 +11,3 @@ public class CommonVolumeSlider : VolumeSlider
             Mixer.SetFloat(Master, Mathf.Log10(Slider.value) * ValueMultiplicationForMixerVolume);
     }
 }
-

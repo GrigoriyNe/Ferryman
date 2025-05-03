@@ -7,18 +7,21 @@ public class Wallet : MonoBehaviour
     private const int BombForExplode = 1;
 
     [SerializeField] private VideoRewarder _rewardBomb;
-    [SerializeField] int _bombValueForReward = 2;
+    [SerializeField] private int _bombValueForReward = 2;
     [SerializeField] private ObstacleLogic _obstacle;
     [SerializeField] private Soungs _soungs;
 
     public event Action<int> ChangedMoney;
+
     public event Action<int> ChangedBomb;
 
     public int Money { get; private set; }
-    public int Bomb { get; private set; }
-    public int StartMoney { get; private set; } = 50;
-    public int StartBomb { get; private set; } = 2;
 
+    public int Bomb { get; private set; }
+
+    public int StartMoney { get; private set; } = 50;
+
+    public int StartBomb { get; private set; } = 2;
 
     private void OnEnable()
     {
@@ -84,7 +87,7 @@ public class Wallet : MonoBehaviour
         ChangedBomb?.Invoke(Bomb);
     }
 
-    private void OnRewardBomb(string _)
+    private void OnRewardBomb(string idReward)
     {
         AddBomb(_bombValueForReward);
     }

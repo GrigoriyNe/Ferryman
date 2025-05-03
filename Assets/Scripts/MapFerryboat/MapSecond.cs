@@ -20,7 +20,7 @@ public class MapSecond : Map
     private const int HorizontalThirdSpesialPlase = Height - 6;
 
     private const int HorizontalParkLower = RoadOffVerticalValue + 2;
-    private const int HorizontalParkHeigth = Height -1;
+    private const int HorizontalParkHeigth = Height - 1;
 
     private const int StartVertcalPlase = 3;
 
@@ -51,10 +51,11 @@ public class MapSecond : Map
     {
         return Height;
     }
+
     public override void SetVaribleObstaclePlaces()
     {
         _logic.SetVaribleObstaclePlaces(LowestThresholdX, BigestThresholdX,
-            RoadOffVerticalValue + RoadOffVerticalLowerValue, (Height - RoadOffVerticalLowerValue));
+            RoadOffVerticalValue + RoadOffVerticalLowerValue, Height - RoadOffVerticalLowerValue);
     }
 
     private void CreateItemOnMap()
@@ -87,7 +88,7 @@ public class MapSecond : Map
         {
             _logic.AddCarStartPoint(i, StartVertcalPlase);
             _logic.AddSpesialCarStartPoint(i, StartVertcalPlase);
-        };
+        }
 
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
         _logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);

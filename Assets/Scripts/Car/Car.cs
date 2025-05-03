@@ -10,7 +10,7 @@ public class Car : SpawnableObject
         _mover.Init(startPositionTile, finishPositionTile, parkPlace);
         _textViewer.Init(parkPlace, finishPositionTile);
         transform.position = startPositionTile.transform.position;
-        
+
         _mover.MoveInQuenue();
     }
 

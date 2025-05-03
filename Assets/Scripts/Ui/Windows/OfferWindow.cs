@@ -6,8 +6,8 @@ public abstract class OfferWindow : Window
 {
     [SerializeField] private Button _gold;
     [SerializeField] private Button _revard;
-    [SerializeField] private Game _game; 
-    [SerializeField] private StarterShow _videoRewarder; 
+    [SerializeField] private Game _game;
+    [SerializeField] private StarterShow _videoRewarder;
 
     public override void OnEnabled()
     {

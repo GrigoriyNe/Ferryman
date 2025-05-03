@@ -14,12 +14,19 @@ public class Point
     }
 
     public int X { get; private set; }
+
     public int Y { get; private set; }
+
     public int CountTileToFinish { get; private set; }
+
     public int CountTileToFinishVertical { get; private set; }
+
     public int CountTileToFinishHorizontal { get; private set; }
+
     public Point Parent { get; private set; }
+
     public bool IsObstacle { get; private set; }
+
     public bool[] Walls { get; private set; }
 
     public void SetValues(Point parent, int g)
@@ -53,7 +60,7 @@ public class Point
 
     public void RemoveWalls()
     {
-        for (int i = 0; i < Walls.Length -1; i++)
+        for (int i = 0; i < Walls.Length - 1; i++)
         {
             Walls[i] = false;
         }

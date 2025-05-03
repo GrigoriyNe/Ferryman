@@ -227,7 +227,7 @@ public class CarMover : MonoBehaviour
                 _map.AddObstacle(_startPositionTile.CordX, _startPositionTile.CordY);
                 isStartMove = false;
 
-                yield return _waitMoving; 
+                yield return _waitMoving;
             }
         }
 

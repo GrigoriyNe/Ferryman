@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using YG;
-using YG.Insides;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Game : MonoBehaviour
 {
@@ -12,9 +10,11 @@ public class Game : MonoBehaviour
     private const int RoundRandomBoat = 15;
     private const int LowerMoney = 0;
 
-    private const int StartFerryboat = 0;
     private const int SecondFerryboat = 1;
     private const int ThirdFerryboat = 2;
+
+    private const int DividerRanomVertival = 2;
+    private const int DividerRanomHorizontal = 4;
 
     private const int DividerRandomRound = 3;
     private const int BombForRound = 1;
@@ -42,47 +42,36 @@ public class Game : MonoBehaviour
 
     private WaitForSeconds _creatingCarDelay;
     private float _creatingCarDelayValue = 0.3f;
-    private WaitForSeconds _wait38Millisecond;
-    private float _delay38Millisecond = 3.8f;
-    private WaitForSeconds _wait1Second;
-    private float _delay1Second = 1f;
-    private WaitForSeconds _wait2Second;
-    private float _delay2Second = 2f;
-    private WaitForSeconds _wait3Second;
-    private float _delay3Second = 3f;
-    private WaitForSeconds _wait4Second;
-    private float _delay4Second = 4f;
+
+    private WaitForSeconds _waitChangeRound;
+    private float _delayChangeRoundValue = 3.8f;
+
+    private WaitForSeconds _waitCreateCars;
+    private float _delayWaitCreateCarsValue = 1f;
+
+    private WaitForSeconds _waitInterstitial;
+    private float _delayWaitInterstitialValue = 2f;
+
+    private WaitForSeconds _waitChangeFerryboat;
+    private float _delayWaitChangeFerryboatValue = 3f;
+
+    private WaitForSeconds _waitCloseCargo;
+    private float _delayWaitCloseCargoValue = 4f;
 
     public event Action StartSceneStart;
+
     public event Action StartSceneDone;
+
     public event Action FinishSceneStart;
+
     public event Action FinishSceneDone;
+
     public event Action<int> LevelChange;
 
     private void OnEnable()
     {
         SetWaitings();
         LoadSaves();
-    }
-
-    private void LoadSaves()
-    {
-        _wallet.SetLoadValues(YG2.saves.Money, YG2.saves.Bomb);
-        _ferryboat = _shipAdder.GetFerryboat(YG2.saves.Ferryboat);
-
-        _currentRound = YG2.saves.Level;
-        LevelChange?.Invoke(_currentRound);
-
-        if (_currentRound == 0)
-            _wallet.SetDefaultValue();
-
-        if (_currentRound > RoundSecondBoat && YG2.envir.isMobile)
-            _cameraMover.Zoom();
-
-        if (_currentRound > RoundThirdBoat && YG2.envir.isMobile)
-            _cameraMover.Zoom();
-
-        StartScene();
     }
 
     public void Fail()
@@ -196,14 +185,34 @@ public class Game : MonoBehaviour
         StartCoroutine(ChangeRound());
     }
 
+    private void LoadSaves()
+    {
+        _wallet.SetLoadValues(YG2.saves.Money, YG2.saves.Bomb);
+        _ferryboat = _shipAdder.GetFerryboat(YG2.saves.Ferryboat);
+
+        _currentRound = YG2.saves.Level;
+        LevelChange?.Invoke(_currentRound);
+
+        if (_currentRound == 0)
+            _wallet.SetDefaultValue();
+
+        if (_currentRound > RoundSecondBoat && YG2.envir.isMobile)
+            _cameraMover.Zoom();
+
+        if (_currentRound > RoundThirdBoat && YG2.envir.isMobile)
+            _cameraMover.Zoom();
+
+        StartScene();
+    }
+
     private void SetWaitings()
     {
-        _wait38Millisecond = new WaitForSeconds(_delay38Millisecond);
+        _waitChangeRound = new WaitForSeconds(_delayChangeRoundValue);
         _creatingCarDelay = new WaitForSeconds(_creatingCarDelayValue);
-        _wait1Second = new WaitForSeconds(_delay1Second);
-        _wait2Second = new WaitForSeconds(_delay2Second);
-        _wait3Second = new WaitForSeconds(_delay3Second);
-        _wait4Second = new WaitForSeconds(_delay4Second);
+        _waitCreateCars = new WaitForSeconds(_delayWaitCreateCarsValue);
+        _waitInterstitial = new WaitForSeconds(_delayWaitInterstitialValue);
+        _waitChangeFerryboat = new WaitForSeconds(_delayWaitChangeFerryboatValue);
+        _waitCloseCargo = new WaitForSeconds(_delayWaitCloseCargoValue);
     }
 
     private void TryChangeCameraMobile()
@@ -250,13 +259,13 @@ public class Game : MonoBehaviour
     private IEnumerator ChangeRound()
     {
         EndScene();
-        yield return _wait38Millisecond;
+        yield return _waitChangeRound;
         StartScene();
     }
 
     private IEnumerator ChangingFerryboat(int value)
     {
-        yield return _wait3Second;
+        yield return _waitChangeFerryboat;
         _ferryboat = _shipAdder.GetFerryboat(value);
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
         StartScene();
@@ -264,7 +273,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator OpeningCargo()
     {
-        yield return _wait3Second;
+        yield return _waitChangeFerryboat;
         _obstacle.CreateObstacle();
         _obstacle.SetRandomObstacle();
 
@@ -281,18 +290,19 @@ public class Game : MonoBehaviour
         _counter.Deactivate();
         _fabricCars.DeactivateCars();
 
-        yield return _wait4Second;
+        yield return _waitCloseCargo;
         FinishSceneDone?.Invoke();
     }
 
     private IEnumerator CreatingCars()
     {
-        yield return _wait1Second;
+        yield return _waitCreateCars;
 
         int count = _mapLogic.GetMaxFinishPlaceCount();
         int countSpesial = _mapLogic.GetMaxSpesialFinishPlaceCount();
 
-        int plaseStartSpesialCar = UnityEngine.Random.Range((count / 4), (count / 2));
+        int plaseStartSpesialCar = UnityEngine.Random.Range(
+            count / DividerRanomHorizontal, count / DividerRanomVertival);
 
         _fabricCars.SetPlacesNames(_ferryboat.GetPlaces());
 
@@ -315,7 +325,7 @@ public class Game : MonoBehaviour
 
     private IEnumerator ShowingInterstitial()
     {
-        yield return _wait2Second;
+        yield return _waitInterstitial;
 
         YG2.InterstitialAdvShow();
     }

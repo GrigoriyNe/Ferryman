@@ -23,7 +23,7 @@ public class ViewSteps : MonoBehaviour
     {
         if (value == LowestThreshold)
         {
-            _stepsCount.text = "";
+            _stepsCount.text = string.Empty;
         }
         else
         {
@@ -32,4 +32,3 @@ public class ViewSteps : MonoBehaviour
         }
     }
 }
-

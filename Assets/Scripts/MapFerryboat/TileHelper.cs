@@ -55,14 +55,16 @@ public class TileHelper : SpawnableObject
         if (value > 0)
         {
             _rewardSpriteRenderer.sprite = _rewardView.GetNeturalView(value);
-            _rewardSpriteRenderer.transform.position = new Vector3(_rewardSpriteRenderer.transform.position.x,
+            _rewardSpriteRenderer.transform.position = new Vector3(
+                _rewardSpriteRenderer.transform.position.x,
                 _offsetDefaultY,
                 _rewardSpriteRenderer.transform.position.z);
         }
         else
         {
             _rewardSpriteRenderer.sprite = _rewardView.GetNegativeiveView(value);
-            _rewardSpriteRenderer.transform.position = new Vector3(_rewardSpriteRenderer.transform.position.x,
+            _rewardSpriteRenderer.transform.position = new Vector3(
+                _rewardSpriteRenderer.transform.position.x,
                 _offsetObstacleY,
                 _rewardSpriteRenderer.transform.position.z);
         }

@@ -16,7 +16,7 @@ public class RewardView : MonoBehaviour
 
     public Sprite GetNegativeiveView(int value)
     {
-        return _negativeCoins[Mathf.Abs( value + Offset)];
+        return _negativeCoins[Mathf.Abs(value + Offset)];
     }
 
     public Sprite GetNeturalView(int value)

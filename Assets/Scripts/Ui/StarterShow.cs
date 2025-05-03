@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using YG;
 
 namespace YG
 {
@@ -42,4 +41,3 @@ namespace YG
         }
     }
 }
-

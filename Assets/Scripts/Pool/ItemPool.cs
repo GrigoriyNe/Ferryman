@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ItemPool<T> : MonoBehaviour where T : SpawnableObject
+public abstract class ItemPool<T> : MonoBehaviour
+    where T : SpawnableObject
 {
     [SerializeField] private T _prefab;
 

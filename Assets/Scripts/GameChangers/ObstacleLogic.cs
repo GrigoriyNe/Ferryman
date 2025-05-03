@@ -26,7 +26,9 @@ public class ObstacleLogic : MonoBehaviour
     private bool _isFirstRound = true;
 
     public event Action BombUsed;
+
     public event Action BombUse;
+
     public event Action BombCanceled;
 
     public void Clean()
@@ -47,8 +49,12 @@ public class ObstacleLogic : MonoBehaviour
 
             for (int i = 0; i < _filedTileCoord.Count; i++)
             {
-                _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).DectivateLigther();
+                _mapLogic.GetTile(
+                    _filedTileCoord[i].GetValue(0).ConvertTo<int>(),
+                    _filedTileCoord[i].GetValue(1)
+                    .ConvertTo<int>()).DectivateLigther();
             }
+
             _isBombUsing = false;
 
             return;
@@ -60,7 +66,10 @@ public class ObstacleLogic : MonoBehaviour
 
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
-            _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).ActivateLigther();
+            _mapLogic.GetTile(
+                _filedTileCoord[i].GetValue(0).ConvertTo<int>(),
+                _filedTileCoord[i].GetValue(1)
+                .ConvertTo<int>()).ActivateLigther();
         }
     }
 
@@ -103,7 +112,8 @@ public class ObstacleLogic : MonoBehaviour
 
     public void SetRandomObstacle()
     {
-        int countCreateOstacles = UnityEngine.Random.Range(0, _maxValueSpawnOpstacles + Offset);
+        int countCreateOstacles = UnityEngine.Random.Range(
+            0, _maxValueSpawnOpstacles + Offset);
 
         for (int i = 0; i < countCreateOstacles; i++)
         {
@@ -131,10 +141,12 @@ public class ObstacleLogic : MonoBehaviour
         bool isDamagebaleTakenErlear = false;
         _soungs.PlayBombSoung();
         _effector.ExplosiveEffects(tile.transform.position);
-        
+
         for (int i = 0; i < _filedTileCoord.Count; i++)
         {
-            _mapLogic.GetTile(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>()).DectivateLigther();
+            _mapLogic.GetTile(
+                _filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i]
+                .GetValue(1).ConvertTo<int>()).DectivateLigther();
         }
 
         if (_finishSpesialBlockTile.Contains(tile))
@@ -190,7 +202,9 @@ public class ObstacleLogic : MonoBehaviour
     {
         for (int i = 0; i < _filedTileCoord.Count;)
         {
-            _mapLogic.CreatingObstacle(_filedTileCoord[i].GetValue(0).ConvertTo<int>(), _filedTileCoord[i].GetValue(1).ConvertTo<int>());
+            _mapLogic.CreatingObstacle(
+                _filedTileCoord[i].GetValue(0).ConvertTo<int>(),
+                _filedTileCoord[i].GetValue(1).ConvertTo<int>());
             i += 1;
         }
 
@@ -203,7 +217,8 @@ public class ObstacleLogic : MonoBehaviour
         {
             for (int i = 0; i < _damagebaleTile.Count;)
             {
-                TileHelper halfDamageBox = _mapLogic.GetTile(_damagebaleTile[i].GetValue(0).ConvertTo<int>(),
+                TileHelper halfDamageBox = _mapLogic.GetTile(
+                    _damagebaleTile[i].GetValue(0).ConvertTo<int>(),
                     _damagebaleTile[i].GetValue(1).ConvertTo<int>());
 
                 _obstacleView.GetDamgaeBox(halfDamageBox.transform);

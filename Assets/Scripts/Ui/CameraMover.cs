@@ -51,9 +51,13 @@ public class CameraMover : MonoBehaviour
     private void DragMovig(Vector2 direction)
     {
         Vector3 target = new Vector3(
-            Math.Clamp((_cameraTransform.position.x - (direction.x * _sensetivity)), _xMinValue, _xMaxValue),
+            Math.Clamp(
+                _cameraTransform.position.x - (direction.x * _sensetivity),
+                _xMinValue, _xMaxValue),
             _cameraTransform.position.y,
-            Math.Clamp((_cameraTransform.position.z - (direction.y * _sensetivity)), _yMinValue, _yMaxValue));
+            Math.Clamp(
+                _cameraTransform.position.z - (direction.y * _sensetivity),
+                _yMinValue, _yMaxValue));
 
         if (_canvasNotMoving.gameObject.activeSelf)
             if (EventSystem.current.IsPointerOverGameObject())

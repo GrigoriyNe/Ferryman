@@ -1,5 +1,5 @@
-﻿using UnityEngine.Audio;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public abstract class VolumeSlider : MonoBehaviour

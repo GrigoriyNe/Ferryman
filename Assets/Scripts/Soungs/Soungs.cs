@@ -25,7 +25,6 @@ public class Soungs : MonoBehaviour
         _audioSourceSplash.PlayOneShot(_audioSplashs[Random.Range(0, _audioSplashs.Count)]);
     }
 
-
     public void PlayCoinPositiveSoung()
     {
         _audioSourceCoins.PlayOneShot(_audioClipsPositive[Random.Range(0, _audioClipsPositive.Count)]);
@@ -76,4 +75,3 @@ public class Soungs : MonoBehaviour
         _startCreateCars.Play();
     }
 }
-

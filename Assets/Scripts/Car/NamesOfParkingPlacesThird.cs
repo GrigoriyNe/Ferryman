@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NamesOfParkingPlacesThird : Namer
 {
-    [SerializeField] Map _map;
+    [SerializeField] private Map _map;
 
     private Dictionary<int, string> _placesVertical;
     private Dictionary<int, int> _placesHorizontal;
@@ -36,6 +36,7 @@ public class NamesOfParkingPlacesThird : Namer
             }
         }
     }
+
     public override string GetTextPlace(int vertical, int horizontal)
     {
         string resultVertical = string.Empty;
@@ -75,5 +76,4 @@ public class NamesOfParkingPlacesThird : Namer
 
         return result;
     }
-
 }

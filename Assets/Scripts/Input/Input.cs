@@ -13,10 +13,10 @@ public class PlayerInputController : MonoBehaviour
     private Vector2 _tapPoint;
     private Vector2 _cameraDelta;
 
-    public event Action<int, int> Clicked;
-
     private float _cooldownClickCarValue = 0.3f;
     private WaitForSeconds _waitCooldown;
+
+    public event Action<int, int> Clicked;
 
     private void OnEnable()
     {

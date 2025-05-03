@@ -1,5 +1,5 @@
-using UnityEngine.Audio;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class Mute : MonoBehaviour
@@ -25,7 +25,7 @@ public class Mute : MonoBehaviour
         _button.onClick.AddListener(OnValueChanged);
     }
 
-    void OnApplicationFocus(bool hasFocus)
+    private void OnApplicationFocus(bool hasFocus)
     {
         if (!hasFocus)
         {

@@ -6,10 +6,10 @@ public class ScoreSteps : MonoBehaviour
 {
     [SerializeField] private Game _game;
 
-    public event Action<int> Changed;
-
     private float _delayValue = 3f;
     private WaitForSeconds _delay;
+
+    public event Action<int> Changed;
 
     public int StepsLeft { get; private set; }
 
@@ -34,8 +34,8 @@ public class ScoreSteps : MonoBehaviour
     {
         StepsLeft -= 1;
         Changed?.Invoke(StepsLeft - 1);
-    
-        if(StepsLeft == 1)
+
+        if (StepsLeft == 1)
             StartCoroutine(EndingRound());
     }
 

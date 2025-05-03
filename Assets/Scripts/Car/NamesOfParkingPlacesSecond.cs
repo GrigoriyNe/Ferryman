@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
 public class NamesOfParkingPlacesSecond : Namer
 {
-    [SerializeField] Map _map;
+    [SerializeField] private Map _map;
 
     private Dictionary<int, string> _placesVertical;
     private Dictionary<int, int> _placesHorizontal;
@@ -45,7 +44,7 @@ public class NamesOfParkingPlacesSecond : Namer
 
         if (_placesVertical.ContainsKey(vertical) && vertical == 4)
         {
-            if (_placesHorizontal.ContainsKey(horizontal) && horizontal ==  _map.GetHeight() - 2)
+            if (_placesHorizontal.ContainsKey(horizontal) && horizontal == _map.GetHeight() - 2)
             {
                 return "g";
             }
