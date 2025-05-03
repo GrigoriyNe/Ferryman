@@ -1,3 +1,6 @@
 ﻿using UnityEngine;
 
-public class SpawnableObject : MonoBehaviour { }
+namespace Pool
+{
+    public class SpawnableObject : MonoBehaviour { }
+}

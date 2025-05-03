@@ -1,64 +1,69 @@
 using System.Collections;
 using UnityEngine;
+using MapFerryboat;
+using CarGroup;
 
-public class Ferryboat : MonoBehaviour
+namespace FerryboatGroup
 {
-    private const int ActivateDelayValue = 3;
-    private const int DeactivateDelayValue = 1;
-
-    [SerializeField] private Game _game;
-    [SerializeField] private Map _map;
-    [SerializeField] private NumberingPlaceText _numberingText;
-    [SerializeField] private WindowBlind _blind;
-    [SerializeField] private FerryboatAnimator _animator;
-    [SerializeField] private Namer _places;
-
-    private WaitForSeconds _waitActivating;
-    private WaitForSeconds _waitDeactivating;
-
-    private void OnEnable()
+    public class Ferryboat : MonoBehaviour
     {
-        _waitActivating = new WaitForSeconds(ActivateDelayValue);
-        _waitDeactivating = new WaitForSeconds(DeactivateDelayValue);
-    }
+        private const int ActivateDelayValue = 3;
+        private const int DeactivateDelayValue = 1;
 
-    public void Activate()
-    {
-        StartCoroutine(Activating());
-    }
+        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Map _map;
+        [SerializeField] private BackgoundTextPlaces _numberingText;
+        [SerializeField] private Envoriments.WindowBlind _blind;
+        [SerializeField] private FerryboatAnimator _animator;
+        [SerializeField] private Namer _places;
 
-    public void Finish()
-    {
-        StartCoroutine(Deactivating());
-    }
+        private WaitForSeconds _waitActivating;
+        private WaitForSeconds _waitDeactivating;
 
-    public Map GetMap()
-    {
-        return _map;
-    }
+        private void OnEnable()
+        {
+            _waitActivating = new WaitForSeconds(ActivateDelayValue);
+            _waitDeactivating = new WaitForSeconds(DeactivateDelayValue);
+        }
 
-    public Namer GetPlaces()
-    {
-        return _places.Get();
-    }
+        public void Activate()
+        {
+            StartCoroutine(Activating());
+        }
 
-    private IEnumerator Activating()
-    {
-        _animator.PlayStart();
-        yield return _waitActivating;
-        _blind.Open();
-        _map.Activate();
-        _numberingText.Activate();
-    }
+        public void Finish()
+        {
+            StartCoroutine(Deactivating());
+        }
 
-    private IEnumerator Deactivating()
-    {
-        _map.Deactivate();
-        _blind.Close();
+        public Map GetMap()
+        {
+            return _map;
+        }
 
-        yield return _waitDeactivating;
+        public Namer GetPlaces()
+        {
+            return _places.Get();
+        }
 
-        _animator.PlayFinish();
-        _numberingText.Deactivate();
+        private IEnumerator Activating()
+        {
+            _animator.PlayStart();
+            yield return _waitActivating;
+            _blind.Open();
+            _map.Activate();
+            _numberingText.Activate();
+        }
+
+        private IEnumerator Deactivating()
+        {
+            _map.Deactivate();
+            _blind.Close();
+
+            yield return _waitDeactivating;
+
+            _animator.PlayFinish();
+            _numberingText.Deactivate();
+        }
     }
 }

@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TileGroup;
+using CarGroup;
 
 public class PlayerInputController : MonoBehaviour
 {
-    [SerializeField] private CameraMover _cameraMover;
-    [SerializeField] private Soungs _soung;
+    [SerializeField] private CameraMove.CameraMover _cameraMover;
+    [SerializeField] private SoungsGroup.Soungs _soung;
 
     private PlayerInput _input;
 
@@ -80,7 +82,7 @@ public class PlayerInputController : MonoBehaviour
 
                 if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
                 {
-                    if (hit.collider.TryGetComponent(out WaterZone _))
+                    if (hit.collider.TryGetComponent(out SoungsGroup.WaterZone _))
                     {
                         _soung.PlayWaterSplash();
                     }
@@ -94,7 +96,7 @@ public class PlayerInputController : MonoBehaviour
                         car.Move();
                     }
 
-                    if (hit.collider.TryGetComponent(out TileHelper tile))
+                    if (hit.collider.TryGetComponent(out Tile tile))
                     {
                         Clicked?.Invoke(tile.CordX, tile.CordY);
                     }

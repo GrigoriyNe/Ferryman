@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 
-public class FerryboatAnimator : MonoBehaviour
+namespace FerryboatGroup
 {
-    private const string Start = nameof(Start);
-    private const string Finish = nameof(Finish);
-
-    [SerializeField] private Animator _animator;
-
-    public void PlayStart()
+    public class FerryboatAnimator : MonoBehaviour
     {
-        _animator.SetTrigger(Start);
-    }
+        private const string Start = nameof(Start);
+        private const string Finish = nameof(Finish);
 
-    public void PlayFinish()
-    {
-        _animator.SetTrigger(Finish);
+        [SerializeField] private Animator _animator;
+
+        public void PlayStart()
+        {
+            _animator.SetTrigger(Start);
+        }
+
+        public void PlayFinish()
+        {
+            _animator.SetTrigger(Finish);
+        }
     }
 }
