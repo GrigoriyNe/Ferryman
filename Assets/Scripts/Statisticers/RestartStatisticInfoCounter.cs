@@ -5,7 +5,7 @@ namespace Statisticers
 {
     public class RestartStatisticInfoCounter : MonoBehaviour
     {
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private Obstacle.ObstacleLogic _obstacleLogic;
         [SerializeField] private PlayerResouce.MoneyCount _wallet;
 
@@ -15,7 +15,7 @@ namespace Statisticers
 
         private void OnEnable()
         {
-            _wallet.ChangedMoney += OnChangedMoney;
+            _wallet.Changed += OnChangedMoney;
             _obstacleLogic.BombUsed += OnChangedBomb;
             _game.LevelChange += OnLevelChange;
 
@@ -26,7 +26,7 @@ namespace Statisticers
 
         private void OnDisable()
         {
-            _wallet.ChangedMoney -= OnChangedMoney;
+            _wallet.Changed -= OnChangedMoney;
             _obstacleLogic.BombUsed -= OnChangedBomb;
             _game.LevelChange -= OnLevelChange;
         }

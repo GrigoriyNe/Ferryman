@@ -12,7 +12,7 @@ namespace WindowOnScreen
         [SerializeField] private Counters.RewardCounter _rewardCounter;
 
         [SerializeField] private Button _useBomb;
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
 
         [SerializeField] private Button _settings;
         [SerializeField] private Button _settingExit;

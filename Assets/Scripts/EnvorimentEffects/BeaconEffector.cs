@@ -9,7 +9,7 @@ namespace Envoriments
         private const float MinValueSecond = 1.0f;
         private const float Speed = 10;
 
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private List<Transform> _beaconsLeft;
         [SerializeField] private List<Transform> _beaconsRigth;
         [SerializeField] private float _deepFactor = 1f;

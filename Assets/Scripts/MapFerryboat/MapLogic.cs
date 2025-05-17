@@ -11,7 +11,7 @@ namespace MapFerryboat
         private const int OffsetVerticat = 7;
 
         [SerializeField] private Pool.ItemPool _tilePool;
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private Obstacle.ObstacleView _obstacleView;
         [SerializeField] private Obstacle.ObstacleLogic _obstaleLogic;
         [SerializeField] private Counters.RewardCounter _rewarder;

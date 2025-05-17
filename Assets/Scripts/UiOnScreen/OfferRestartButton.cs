@@ -5,7 +5,7 @@ namespace UiOnScreen
 {
     public class OfferRestartButton : MonoBehaviour
     {
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private Button _restart;
 
         private void OnEnable()

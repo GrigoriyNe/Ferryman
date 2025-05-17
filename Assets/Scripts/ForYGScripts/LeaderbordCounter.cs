@@ -24,9 +24,9 @@ namespace YG
 
         public void ChangeCounter()
         {
-            if (_scorePlayer < _wallet.Money)
+            if (_scorePlayer < _wallet.ItemCount)
             {
-                _scorePlayer = _wallet.Money;
+                _scorePlayer = _wallet.ItemCount;
                 _board.SetLeaderboard(_scorePlayer);
                 _board.UpdateLB();
             }

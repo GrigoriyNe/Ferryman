@@ -18,8 +18,8 @@ namespace UiOnScreen
 
         private void OnEnable()
         {
-            _money.ChangedMoney += OnChangedMoney;
-            _bomb.ChangedBomb += OnChangedCountBomb;
+            _money.Changed += OnChangedMoney;
+            _bomb.Changed += OnChangedCountBomb;
             _obstacleLogic.BombUsed += OnDeactivateBomb;
             _obstacleLogic.BombCanceled += OnDeactivateBomb;
             _obstacleLogic.BombUse += OnActivatedBomb;
@@ -27,8 +27,8 @@ namespace UiOnScreen
 
         private void OnDisable()
         {
-            _money.ChangedMoney -= OnChangedMoney;
-            _bomb.ChangedBomb -= OnChangedCountBomb;
+            _money.Changed -= OnChangedMoney;
+            _bomb.Changed -= OnChangedCountBomb;
             _obstacleLogic.BombUsed -= OnDeactivateBomb;
             _obstacleLogic.BombCanceled -= OnDeactivateBomb;
             _obstacleLogic.BombUse -= OnActivatedBomb;

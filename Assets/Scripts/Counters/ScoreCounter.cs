@@ -7,7 +7,7 @@ namespace Counters
         private const int MultiplicationValue = 1;
 
         [SerializeField] private MapFerryboat.MapLogic _map;
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private ScoreSteps _step;
         [SerializeField] private RewardCounter _rewarder;
 

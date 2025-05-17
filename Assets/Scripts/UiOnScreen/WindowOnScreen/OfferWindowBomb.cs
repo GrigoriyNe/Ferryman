@@ -13,7 +13,7 @@ namespace WindowOnScreen
         {
             if (IsEnoughMoney(_goldPrice))
             {
-                _bomb.AddBomb(ValueBombForPay);
+                _bomb.AddCount(ValueBombForPay);
             }
         }
     }

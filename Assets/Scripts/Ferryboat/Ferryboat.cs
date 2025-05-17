@@ -10,7 +10,7 @@ namespace FerryboatGroup
         private const int ActivateDelayValue = 3;
         private const int DeactivateDelayValue = 1;
 
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private Map _map;
         [SerializeField] private BackgoundTextPlaces _numberingText;
         [SerializeField] private Envoriments.WindowBlind _blind;

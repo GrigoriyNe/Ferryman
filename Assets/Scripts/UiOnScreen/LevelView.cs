@@ -7,7 +7,7 @@ namespace UiOnScreen
     {
         private const int ViewOffset = 1;
 
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private AnimationResources _animator;
 

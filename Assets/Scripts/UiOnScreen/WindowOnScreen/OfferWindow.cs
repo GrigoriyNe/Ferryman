@@ -8,7 +8,7 @@ namespace WindowOnScreen
     {
         [SerializeField] private Button _gold;
         [SerializeField] private Button _revard;
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private StarterShow _videoRewarder;
 
         public override void OnEnabled()

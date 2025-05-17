@@ -5,7 +5,7 @@ using YG;
 
 namespace Game
 {
-    public class GameProcess : MonoBehaviour
+    public class GameLoop : MonoBehaviour
     {
         private const int RoundSecondBoat = 5;
         private const int RoundThirdBoat = 10;
@@ -21,6 +21,8 @@ namespace Game
         private const int DividerRandomRound = 3;
         private const int BombForRound = 1;
         private const int RoundAfteInterstitialAdvShow = 6;
+
+        private const int BobmPerExplode = 1;
 
         [SerializeField] private Counters.ScoreCounter _counter;
         [SerializeField] private Counters.RewardCounter _rewardCounter;
@@ -83,8 +85,8 @@ namespace Game
             _money.SetDefaultValue();
             _currentRound = 0;
 
-            YG2.saves.Money = _money.Money;
-            YG2.saves.Bomb = _bombs.Bomb;
+            YG2.saves.Money = _money.ItemCount;
+            YG2.saves.Bomb = _bombs.ItemCount;
             YG2.saves.Level = _currentRound;
             YG2.saves.Ferryboat = 0;
 
@@ -95,9 +97,9 @@ namespace Game
 
         public bool TryPay(int coust)
         {
-            if (_money.IsEnoughMoney(coust))
+            if (_money.IsEnougCount(coust))
             {
-                _money.RemoveMoney(coust);
+                _money.RemoveCount(coust);
                 return true;
             }
             else
@@ -108,7 +110,7 @@ namespace Game
 
         public void TryUseBomb()
         {
-            if (_bombs.IsEnoughBomb())
+            if (_bombs.IsEnougCount(BobmPerExplode))
             {
                 _obstacle.TryActivateSpesialClicked();
             }
@@ -125,12 +127,12 @@ namespace Game
 
         public void RoundOver()
         {
-            _money.AddMoney(_rewardCounter.GetRewardValue());
+            _money.AddCount(_rewardCounter.GetRewardValue());
 
             _leaderbordCounter.ChangeCounter();
             _restartInfoView.DeactivateRestartButtomAnimatoin();
 
-            if (_money.Money < LowerMoney)
+            if (_money.ItemCount < LowerMoney)
             {
                 _offerRestart.gameObject.SetActive(true);
                 Time.timeScale = 0;
@@ -143,7 +145,7 @@ namespace Game
 
             _soungs.PlayRestartSoung();
 
-            _bombs.AddBomb(BombForRound);
+            _bombs.AddCount(BombForRound);
             _currentRound += 1;
             LevelChange?.Invoke(_currentRound);
 
@@ -181,8 +183,8 @@ namespace Game
 
             YG2.MetricaSend(_currentRound.ToString());
             YG2.saves.Ferryboat = _currentFerryboat;
-            YG2.saves.Money = _money.Money;
-            YG2.saves.Bomb = _bombs.Bomb;
+            YG2.saves.Money = _money.ItemCount;
+            YG2.saves.Bomb = _bombs.ItemCount;
             YG2.saves.Level = _currentRound;
             YG2.SaveProgress();
 

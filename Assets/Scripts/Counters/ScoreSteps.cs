@@ -6,7 +6,7 @@ namespace Counters
 {
     public class ScoreSteps : MonoBehaviour
     {
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
 
         private float _delayValue = 3f;
         private WaitForSeconds _delay;

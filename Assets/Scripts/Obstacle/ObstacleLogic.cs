@@ -11,7 +11,7 @@ namespace Obstacle
         private const int Offset = 1;
 
         [SerializeField] private MapFerryboat.MapLogic _mapLogic;
-        [SerializeField] private Game.GameProcess _game;
+        [SerializeField] private Game.GameLoop _game;
         [SerializeField] private SoungsGroup.Soungs _soungs;
         [SerializeField] private ObstacleExplosiveEffector _effector;
 
@@ -49,7 +49,6 @@ namespace Obstacle
             {
                 _input.Clicked -= OnBombClicked;
                 BombCanceled?.Invoke();
-
                 for (int i = 0; i < _filedTileCoord.Count; i++)
                 {
                     _mapLogic.GetTile(
