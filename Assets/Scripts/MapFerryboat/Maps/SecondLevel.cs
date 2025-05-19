@@ -2,25 +2,24 @@
 
 namespace MapFerryboat
 {
-    public class MapFirst : Map
+    public class SecondLevel : Map
     {
         private const int LowestThresholdX = 1;
         private const int BigestThresholdX = 4;
         private const int RoadOffVerticalLowerValue = 3;
-        private const int RoadOffVerticalHeigterValue = 5;
 
         private const int HeightOffset = 2;
         private const int VerticalRigthBorder = 4;
         private const int VerticalOffset = 1;
-        private const int HorizontalFirstSpesialPlase = Height - 5;
-        private const int HorizontalSecondSpesialPlase = Height - 3;
 
-        private const int HorizontalParkLower = Height - 6;
-        private const int HorizontalParkHeigth = Height - 2;
+        private const int HorizontalFirstSpesialPlase = Height - 2;
+        private const int HorizontalSecondSpesialPlase = Height - 4;
+        private const int HorizontalThirdSpesialPlase = Height - 6;
+
+        private const int HorizontalParkLower = RoadOffVerticalValue + 2;
+        private const int HorizontalParkHeigth = Height - 1;
 
         private const int StartVertcalPlase = 3;
-        private const int RigthStartPole = 3;
-        private const int MiddleStartPole = 2;
 
         private const int WallHorizontalPlace = RoadOffVerticalValue + 1;
         private const int WallState = 2;
@@ -33,22 +32,27 @@ namespace MapFerryboat
         public override void SetVaribleObstaclePlaces()
         {
             Logic.SetVaribleObstaclePlaces(LowestThresholdX, BigestThresholdX,
-                RoadOffVerticalValue + RoadOffVerticalLowerValue,
-                RoadOffVerticalValue + RoadOffVerticalHeigterValue);
+                RoadOffVerticalValue + RoadOffVerticalLowerValue, Height - RoadOffVerticalLowerValue);
         }
 
         public override void CreateItemOnMap()
         {
-            for (int i = 0; i < Height; i++)
-                for (int j = Height - HeightOffset; j < Height; j++)
-                    Logic.AddVoid(i, j);
-
             for (int i = 0; i < RoadOffVerticalValue + VerticalOffset; i++)
                 Logic.AddVoid(VerticalRigthBorder, i);
+
+            for (int i = 0; i < RoadOffVerticalValue; i++)
+                Logic.AddVoid(VerticalRigthBorder + VerticalOffset, i);
 
             for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
                 for (int j = 0; j < Width; j++)
                     Logic.AddVoid(i, j);
+
+            for (int i = 0; i < Height; i++)
+                for (int j = Height - VerticalOffset; j < Height; j++)
+                    Logic.AddVoid(i, j);
+
+            for (int i = 0; i < VerticalRigthBorder; i++)
+                _obstaleLogic.SetBlockedFinishPlace(Logic.GetTile(i, Height - HeightOffset));
 
             _obstaleLogic.SetSpesialFinishPlace(Logic.GetTile(VerticalRigthBorder, HorizontalFirstSpesialPlase));
             _obstaleLogic.SetSpesialFinishPlace(Logic.GetTile(VerticalRigthBorder, HorizontalSecondSpesialPlase));
@@ -65,8 +69,7 @@ namespace MapFerryboat
 
             Logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalFirstSpesialPlase);
             Logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalSecondSpesialPlase);
-            Logic.AddSpesialCarStartPoint(RigthStartPole, StartVertcalPlase);
-            Logic.AddSpesialCarStartPoint(MiddleStartPole, StartVertcalPlase);
+            Logic.AddSpesialCarFinishPoint(VerticalRigthBorder, HorizontalThirdSpesialPlase);
 
             Logic.AddWall(WallVerticalFirst, WallHorizontalPlace, WallState);
             Logic.AddWall(WallVerticalSecond, WallHorizontalPlace, WallState);

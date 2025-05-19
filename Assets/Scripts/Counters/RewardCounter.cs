@@ -66,7 +66,7 @@ namespace Counters
             return result;
         }
 
-        public void SetFinishPositions(List<Tile> positions, bool isSpesial)
+        public void SetFinishPositions(List<Tile> positions)
         {
             foreach (Tile tile in positions)
             {
@@ -74,7 +74,7 @@ namespace Counters
                 {
                     if (_map.CheckObstacle(tile.CordX, tile.CordY) == false)
                     {
-                        if (isSpesial)
+                        if (tile.TileType == Tile.Type.Special)
                         {
                             _emptySpesialTiles.Add(tile);
                         }
@@ -85,7 +85,7 @@ namespace Counters
                     }
                     else
                     {
-                        if (isSpesial)
+                        if (tile.TileType == Tile.Type.Special)
                         {
                             _filledFinishSpesialTile.Add(tile);
                         }

@@ -1,13 +1,14 @@
+using System;
 using UnityEngine;
 
 namespace TileGroup
 {
-    public class Tile : Pool.SpawnableObject
+    public class Tile : MonoBehaviour
     {
         [SerializeField] private Sprite _defaultSprite;
         [SerializeField] private SpriteRenderer _ligter;
-        [SerializeField] private Counters.RewardView _rewardView;
         [SerializeField] private SpriteRenderer _rewardSpriteRenderer;
+        [SerializeField] private Counters.RewardView _rewardView;
         [SerializeField] private GameObject[] walls;
         [SerializeField] private bool[] wallsBool;
 
@@ -19,11 +20,23 @@ namespace TileGroup
         private Vector3 _defaultScale = new Vector3(0.4f, 0.4f, 0.4f);
         private Vector3 _winScale = new Vector3(0.3f, 0.3f, 0.3f);
 
-        public int CordX { get; private set; }
+        public enum Type
+        {
+            Regular,
+            Special,
+        }
 
-        public int CordY { get; private set; }
+        public Type TileType { get; private set; }
+
+        public Vector2 Coords { get; private set; }
+
+        public int CordY => Convert.ToInt16(Coords.y);
+
+        public int CordX => Convert.ToInt16(Coords.x);
 
         public int Reward => _rewardValue;
+
+        public bool IsSpesial { get; private set; }
 
         private void OnEnable()
         {
@@ -40,14 +53,14 @@ namespace TileGroup
             _rewardSpriteRenderer.gameObject.SetActive(false);
         }
 
-        public void ChangeX(int value)
+        public void ChangeType(Type type)
         {
-            CordX = value;
+            TileType = type;
         }
 
-        public void ChangeY(int value)
+        public void ChangeTilePlace(Vector2 value)
         {
-            CordY = value;
+            Coords = value;
         }
 
         public void SetRewardValue(int value)

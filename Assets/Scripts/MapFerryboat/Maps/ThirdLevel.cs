@@ -2,7 +2,7 @@
 
 namespace MapFerryboat
 {
-    public class MapThird : Map
+    public class ThirdLevel : Map
     {
         private const int LowestThresholdX = 1;
         private const int VaribleObsaleHorizontalLower = RoadOffVerticalValue + 3;

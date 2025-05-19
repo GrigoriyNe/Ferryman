@@ -26,7 +26,6 @@ namespace Game
 
         [SerializeField] private Counters.ScoreCounter _counter;
         [SerializeField] private Counters.RewardCounter _rewardCounter;
-        [SerializeField] private MapFerryboat.MapLogic _mapLogic;
         [SerializeField] private Obstacle.ObstacleLogic _obstacle;
         [SerializeField] private PlayerResouce.MoneyCount _money;
         [SerializeField] private PlayerResouce.BombCount _bombs;
@@ -36,6 +35,7 @@ namespace Game
         [SerializeField] private FerryboatGroup.FerryboatFabric _shipAdder;
         [SerializeField] private CarGroup.FabricCars _fabricCars;
         [SerializeField] private CameraMover.CameraMover _cameraMover;
+        [SerializeField] private MapFerryboat.MapLogic _mapLogic;
         [SerializeField] private ScenesChanger _scenes;
         [SerializeField] private Canvas _offerRestart;
         [SerializeField] private LeaderbordCounter _leaderbordCounter;
@@ -289,6 +289,7 @@ namespace Game
 
             _counter.Activate();
             _soungs.PlayCreatCar();
+            _fabricCars.SetParkPlace(_mapLogic.GetFinihCarPositions());
             _creatigCars = StartCoroutine(CreatingCars());
             _mapLogic.PrepareReward();
             StartSceneDone?.Invoke();

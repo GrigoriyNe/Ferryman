@@ -24,7 +24,6 @@ namespace CarGroup
         [SerializeField] private List<WheelEffectViewer> _trailEffects;
         [SerializeField] private Outline _outliner;
         [SerializeField] private Transform transformPipe;
-        [SerializeField] private List<MeshRenderer> _meshRenderers;
 
         private CarAnimator _animator;
         private Tile _startPositionTile;

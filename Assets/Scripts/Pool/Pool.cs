@@ -3,24 +3,20 @@ using UnityEngine;
 
 namespace Pool
 {
-    public class Pool<T> : MonoBehaviour
-        where T : SpawnableObject
+    public class Pool<T>
+        where T : MonoBehaviour
     {
         [SerializeField] private T _prefab;
 
         private Queue<T> _pool;
 
-        private void Awake()
+        public Pool(T prefab)
         {
+            _prefab = prefab;
             _pool = new Queue<T>();
         }
 
-        public void ChangePrefab(T newPrefab)
-        {
-            _prefab = newPrefab;
-        }
-
-        public SpawnableObject GetItem()
+        public MonoBehaviour GetItem()
         {
             return CreateObject();
         }
@@ -36,13 +32,13 @@ namespace Pool
             _pool.Enqueue(item);
         }
 
-        private SpawnableObject CreateObject()
+        private MonoBehaviour CreateObject()
         {
-            SpawnableObject item;
+            MonoBehaviour item;
 
             if (_pool.Count == 0)
             {
-                item = Instantiate(_prefab);
+                item = Object.Instantiate(_prefab);
                 Activate(item);
 
                 return item;
@@ -54,7 +50,7 @@ namespace Pool
             return item;
         }
 
-        private void Activate(SpawnableObject item)
+        private void Activate(MonoBehaviour item)
         {
             item.gameObject.SetActive(true);
         }

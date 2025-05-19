@@ -10,7 +10,7 @@ namespace MapFerryboat
         private const int OffsetHorizontal = 1;
         private const int OffsetVerticat = 7;
 
-        [SerializeField] private Pool.ItemPool _tilePool;
+        [SerializeField] private Tile _prefab;
         [SerializeField] private Game.GameLoop _game;
         [SerializeField] private Obstacle.ObstacleView _obstacleView;
         [SerializeField] private Obstacle.ObstacleLogic _obstaleLogic;
@@ -18,16 +18,13 @@ namespace MapFerryboat
 
         private Point[,] _map;
         private Tile[,] _tiles;
+        private Pool.Pool<Tile> _tilePool;
 
         private Queue<Tile> _carStartPoints = new Queue<Tile>();
         private List<Tile> _carFinishPoints = new List<Tile>();
 
         private List<Tile> _emptyCellObstacle = new List<Tile>();
         private List<Tile> _filledCellObstacle = new List<Tile>();
-        private List<Tile> _filledSpesialCellObstacle = new List<Tile>();
-
-        private List<Tile> _carSpesialStartPoints = new List<Tile>();
-        private List<Tile> _carSpesialFinishPoints = new List<Tile>();
 
         private Point _start;
         private Point _end;
@@ -40,15 +37,12 @@ namespace MapFerryboat
         private int _endX;
         private int _endY;
 
-        public int CountFinishPlace => _carFinishPoints.Count;
-
-        public int CountStartPlace => _carStartPoints.Count;
-
-        public int CountStartSpesialPlace => _carSpesialStartPoints.Count;
-
-        public int CountFinishSpesialPlace => _carSpesialFinishPoints.Count;
-
         public int RoadOffVerticalValue { get; private set; }
+
+        private void Awake()
+        {
+            _tilePool = new Pool.Pool<Tile>(_prefab);
+        }
 
         public void Init(int width, int height, int roadOffVerticalValue)
         {
@@ -83,9 +77,7 @@ namespace MapFerryboat
         public void Clean()
         {
             _carFinishPoints = new List<Tile>();
-            _carSpesialFinishPoints = new List<Tile>();
             _filledCellObstacle = new List<Tile>();
-            _filledSpesialCellObstacle = new List<Tile>();
             _emptyCellObstacle = new List<Tile>();
             _tilePool.Clean();
 
@@ -94,7 +86,7 @@ namespace MapFerryboat
 
         public int GetMaxPlaceCount()
         {
-            return GetMaxFinishPlaceCount() + GetMaxSpesialFinishPlaceCount();
+            return _carFinishPoints.Count;
         }
 
         public int GetMaxFinishPlaceCount()
@@ -105,7 +97,10 @@ namespace MapFerryboat
             {
                 if (tile.gameObject.activeSelf)
                 {
-                    result++;
+                    if (tile.TileType == Tile.Type.Regular)
+                    {
+                        result++;
+                    }
                 }
             }
 
@@ -116,11 +111,14 @@ namespace MapFerryboat
         {
             int result = 0;
 
-            foreach (Tile tile in _carSpesialFinishPoints)
+            foreach (Tile tile in _carFinishPoints)
             {
                 if (tile.gameObject.activeSelf)
                 {
-                    result++;
+                    if (tile.TileType == Tile.Type.Special)
+                    {
+                        result++;
+                    }
                 }
             }
 
@@ -148,8 +146,7 @@ namespace MapFerryboat
 
         public void PrepareReward()
         {
-            _rewarder.SetFinishPositions(_carFinishPoints, false);
-            _rewarder.SetFinishPositions(_carSpesialFinishPoints, true);
+            _rewarder.SetFinishPositions(_carFinishPoints);
             _rewarder.WriteReward();
         }
 
@@ -217,28 +214,9 @@ namespace MapFerryboat
             return cashtile;
         }
 
-        public Tile GetFinihCarPosition()
+        public List<Tile> GetFinihCarPositions()
         {
-            Tile tile = _carFinishPoints[UnityEngine.Random.Range(0, _carFinishPoints.Count)];
-
-            _carFinishPoints.Remove(tile);
-
-            return tile;
-        }
-
-        public Tile GetStartSpesialCarPosition()
-        {
-            Tile tile = _carSpesialStartPoints[UnityEngine.Random.Range(0, _carSpesialStartPoints.Count)];
-
-            return tile;
-        }
-
-        public Tile GetSpesialFinihCarPosition()
-        {
-            Tile tile = _carSpesialFinishPoints[UnityEngine.Random.Range(0, _carSpesialFinishPoints.Count)];
-            _carSpesialFinishPoints.Remove(tile);
-
-            return tile;
+            return _carFinishPoints;
         }
 
         public void AddObstacle(int x, int y)
@@ -261,34 +239,31 @@ namespace MapFerryboat
             _carStartPoints.Enqueue(_tiles[x, y]);
         }
 
-        public void AddCarFinishPoint(int x, int y)
-        {
-            if (_carFinishPoints.Contains(_tiles[x, y]))
-                return;
-
-            _carFinishPoints.Add(_tiles[x, y]);
-
-            if (_map[x, y].IsObstacle)
-                return;
-
-            _obstacleView.RemoveObstacle(_tiles[x, y].transform);
-        }
-
         public void AddSpesialCarStartPoint(int x, int y)
         {
-            _carSpesialStartPoints.Add(_tiles[x, y]);
+            _carStartPoints.Enqueue(_tiles[x, y]);
+        }
+
+        public void AddCarFinishPoint(int x, int y)
+        {
+            AddingFinishPoint(x, y, Tile.Type.Regular);
         }
 
         public void AddSpesialCarFinishPoint(int x, int y)
         {
-            if (_carSpesialFinishPoints.Contains(_tiles[x, y]))
-                return;
+            AddingFinishPoint(x, y, Tile.Type.Special);
+        }
 
-            _carSpesialFinishPoints.Add(_tiles[x, y]);
+        public void AddingFinishPoint(int x, int y, Tile.Type type)
+        {
+            if (_carFinishPoints.Contains(_tiles[x, y]))
+                return;
 
             if (_map[x, y].IsObstacle)
                 return;
 
+            _tiles[x, y].ChangeType(type);
+            _carFinishPoints.Add(_tiles[x, y]);
             _tiles[x, y].gameObject.SetActive(true);
             _obstacleView.RemoveObstacle(_tiles[x, y].transform);
         }
@@ -322,7 +297,10 @@ namespace MapFerryboat
 
         public void CreateRandomObstacle()
         {
-            Tile tile = _emptyCellObstacle[UnityEngine.Random.Range(0, _emptyCellObstacle.Count)];
+            Tile tile = _emptyCellObstacle[UnityEngine.Random.Range(
+                0,
+                _emptyCellObstacle.Count)];
+
             CreatingObstacle(tile.CordX, tile.CordY);
         }
 
@@ -333,17 +311,16 @@ namespace MapFerryboat
 
             Tile creatingTile = GetTile(x, y);
 
-            if (_carSpesialFinishPoints.Contains(creatingTile) == false)
+            if (creatingTile.TileType == Tile.Type.Regular)
             {
-                _filledCellObstacle.Add(creatingTile);
                 _obstacleView.SetObstacle(creatingTile.transform);
             }
-            else
+            else if (creatingTile.TileType == Tile.Type.Special)
             {
-                _filledSpesialCellObstacle.Add(creatingTile);
                 _obstacleView.SetObstacleSpesial(creatingTile.transform);
             }
 
+            _filledCellObstacle.Add(creatingTile);
             AddObstacle(creatingTile.CordX, creatingTile.CordY);
             _obstaleLogic.RememberObstacle(creatingTile);
         }
@@ -357,13 +334,15 @@ namespace MapFerryboat
             if (_filledCellObstacle.Contains(tile))
             {
                 _filledCellObstacle.Remove(tile);
-                _rewarder.ChangeRewardCell(tile);
             }
 
-            if (_filledSpesialCellObstacle.Contains(tile))
+            if (tile.TileType == Tile.Type.Special)
             {
-                _filledSpesialCellObstacle.Remove(tile);
                 _rewarder.ChangeRewardSpesialCell(tile);
+            }
+            else
+            {
+                _rewarder.ChangeRewardCell(tile);
             }
         }
 
@@ -376,8 +355,7 @@ namespace MapFerryboat
                     _tiles[i, j] = _tilePool.GetItem().GetComponent<Tile>();
                     _tiles[i, j].transform.SetParent(transform, false);
                     _tiles[i, j].transform.position = new Vector3(i + OffsetHorizontal, 0, j - OffsetVerticat);
-                    _tiles[i, j].ChangeX(i);
-                    _tiles[i, j].ChangeY(j);
+                    _tiles[i, j].ChangeTilePlace(new Vector2(i, j));
                     _map[i, j] = new Point(i, j);
                 }
             }
