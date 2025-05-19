@@ -8,15 +8,14 @@ namespace CarGroup
     public class FabricCars : MonoBehaviour
     {
         [SerializeField] private MapFerryboat.MapLogic _map;
-
-        private Pool<Car> _carPool;
-        private Pool<Car> _carSpesialPool;
-
         [SerializeField] private Car _prefabCar;
         [SerializeField] private Car _prefabSpesialCar;
 
         [SerializeField] private List<CarPropery> _carsPropertys;
         [SerializeField] private List<CarPropery> _spesialCarsPropertys;
+
+        private Pool<Car> _carPool;
+        private Pool<Car> _carSpesialPool;
 
         private List<Car> _createdCars = new List<Car>();
         private List<Car> _createdSpesialCars = new List<Car>();
