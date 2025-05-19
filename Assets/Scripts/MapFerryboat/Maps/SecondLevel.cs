@@ -44,7 +44,7 @@ namespace MapFerryboat
                 Logic.AddVoid(VerticalRigthBorder + VerticalOffset, i);
 
             for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < Height; j++)
                     Logic.AddVoid(i, j);
 
             for (int i = 0; i < Height; i++)

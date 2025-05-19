@@ -47,11 +47,11 @@ namespace MapFerryboat
             }
 
             for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < Height; j++)
                     Logic.AddVoid(i, j);
 
             for (int i = VerticalOffset; i < VerticalRigthBorder; i++)
-                for (int j = RoadOffVerticalLowerValue + VerticalOffset; j < Width; j++)
+                for (int j = RoadOffVerticalLowerValue + VerticalOffset; j < Height; j++)
                     Logic.AddCarFinishPoint(i, j);
 
             for (int i = VerticalOffset; i < VerticalRigthBorder - VerticalOffset; i++)

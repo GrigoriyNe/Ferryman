@@ -47,7 +47,7 @@ namespace MapFerryboat
                 Logic.AddVoid(VerticalRigthBorder, i);
 
             for (int i = VerticalRigthBorder + VerticalOffset; i < Height; i++)
-                for (int j = 0; j < Width; j++)
+                for (int j = 0; j < Height; j++)
                     Logic.AddVoid(i, j);
 
             _obstaleLogic.SetSpesialFinishPlace(Logic.GetTile(VerticalRigthBorder, HorizontalFirstSpesialPlase));

@@ -4,9 +4,8 @@ namespace MapFerryboat
 {
     public abstract class Map : MonoBehaviour
     {
-        public const int Width = 24;
         public const int Height = 24;
-        public const int RoadOffVerticalValue = Width - MiddleOffset;
+        public const int RoadOffVerticalValue = Height - MiddleOffset;
         public const int MiddleOffset = 8;
 
         [SerializeField] protected MapLogic Logic;
@@ -19,7 +18,7 @@ namespace MapFerryboat
 
         public void Activate()
         {
-            Logic.Init(Width, Height, RoadOffVerticalValue);
+            Logic.Init(Height, RoadOffVerticalValue);
             gameObject.SetActive(true);
             CreateItemOnMap();
             SetVaribleObstaclePlaces();

@@ -29,7 +29,6 @@ namespace MapFerryboat
         private Point _start;
         private Point _end;
 
-        private int _width;
         private int _height;
 
         private int _startX;
@@ -44,15 +43,14 @@ namespace MapFerryboat
             _tilePool = new Pool.Pool<Tile>(_prefab);
         }
 
-        public void Init(int width, int height, int roadOffVerticalValue)
+        public void Init(int height, int roadOffVerticalValue)
         {
             RoadOffVerticalValue = roadOffVerticalValue;
 
-            _width = width;
             _height = height;
 
-            _map = new Point[_height, _width];
-            _tiles = new Tile[_height, _width];
+            _map = new Point[_height, height];
+            _tiles = new Tile[_height, height];
 
             Activate();
             InitLogicMap();
@@ -348,7 +346,7 @@ namespace MapFerryboat
 
         private void InitLogicMap()
         {
-            for (int i = 0; i < _width; i++)
+            for (int i = 0; i < _height; i++)
             {
                 for (int j = 0; j < _height; j++)
                 {
@@ -434,7 +432,7 @@ namespace MapFerryboat
                 points.Add(_map[x + 1, y]);
             }
 
-            if (y < _width - 1 && !_map[x, y + 1].IsObstacle && !_map[x, y + 1].Walls[3] && !_map[x, y].Walls[2])
+            if (y < _height - 1 && !_map[x, y + 1].IsObstacle && !_map[x, y + 1].Walls[3] && !_map[x, y].Walls[2])
             {
                 points.Add(_map[x, y + 1]);
             }
